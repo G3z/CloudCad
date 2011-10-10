@@ -3,6 +3,9 @@ mvMatrix = mat4.create()
 pMatrix = mat4.create()
 
 initGL = (canvas)->
+	###
+		Inizializzo il sistema WebGL sul canvas specificato
+	###
 	try 
 		gl = canvas.getContext("experimental-webgl");
 		gl.viewportWidth = canvas.width;
@@ -14,6 +17,9 @@ initGL = (canvas)->
 
 
 initShaders = ->
+	###
+		Inizializzo gli shaders
+	###
 	fragmentShader = getShader(gl, "shader-fs")
 	vertexShader = getShader(gl, "shader-vs")
 
@@ -34,6 +40,9 @@ initShaders = ->
 	return
 
 getShader=(gl, id) ->
+	###
+		Carico lo shader che mi viene richiesto
+	###
 	shaderScript = document.getElementById(id);
 	return null if !shaderScript?
 	str = ""
@@ -60,12 +69,18 @@ getShader=(gl, id) ->
 	return shader
 
 setMatrixUniforms= -> 
+	###
+		?CREDO che scali le immagini riportate dallo shader alla dimenzione del canvas o qualcosa del genere?
+	###
 	gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix)
 	gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix)
 	return
     
 
 initBuffers = ->
+	###
+		Qui vengono create le forme (triangolo e quadrato) che vengono visualizzate
+	###
 	triangleVertexPositionBuffer = gl.createBuffer()
 	gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer)
 	vertices = [
@@ -91,6 +106,9 @@ initBuffers = ->
 	return
 
 drawScene = ->
+	###
+		Funzione che disegna le forme sul canvas
+	###
 	gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight)
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 	mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix) #prospettiva
@@ -108,10 +126,10 @@ drawScene = ->
 	setMatrixUniforms()
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems)
 	return
-	
-init = ->
+
+init =(canvasName) ->
 	console.log("Inizializzo il sistema WebGL")
-	canvas = document.getElementById("3dcanvas");
+	canvas = document.getElementById(canvasName);
 	initGL(canvas);
 	initShaders();
 	initBuffers();
@@ -121,4 +139,4 @@ init = ->
 
 	drawScene();
 	return
-$.ready(init())
+$.ready(init("3dcanvas"))

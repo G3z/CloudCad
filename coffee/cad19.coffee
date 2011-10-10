@@ -13,6 +13,7 @@ init = ->
 	gl.enable(gl.DEPTH_TEST);
 
 	drawScene();
+	return
 
 
 initGL = (canvas)->
@@ -23,6 +24,7 @@ initGL = (canvas)->
 	catch e 
     
 	alert("Could not initialise WebGL, sorry :-(") if not gl?
+	return
 
 
 initShaders = ->
@@ -43,6 +45,7 @@ initShaders = ->
 
 	shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix")
 	shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix")
+	return
 
 getShader=(gl, id) ->
 	shaderScript = document.getElementById(id);
@@ -72,6 +75,7 @@ getShader=(gl, id) ->
 setMatrixUniforms= -> 
 	gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix)
 	gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix)
+	return
     
 
 initBuffers = ->
@@ -97,6 +101,7 @@ initBuffers = ->
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
 	squareVertexPositionBuffer.itemSize = 3
 	squareVertexPositionBuffer.numItems = 4
+	return
 
 drawScene = ->
 	gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight)
@@ -115,5 +120,6 @@ drawScene = ->
 	gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0)
 	setMatrixUniforms()
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems)
+	return
 
 $.ready(init())

@@ -1,20 +1,6 @@
-triangleVertexPositionBuffer = "" ; squareVertexPositionBuffer = "";gl = "";mvMatrix = "";pMatrix = "";shaderProgram="";
+triangleVertexPositionBuffer = "" ; squareVertexPositionBuffer = "";gl = "";shaderProgram="";
 mvMatrix = mat4.create()
 pMatrix = mat4.create()
-
-init = ->
-	console.log("Inizializzo il sistema WebGL")
-	canvas = document.getElementById("3dcanvas");
-	initGL(canvas);
-	initShaders();
-	initBuffers();
-
-	gl.clearColor(0.0, 0.0, 0.0, 1.0);
-	gl.enable(gl.DEPTH_TEST);
-
-	drawScene();
-	return
-
 
 initGL = (canvas)->
 	try 
@@ -68,6 +54,7 @@ getShader=(gl, id) ->
 	gl.compileShader(shader)
 
 	if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+		alert(gl.getShaderInfoLog(shader));
 		return null
     
 	return shader
@@ -121,5 +108,17 @@ drawScene = ->
 	setMatrixUniforms()
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems)
 	return
+	
+init = ->
+	console.log("Inizializzo il sistema WebGL")
+	canvas = document.getElementById("3dcanvas");
+	initGL(canvas);
+	initShaders();
+	initBuffers();
 
+	gl.clearColor(0.0, 0.0, 0.0, 1.0);
+	gl.enable(gl.DEPTH_TEST);
+
+	drawScene();
+	return
 $.ready(init())

@@ -1,18 +1,18 @@
- (function() {
+(function() {
   var Cad19, cad;
   Cad19 = (function() {
-    var cubeVertexColorBuffer, cubeVertexPositionBuffer, gl, lastTime, mvMatrix, mvMatrixStack, pMatrix, pyramidVertexColorBuffer, pyramidVertexPositionBuffer, rCube, rPyramid, shaderProgram;
-    pyramidVertexPositionBuffer = "";
-    cubeVertexPositionBuffer = "";
+    var gl, lastTime, mvMatrix, mvMatrixStack, pMatrix, rSquare, rTri, shaderProgram, squareVertexColorBuffer, squareVertexPositionBuffer, triangleVertexColorBuffer, triangleVertexPositionBuffer;
+    triangleVertexPositionBuffer = "";
+    squareVertexPositionBuffer = "";
     gl = "";
     shaderProgram = "";
-    pyramidVertexColorBuffer = "";
-    cubeVertexColorBuffer = "";
+    triangleVertexColorBuffer = "";
+    squareVertexColorBuffer = "";
     mvMatrix = mat4.create();
     mvMatrixStack = [];
     pMatrix = mat4.create();
-    rPyramid = 0;
-    rCube = 0;
+    rTri = 0;
+    rSquare = 0;
     lastTime = 0;
     Cad19.prototype.degToRad = function(degrees) {
       return degrees * Math.PI / 180;
@@ -96,7 +96,7 @@
       /*
       			Qui vengono create le forme (triangolo e quadrato) che vengono visualizzate
       		*/
-      var colors, num, squareVertexColorBuffer, squareVertexPositionBuffer, triangleVertexColorBuffer, triangleVertexPositionBuffer, vertices;
+      var colors, num, vertices;
       triangleVertexPositionBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
       vertices = [0.0, 1.0, 0.0, -1.0, -1.0, 0.0, 1.0, -1.0, 0.0];
@@ -134,23 +134,23 @@
       mat4.identity(mvMatrix);
       mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
       this.mvPushMatrix();
-      mat4.rotate(mvMatrix, this.degToRad(rPyramid), [0, 1, 0]);
-      gl.bindBuffer(gl.ARRAY_BUFFER, pyramidVertexPositionBuffer);
-      gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, pyramidVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-      gl.bindBuffer(gl.ARRAY_BUFFER, pyramidVertexColorBuffer);
-      gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, pyramidVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
+      mat4.rotate(mvMatrix, this.degToRad(rTri), [0, 1, 0]);
+      gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
+      gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer);
+      gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, triangleVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
       this.setMatrixUniforms();
-      gl.drawArrays(gl.TRIANGLES, 0, pyramidVertexPositionBuffer.numItems);
-      mvPopMatrix();
+      gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
+      this.mvPopMatrix();
       mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
       this.mvPushMatrix();
-      mat4.rotate(mvMatrix, this.degToRad(rCube), [1, 1, 1]);
-      gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
-      gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, cubeVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-      gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexColorBuffer);
-      gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, cubeVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
+      mat4.rotate(mvMatrix, this.degToRad(rSquare), [0, 0, 1]);
+      gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
+      gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexColorBuffer);
+      gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, squareVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
       this.setMatrixUniforms();
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, cubeVertexPositionBuffer.numItems);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
       this.mvPopMatrix();
     };
     Cad19.prototype.mvPushMatrix = function() {
@@ -170,19 +170,20 @@
       timeNow = new Date().getTime();
       if (lastTime !== 0) {
         elapsed = timeNow - lastTime;
-        rPyramid += (180 * elapsed) / 1000.0;
-        rCube += (90 * elapsed) / 1000.0;
+        rTri += (180 * elapsed) / 1000.0;
+        rSquare += (90 * elapsed) / 1000.0;
       }
       return lastTime = timeNow;
     };
     Cad19.prototype.tick = function() {
-      requestAnimFrame(@tick);
+      requestAnimFrame(this.tick);
       this.drawScene();
       this.animate();
     };
     function Cad19(canvasName) {
       var canvas;
       this.canvasName = canvasName;
+      console.log("Inizializzo il sistema WebGL");
       canvas = document.getElementById(this.canvasName);
       this.initGL(canvas);
       this.initShaders();

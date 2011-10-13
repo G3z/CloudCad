@@ -26,24 +26,31 @@ class Cad19
         @scene = new THREE.Scene()
 
         @geometry = new THREE.CubeGeometry( 200, 200, 200 )
-        @material = new THREE.MeshLambertMaterial( { color: 0xff0000, wireframe :false } )
+        @material = new THREE.MeshLambertMaterial( { color: 0x8866ff, wireframe :false } )
 
         @mesh = new THREE.Mesh( @geometry, @material )
         @scene.add( @mesh )
         
-        @light = new THREE.PointLight( 0xFFFF00, .5  )
+        @light = new THREE.PointLight( 0xFFFF00, .4  )
         @light.position.set( 400, 300, 400 )
         @scene.add( @light )
 
-        @ambientLight = new THREE.AmbientLight( 0xbbbbbb )
+        @ambientLight = new THREE.AmbientLight( 0x888888, )
         @scene.add( @ambientLight )
 
-        if glOrNot 
+        if glOrNot == "canvas"
+            @renderer =new THREE.CanvasRenderer()
+        else if glOrNot == "svg"
+            @renderer =new THREE.SVGRenderer()
+        else
             @renderer = new THREE.WebGLRenderer()
-        else 
-            @renderer =new THREE.WebCanvasRenderer()
+            #@renderer.setFaceCulling("back","cw")
         @renderer.setSize( window.innerWidth, window.innerHeight )
-
+        
+        ###
+            *-- FUNZIONI PER IL MOUSE --*
+            Per chiarezza sarebbero da spostare su un altro file
+        ###
         $(document).mousedown( (event)-> 
             cadView.mouseDown = true
             cadView.origin.x = event.clientX
@@ -76,5 +83,5 @@ class Cad19
         @renderer.render(@scene,@camera)
     
 
-cadView = new Cad19(true)
-cadView.animate()
+window.cadView = new Cad19()
+window.cadView.animate()

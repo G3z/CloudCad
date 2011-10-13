@@ -6,6 +6,8 @@ gem 'rails', '3.1.0'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
+gem 'mysql'
+gem 'rack'
 
 gem 'json'
 
@@ -26,5 +28,4 @@ gem 'jquery-rails'
 # gem 'capistrano'
 
 # To use debugger
-# gem 'ruby-debug'
-
+gem 'ruby-debug19'

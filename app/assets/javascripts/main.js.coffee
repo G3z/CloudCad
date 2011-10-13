@@ -2,18 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
-Ext.application(
-    name: 'HelloExt'
-    launch: ->
-        Ext.create('Ext.container.Viewport', {
-            layout: 'fit',
-            items: [
-                {
-                    title: 'Hello Ext',
-                    html : 'Hello! Welcome to Ext JS.'
-                }
-            ]
-        })
+$ = jQuery
 
-)
-
+$(document).ready ->
+    console.log("START")

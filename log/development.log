@@ -460,3 +460,83 @@ Served asset /main.js - 304 Not Modified (0ms)
 
 Started GET "/assets/application.js?body=1" for 127.0.0.1 at Tue Oct 11 01:11:42 +0200 2011
 Served asset /application.js - 200 OK (258ms)
+
+
+Started GET "/" for 127.0.0.1 at 2011-10-11 08:06:05 +0200
+
+ActionController::RoutingError (No route matches [GET] "/"):
+  
+
+Rendered /Users/g3z/.rvm/gems/ruby-1.9.2-p290/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (17.3ms)
+
+
+Started GET "/" for 127.0.0.1 at 2011-10-11 08:06:06 +0200
+
+ActionController::RoutingError (No route matches [GET] "/"):
+  
+
+Rendered /Users/g3z/.rvm/gems/ruby-1.9.2-p290/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.6ms)
+
+
+Started GET "/" for 127.0.0.1 at 2011-10-11 19:35:50 +0200
+
+ActionController::RoutingError (No route matches [GET] "/"):
+  
+
+Rendered /Users/g3z/.rvm/gems/ruby-1.9.2-p290/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (20.9ms)
+
+
+Started GET "/c" for 127.0.0.1 at 2011-10-11 19:35:54 +0200
+
+ActionController::RoutingError (No route matches [GET] "/c"):
+  
+
+Rendered /Users/g3z/.rvm/gems/ruby-1.9.2-p290/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.1ms)
+
+
+Started GET "/cont" for 127.0.0.1 at 2011-10-11 19:35:55 +0200
+
+ActionController::RoutingError (No route matches [GET] "/cont"):
+  
+
+Rendered /Users/g3z/.rvm/gems/ruby-1.9.2-p290/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.6ms)
+
+
+Started GET "/contro" for 127.0.0.1 at 2011-10-11 19:35:55 +0200
+
+ActionController::RoutingError (No route matches [GET] "/contro"):
+  
+
+Rendered /Users/g3z/.rvm/gems/ruby-1.9.2-p290/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.0ms)
+
+
+Started GET "/controller" for 127.0.0.1 at 2011-10-11 19:35:55 +0200
+
+ActionController::RoutingError (No route matches [GET] "/controller"):
+  
+
+Rendered /Users/g3z/.rvm/gems/ruby-1.9.2-p290/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.2ms)
+
+
+Started GET "/a" for 127.0.0.1 at 2011-10-11 19:36:10 +0200
+
+ActionController::RoutingError (No route matches [GET] "/a"):
+  
+
+Rendered /Users/g3z/.rvm/gems/ruby-1.9.2-p290/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.5ms)
+
+
+Started GET "/app" for 127.0.0.1 at 2011-10-11 19:36:11 +0200
+
+ActionController::RoutingError (No route matches [GET] "/app"):
+  
+
+Rendered /Users/g3z/.rvm/gems/ruby-1.9.2-p290/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.4ms)
+
+
+Started GET "/" for 127.0.0.1 at 2011-10-11 19:36:37 +0200
+
+ActionController::RoutingError (No route matches [GET] "/"):
+  
+
+Rendered /Users/g3z/.rvm/gems/ruby-1.9.2-p290/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.0ms)

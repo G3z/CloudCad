@@ -460,3 +460,684 @@ Served asset /main.js - 304 Not Modified (0ms)
 
 Started GET "/assets/application.js?body=1" for 127.0.0.1 at Tue Oct 11 01:11:42 +0200 2011
 Served asset /application.js - 200 OK (258ms)
+
+
+Started GET "/" for 127.0.0.1 at Thu Oct 13 22:08:36 +0200 2011
+
+ActionController::RoutingError (No route matches [GET] "/"):
+  
+
+Rendered /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (30.5ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:08:45 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 79ms (Views: 78.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:08:45 +0200 2011
+Served asset /main.css - 200 OK (8ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:08:45 +0200 2011
+Served asset /application.css - 200 OK (1ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:08:45 +0200 2011
+Served asset /jquery.js - 200 OK (19ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:08:45 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (8ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:08:45 +0200 2011
+Served asset /cad.js - 200 OK (46ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:08:45 +0200 2011
+Served asset /main.js - 200 OK (4ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:08:45 +0200 2011
+Served asset /application.js - 200 OK (128ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:09:09 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 12ms (Views: 11.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:09:09 +0200 2011
+Served asset /application.css - 200 OK (0ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:09:09 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:09:09 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:09:09 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:09:09 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:09:09 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:09:09 +0200 2011
+Served asset /application.js - 200 OK (14ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:14:08 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.3ms)
+Completed 500 Internal Server Error in 111ms
+
+ActionView::Template::Error (/public/js/Three.js isn't in paths: /Users/wezzy/Sites/cad19/app/assets/images, /Users/wezzy/Sites/cad19/app/assets/javascripts, /Users/wezzy/Sites/cad19/app/assets/stylesheets, /Users/wezzy/Sites/cad19/vendor/assets/stylesheets, /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/jquery-rails-1.0.14/vendor/assets/javascripts):
+    4:   <title>Cad19</title>
+    5:   <%= stylesheet_link_tag    "application" %>
+    6: 
+    7:   <%= javascript_include_tag "/public/js/Three.js" %>
+    8:   <%= javascript_include_tag "application" %>
+    9:   <%= csrf_meta_tags %>
+    10: </head>
+  app/views/layouts/application.html.erb:7:in `_app_views_layouts_application_html_erb__551976351_2232591280'
+
+Rendered /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.5ms)
+Rendered /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (0.9ms)
+Rendered /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/template_error.erb within rescues/layout (6.5ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:14:46 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 20ms (Views: 19.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:14:46 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:14:46 +0200 2011
+Served asset /jquery.js - 200 OK (1ms)
+
+
+Started GET "/assets/public/js/Three.js" for 127.0.0.1 at Thu Oct 13 22:14:46 +0200 2011
+Served asset /public/js/Three.js - 404 Not Found (4ms)
+
+ActionController::RoutingError (No route matches [GET] "/assets/public/js/Three.js"):
+  
+
+Rendered /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.6ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:14:46 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:14:46 +0200 2011
+Served asset /application.css - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:14:46 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:14:46 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:14:46 +0200 2011
+Served asset /application.js - 200 OK (0ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:16:08 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 15ms (Views: 14.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:08 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/public/ext-4.0.2a/ext-all-debug-w-comments.js" for 127.0.0.1 at Thu Oct 13 22:16:08 +0200 2011
+
+ActionController::RoutingError (No route matches [GET] "/public/ext-4.0.2a/ext-all-debug-w-comments.js"):
+  
+
+Rendered /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.7ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:16:08 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/public/Three.js" for 127.0.0.1 at Thu Oct 13 22:16:08 +0200 2011
+
+ActionController::RoutingError (No route matches [GET] "/public/Three.js"):
+  
+
+Rendered /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (2.3ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:16:08 +0200 2011
+Served asset /application.css - 200 OK (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:08 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:08 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:08 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:08 +0200 2011
+Served asset /application.js - 200 OK (0ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:16:18 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 24ms (Views: 23.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/public/js/ext-4.0.2a/ext-all-debug-w-comments.js" for 127.0.0.1 at Thu Oct 13 22:16:18 +0200 2011
+
+ActionController::RoutingError (No route matches [GET] "/public/js/ext-4.0.2a/ext-all-debug-w-comments.js"):
+  
+
+Rendered /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.6ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:18 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:18 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:16:18 +0200 2011
+Served asset /application.css - 200 OK (1ms)
+
+
+Started GET "/public/js/Three.js" for 127.0.0.1 at Thu Oct 13 22:16:19 +0200 2011
+
+ActionController::RoutingError (No route matches [GET] "/public/js/Three.js"):
+  
+
+Rendered /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.7ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:16:19 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:19 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:19 +0200 2011
+Served asset /main.js - 200 OK (46ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:19 +0200 2011
+Served asset /application.js - 200 OK (0ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:16:34 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 14ms (Views: 13.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:16:34 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/public/js/Three.js" for 127.0.0.1 at Thu Oct 13 22:16:34 +0200 2011
+
+ActionController::RoutingError (No route matches [GET] "/public/js/Three.js"):
+  
+
+Rendered /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.6ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:16:34 +0200 2011
+Served asset /application.css - 200 OK (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:34 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:34 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:34 +0200 2011
+Served asset /cad.js - 200 OK (3ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:34 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:34 +0200 2011
+Served asset /application.js - 200 OK (0ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:16:46 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 23ms (Views: 22.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:46 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:16:46 +0200 2011
+Served asset /application.css - 200 OK (1ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:46 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:16:46 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:46 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:46 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:16:46 +0200 2011
+Served asset /application.js - 200 OK (0ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:17:53 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 16ms (Views: 15.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:17:54 +0200 2011
+Served asset /application.css - 200 OK (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:17:54 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:17:54 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:17:54 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:17:54 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:17:54 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:17:54 +0200 2011
+Served asset /application.js - 200 OK (0ms)
+
+
+Started GET "/tests.html" for 127.0.0.1 at Thu Oct 13 22:18:57 +0200 2011
+
+ActionController::RoutingError (No route matches [GET] "/tests.html"):
+  
+
+Rendered /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.6ms)
+
+
+Started GET "/tests.html" for 127.0.0.1 at Thu Oct 13 22:19:15 +0200 2011
+
+ActionController::RoutingError (No route matches [GET] "/tests.html"):
+  
+
+Rendered /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.6ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:19:16 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 12ms (Views: 11.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:19:16 +0200 2011
+Served asset /application.css - 200 OK (0ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:19:16 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:19:16 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:19:16 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:19:16 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:19:16 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:19:16 +0200 2011
+Served asset /application.js - 200 OK (0ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:19:18 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 10ms (Views: 9.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:19:18 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (2ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:19:18 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:19:18 +0200 2011
+Served asset /jquery.js - 200 OK (2ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:19:18 +0200 2011
+Served asset /application.css - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:19:18 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:19:18 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:19:18 +0200 2011
+Served asset /application.js - 200 OK (0ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:22:55 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 14ms (Views: 13.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:22:56 +0200 2011
+Served asset /main.css - 200 OK (2ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:22:56 +0200 2011
+Served asset /application.css - 200 OK (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:22:56 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:22:56 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:22:56 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:22:56 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:22:56 +0200 2011
+Served asset /application.js - 200 OK (0ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:25:22 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.4ms)
+Completed 200 OK in 24ms (Views: 23.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:25:23 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:25:23 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:25:23 +0200 2011
+Served asset /application.css - 200 OK (1ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:25:23 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:25:23 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:25:23 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:25:23 +0200 2011
+Served asset /application.js - 200 OK (1ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:25:49 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 20ms (Views: 18.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/main/js/ext-4.0.2a/resources/css/ext-all.css" for 127.0.0.1 at Thu Oct 13 22:25:49 +0200 2011
+
+ActionController::RoutingError (No route matches [GET] "/main/js/ext-4.0.2a/resources/css/ext-all.css"):
+  
+
+Rendered /Users/wezzy/.rvm/gems/ruby-1.8.7-p352/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.6ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:25:49 +0200 2011
+Served asset /application.css - 200 OK (0ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:25:49 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:25:49 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:25:49 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:25:49 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:25:49 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:25:49 +0200 2011
+Served asset /application.js - 200 OK (1ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:26:15 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 15ms (Views: 13.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:26:15 +0200 2011
+Served asset /application.css - 200 OK (0ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:26:15 +0200 2011
+Served asset /main.css - 200 OK (1ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:26:15 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:26:15 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:26:15 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:26:15 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:26:15 +0200 2011
+Served asset /application.js - 200 OK (7ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:26:56 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 17ms (Views: 15.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:26:56 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:26:56 +0200 2011
+Served asset /application.css - 200 OK (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:26:56 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:26:56 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:26:56 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:26:56 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:26:56 +0200 2011
+Served asset /application.js - 200 OK (4ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:43:51 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Compiled main.js  (260ms)  (pid 2610)
+Compiled application.js  (8ms)  (pid 2610)
+Completed 200 OK in 393ms (Views: 391.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:43:51 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:43:51 +0200 2011
+Served asset /application.css - 200 OK (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:43:51 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:43:51 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:43:51 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:43:51 +0200 2011
+Served asset /main.js - 200 OK (9ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:43:51 +0200 2011
+Served asset /application.js - 200 OK (74ms)
+
+
+Started GET "/main/index" for 127.0.0.1 at Thu Oct 13 22:44:19 +0200 2011
+  Processing by MainController#index as HTML
+Rendered main/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 14ms (Views: 13.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at Thu Oct 13 22:44:19 +0200 2011
+Served asset /application.css - 200 OK (0ms)
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at Thu Oct 13 22:44:19 +0200 2011
+Served asset /main.css - 200 OK (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at Thu Oct 13 22:44:19 +0200 2011
+Served asset /jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at Thu Oct 13 22:44:19 +0200 2011
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/cad.js?body=1" for 127.0.0.1 at Thu Oct 13 22:44:19 +0200 2011
+Served asset /cad.js - 200 OK (0ms)
+
+
+Started GET "/assets/main.js?body=1" for 127.0.0.1 at Thu Oct 13 22:44:19 +0200 2011
+Served asset /main.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at Thu Oct 13 22:44:19 +0200 2011
+Served asset /application.js - 200 OK (0ms)

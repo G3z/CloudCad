@@ -1,4 +1,4 @@
-o: ActiveSupport::Cache::Entry	:@value{	"_version"%01486a3599c2144e90a35aba0211c0f9"digest"%eb5c12fe82f43a672d9f7fe4ac7889ad"lengthi»Ö"source"»Ö/*!
+o: ActiveSupport::Cache::Entry	:@value{	"_version"%f8544f9b7a470c78bf7377af79d14c86"digest"%ecf9cd9cb2611d83f648a0048616a164"lengthiÂ×"source"Â×/*!
  * jQuery JavaScript Library v1.6.2
  * http://jquery.com/
  *
@@ -9348,7 +9348,20 @@ window.jQuery = window.$ = jQuery;
   console.log("Cad");
 }).call(this);
 (function() {
-  console.log("Hello World");
+  Ext.application({
+    name: 'HelloExt',
+    launch: function() {
+      return Ext.create('Ext.container.Viewport', {
+        layout: 'fit',
+        items: [
+          {
+            title: 'Hello Ext',
+            html: 'Hello! Welcome to Ext JS.'
+          }
+        ]
+      });
+    }
+  });
 }).call(this);
 // This is a manifest file that'll be compiled into including all the files listed below.
 // Add new JavaScript/Coffee code in separate files in this directory and they'll automatically
@@ -9357,4 +9370,4 @@ window.jQuery = window.$ = jQuery;
 // the compiled file.
 //
 ;
-:@expires_in0:@compressedF:@created_atf1318288302.7098911 nÛ
+:@expires_in0:@compressedF:@created_atf1318538631.9235671 ¹

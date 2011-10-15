@@ -17,10 +17,10 @@ class Cad19
         @mouseX=1
         @mouseY=1
         @mouseDown=false
-        @origin= { x: window.innerWidth/2, y:window.innerHeight/2}
+        @origin= { x: (window.innerWidth-50)/2, y:(window.innerHeight-50)/2}
         @oldDelta= { x: 0, y:0}
 
-        @camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 10000 )
+        @camera = new THREE.PerspectiveCamera( 35, (window.innerWidth-50) / (window.innerHeight-50), 1, 10000 )
         @camera.position.z = 1000
 
         @scene = new THREE.Scene()
@@ -46,14 +46,14 @@ class Cad19
             @renderer = new THREE.WebGLRenderer({
                 antialias: true,
                 canvas: document.createElement( 'canvas' ),
-                clearColor: 0x000000,
-                clearAlpha: .1,
+                clearColor: 0x111188,
+                clearAlpha: 0.2,
                 maxLights: 4,
                 stencil: true,
-                preserveDrawingBuffer: false
+                preserveDrawingBuffer: true
             })
             #@renderer.setFaceCulling("back","cw")
-        @renderer.setSize( window.innerWidth, window.innerHeight )
+        @renderer.setSize( window.innerWidth-50, window.innerHeight-50 )
         
         ###
             *-- FUNZIONI PER IL MOUSE --*

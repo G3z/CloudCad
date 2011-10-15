@@ -1,5 +1,5 @@
 (function() {
-  var Cad19, cadView;
+  var Cad19;
   Cad19 = (function() {
     Cad19.camera;
     Cad19.scene;
@@ -32,7 +32,7 @@
       this.scene = new THREE.Scene();
       this.geometry = new THREE.CubeGeometry(200, 200, 200);
       this.material = new THREE.MeshLambertMaterial({
-        color: 0xff0000,
+        color: 0x8866ff,
         wireframe: false
       });
       this.mesh = new THREE.Mesh(this.geometry, this.material);
@@ -42,10 +42,20 @@
       this.scene.add(this.light);
       this.ambientLight = new THREE.AmbientLight(0x888888);
       this.scene.add(this.ambientLight);
-      if (glOrNot) {
-        this.renderer = new THREE.WebGLRenderer();
-      } else {
+      if (glOrNot === "canvas") {
         this.renderer = new THREE.CanvasRenderer();
+      } else if (glOrNot === "svg") {
+        this.renderer = new THREE.SVGRenderer();
+      } else {
+        this.renderer = new THREE.WebGLRenderer({
+          antialias: true,
+          canvas: document.createElement('canvas'),
+          clearColor: 0x111188,
+          clearAlpha: 0.2,
+          maxLights: 4,
+          stencil: true,
+          preserveDrawingBuffer: true
+        });
       }
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       /*
@@ -81,6 +91,12 @@
     };
     return Cad19;
   })();
-  cadView = new Cad19(false);
-  cadView.animate();
+  window.cadView = new Cad19();
+  window.cadView.animate();
+  window.stats = new Stats();
+  stats.domElement.style.position = 'absolute';
+  stats.domElement.style.left = '0px';
+  stats.domElement.style.top = '0px';
+  document.body.appendChild(stats.domElement);
+  setInterval(stats.update(), 1000 / 60);
 }).call(this);

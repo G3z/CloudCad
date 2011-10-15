@@ -30,9 +30,9 @@ class Cad19_Mouse
         @rotationScale = 0.003
         @btn1 = new Cad19_Mouse_Button()
         @btn2 = new Cad19_Mouse_Button()
-        @btn2 = new Cad19_Mouse_Button()
+        @btn3 = new Cad19_Mouse_Button()
 
-
+        $(document.body).attr("oncontextmenu","return false")
         $(document).mousedown( (event)=> @mouseDown({x:event.clientX,y:event.clientY},event.which) )
 
         $(document).mousemove( (event)=> @mouseDragged({x:event.clientX,y:event.clientY},event.which) )
@@ -41,17 +41,17 @@ class Cad19_Mouse
 
     mouseDown:(point,button)->
 
-        if button == 1
+        if button == 1                          #click sinistro
             @btn1.down = true
             @btn1.click.start = point
             @btn1.click.currentPos = point
 
-        if button == 2
+        if button == 2                          #click centrale
             @btn2.down = true
             @btn2.click.start = point
             @btn2.click.currentPos = point
 
-        if button == 3
+        if button == 3                          #click centrale
             @btn3.down = true
             @btn3.click.start = point
             @btn3.click.currentPos = point
@@ -92,9 +92,9 @@ class Cad19_Mouse
             @btn3.click.oldDelta = @btn3.click.delta
     
     rotationX:=>
-        @btn1.click.delta.h * @rotationScale
+        @btn3.click.delta.h * @rotationScale
     rotationY:=>
-        @btn1.click.delta.w * @rotationScale
+        @btn3.click.delta.w * @rotationScale
 
 class Cad19   
     @camera

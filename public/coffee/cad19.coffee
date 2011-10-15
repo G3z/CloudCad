@@ -43,7 +43,15 @@ class Cad19
         else if glOrNot == "svg"
             @renderer =new THREE.SVGRenderer()
         else
-            @renderer = new THREE.WebGLRenderer()
+            @renderer = new THREE.WebGLRenderer({
+                antialias: true,
+                canvas: document.createElement( 'canvas' ),
+                clearColor: 0x000000,
+                clearAlpha: .1,
+                maxLights: 4,
+                stencil: true,
+                preserveDrawingBuffer: false
+            })
             #@renderer.setFaceCulling("back","cw")
         @renderer.setSize( window.innerWidth, window.innerHeight )
         

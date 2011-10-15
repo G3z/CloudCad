@@ -1,3 +1,101 @@
+###
+    *-- FUNZIONI PER IL MOUSE --*
+    Per chiarezza sarebbero da spostare su un altro file
+###
+class Cad19_Mouse_Button
+    constructor:->
+        @down = false
+        @click = {
+            start: {
+                x:0
+                y:0
+            }
+            currentPos: {
+                x:0
+                y:0
+            }
+            delta: {
+                w:0
+                h:0
+            }
+            oldDelta: {
+                w:0
+                h:0
+            }
+        }
+
+class Cad19_Mouse
+    
+    constructor:->
+        @rotationScale = 0.003
+        @btn1 = new Cad19_Mouse_Button()
+        @btn2 = new Cad19_Mouse_Button()
+        @btn2 = new Cad19_Mouse_Button()
+
+
+        $(document).mousedown( (event)=> @mouseDown({x:event.clientX,y:event.clientY},event.which) )
+
+        $(document).mousemove( (event)=> @mouseDragged({x:event.clientX,y:event.clientY},event.which) )
+
+        $(document).mouseup( (event)=>  @mouseUp({x:event.clientX,y:event.clientY},event.which) )
+
+    mouseDown:(point,button)->
+
+        if button == 1
+            @btn1.down = true
+            @btn1.click.start = point
+            @btn1.click.currentPos = point
+
+        if button == 2
+            @btn2.down = true
+            @btn2.click.start = point
+            @btn2.click.currentPos = point
+
+        if button == 3
+            @btn3.down = true
+            @btn3.click.start = point
+            @btn3.click.currentPos = point
+
+    mouseDragged:(point,button)->   
+        if button ==1 && @btn1.down
+            @btn1.click.currentPos = point
+            @btn1.click.delta = {
+                w:@btn1.click.oldDelta.w + point.x - @btn1.click.start.x
+                h:@btn1.click.oldDelta.h + point.y - @btn1.click.start.y
+            }
+
+        if button ==2 && @btn2.down
+            @btn2.click.currentPos = point
+            @btn2.click.delta = {
+                w:@btn2.click.oldDelta.w + point.x - @btn2.click.start.x
+                h:@btn2.click.oldDelta.h + point.y - @btn2.click.start.y
+            }
+
+        if button ==3 && @btn3.down
+            @btn3.click.currentPos = point
+            @btn3.click.delta = {
+                w:@btn3.click.oldDelta.w + point.x - @btn3.click.start.x
+                h:@btn3.click.oldDelta.h + point.y - @btn3.click.start.y
+            }
+
+    mouseUp:(point,button)->
+        if button == 1 && @btn1.down
+            @btn1.down =false
+            @btn1.click.oldDelta = @btn1.click.delta
+
+        if button == 2 && @btn2.down
+            @btn2.down =false
+            @btn3.click.oldDelta = @btn3.click.delta
+
+        if button == 3 && @btn3.down
+            @btn3.down =false
+            @btn3.click.oldDelta = @btn3.click.delta
+    
+    rotationX:=>
+        @btn1.click.delta.h * @rotationScale
+    rotationY:=>
+        @btn1.click.delta.w * @rotationScale
+
 class Cad19   
     @camera
     @scene
@@ -7,19 +105,10 @@ class Cad19
     @mesh
     @light
     @ambientLight
-    @mouseX
-    @mouseY
-    @mouseDown
     @origin
-    @oldDelta
 
     constructor:(@glOrNot)->
-        @mouseX=1
-        @mouseY=1
-        @mouseDown=false
-        @origin= { x: (window.innerWidth-50)/2, y:(window.innerHeight-50)/2}
-        @oldDelta= { x: 0, y:0}
-
+        @mouse = new Cad19_Mouse()
         @camera = new THREE.PerspectiveCamera( 35, (window.innerWidth-50) / (window.innerHeight-50), 1, 10000 )
         @camera.position.z = 1000
 
@@ -54,42 +143,19 @@ class Cad19
             })
             #@renderer.setFaceCulling("back","cw")
         @renderer.setSize( window.innerWidth-50, window.innerHeight-50 )
-        
-        ###
-            *-- FUNZIONI PER IL MOUSE --*
-            Per chiarezza sarebbero da spostare su un altro file
-        ###
-        $(document).mousedown( (event)-> 
-            cadView.mouseDown = true
-            cadView.origin.x = event.clientX
-            cadView.origin.y = event.clientY
-        )
-
-        $(document).mousemove( (event)->
-            if cadView.mouseDown
-                cadView.mouseX = cadView.oldDelta.x + event.clientX - cadView.origin.x;
-                cadView.mouseY = cadView.oldDelta.y + event.clientY - cadView.origin.y;
-                
-        )
-
-        $(document).mouseup( (event)-> 
-            cadView.mouseDown = false
-            
-            cadView.oldDelta.x = cadView.mouseX
-            cadView.oldDelta.y = cadView.mouseY
-        )
 
         document.body.appendChild( @renderer.domElement )
 
-    animate:->
-        requestAnimFrame(cadView.animate)
-        cadView.render()
+    animate:=>
+        requestAnimFrame(@animate)
+        @render()
     
-    render:->
-        @mesh.rotation.x = @mouseY * 0.003
-        @mesh.rotation.y = @mouseX * 0.003
+    render:=>
+        @mesh.rotation.x = @mouse.rotationX()
+        @mesh.rotation.y = @mouse.rotationY()   
         @renderer.render(@scene,@camera)
     
 
-window.cadView = new Cad19()
-window.cadView.animate()
+cadView = new Cad19()
+cadView.animate()
+

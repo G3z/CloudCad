@@ -1,2 +1,8 @@
-Use this README file to introduce your application and point to useful places in the API for learning more.
-Run "rake doc:app" to generate API documentation for your models, controllers, helpers, and libraries.
+Naming Convention
+    - Class name: camel case
+    - File name: same name of the class + ".coffee"
+    - namespace are defined in main.coffee
+    - folder structure must follow the namespace structure -> class in CC.draw are defined in views/draw models/draw controller/draw
+
+We use CoffeeDoc for documentation
+    https://github.com/omarkhan/coffeedoc

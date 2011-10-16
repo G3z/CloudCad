@@ -1,3 +1,6 @@
+
+#= require ./main
+
 #= require json2
 #= require jquery-tmpl
 #= require spine
@@ -6,6 +9,7 @@
 #= require spine/tmpl
 #= require spine/route
 #
+
 #= require_tree ./libs
 #= require_tree ./models
 #= require_tree ./controllers

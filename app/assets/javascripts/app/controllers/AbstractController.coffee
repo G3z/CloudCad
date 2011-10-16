@@ -2,7 +2,7 @@
 #
 #   Abstract class for every controller
 #
-class AbstractController
+class CC.AbstractController
 
     constructor: (@view) ->
 

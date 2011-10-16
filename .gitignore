@@ -12,3 +12,5 @@
 /tmp/cache/assets/E04/890/sprockets%2F2f5173deea6c795b8fdde723bb4b63af
 /tmp/cache/assets/E35/
 /.DS_Store
+tmp/*
+/.bundle/

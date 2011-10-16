@@ -19,7 +19,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         super()
 
         @mouse = new CC.views.draw.Mouse()
-        @camera = new THREE.PerspectiveCamera( 35, (window.innerWidth-50) / (window.innerHeight-50), 1, 10000 )
+
+        @camera = new CC.views.draw.Camera(35, (window.innerWidth-50) / (window.innerHeight-50), 1, 10000)
         @camera.position.z = 1000
 
         @scene = new THREE.Scene()

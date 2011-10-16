@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f5d5a617-6fe3-4f92-8171-897af34e9919" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/models/Project.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/draw/Edge.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/TopBar.coffee" />
+    <list default="true" id="f5d5a617-6fe3-4f92-8171-897af34e9919" name="Default" comment="Elementi di GUI">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/js/modernizr-2.0.6.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/main.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/main.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/AbstractView.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/AbstractView.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/draw/Stage3d.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/draw/Stage3d.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/layouts/application.html.erb" afterPath="$PROJECT_DIR$/app/views/layouts/application.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/main/index.html.erb" afterPath="$PROJECT_DIR$/app/views/main/index.html.erb" />
     </list>
     <ignored path="cad19.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,98 +29,7 @@
     <favorites_list name="cad19" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="Stage3d.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/draw/Stage3d.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="50" selection-start="51" selection-end="51" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractView.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/AbstractView.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="4" selection-start="139" selection-end="139" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html.erb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/main/index.html.erb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="0" selection-start="749" selection-end="749" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TopBar.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/gui/TopBar.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="22" selection-start="416" selection-end="416" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="application.html.erb" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/views/layouts/application.html.erb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="0" selection-start="1037" selection-end="1037" vertical-scroll-proportion="0.6075949">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/main.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="59" selection-start="247" selection-end="247" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Main.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/controllers/Main.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="0" selection-start="508" selection-end="508" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Edge.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/draw/Edge.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="18" selection-start="303" selection-end="303" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Project.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/models/Project.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="34" selection-start="272" selection-end="272" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Camera.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/draw/Camera.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="8" selection-start="124" selection-end="124" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -949,7 +851,7 @@
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aggiunto Moderniz per scegliere il render corretto in base alle possibilità del browser" />
+    <option name="LAST_COMMIT_MESSAGE" value="Elementi di GUI" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -967,6 +869,7 @@
     <MESSAGE value="Ora il codice di Giacomo funziona nella struttura rails" />
     <MESSAGE value="Aggiustamenti in ottica MVC al codice di Giacomo (ancora molto da fare)" />
     <MESSAGE value="Aggiunto Moderniz per scegliere il render corretto in base alle possibilità del browser" />
+    <MESSAGE value="Elementi di GUI" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1016,28 +919,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/draw/Camera.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="8" selection-start="124" selection-end="124" vertical-scroll-proportion="0.0">
+        <state line="4" column="8" selection-start="124" selection-end="124" vertical-scroll-proportion="0.07664671">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/controllers/Main.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="0" selection-start="508" selection-end="508" vertical-scroll-proportion="0.0">
+        <state line="22" column="0" selection-start="508" selection-end="508" vertical-scroll-proportion="0.4215569">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/draw/Edge.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="18" selection-start="303" selection-end="303" vertical-scroll-proportion="0.0">
+        <state line="16" column="18" selection-start="303" selection-end="303" vertical-scroll-proportion="0.30658683">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/models/Project.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="34" selection-start="272" selection-end="272" vertical-scroll-proportion="0.0">
+        <state line="12" column="34" selection-start="272" selection-end="272" vertical-scroll-proportion="0.22994012">
           <folding />
         </state>
       </provider>
@@ -1051,7 +954,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/main.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="59" selection-start="247" selection-end="247" vertical-scroll-proportion="0.0">
+        <state line="9" column="59" selection-start="247" selection-end="247" vertical-scroll-proportion="0.17245509">
           <folding />
         </state>
       </provider>
@@ -1079,7 +982,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/layouts/application.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="0" selection-start="1037" selection-end="1037" vertical-scroll-proportion="0.6075949">
+        <state line="33" column="0" selection-start="1054" selection-end="1054" vertical-scroll-proportion="0.65185183">
           <folding />
         </state>
       </provider>

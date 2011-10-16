@@ -7,6 +7,7 @@ window.CC = {}
 window.CC = {}
 window.CC.views = {}
 window.CC.views.draw = {} # Classes used by the draw area
+window.CC.views.gui = {} # Classes that defined GUI widgets
 window.CC.controllers = {}
 window.CC.models = {}
 

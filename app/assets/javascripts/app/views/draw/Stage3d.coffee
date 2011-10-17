@@ -3,7 +3,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
     ###
     This class represent the Stage area where all the elements are represented
     ###
-    
+    @rotationScale
     @camera
     @scene
     @renderer
@@ -16,7 +16,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
     constructor:(@glOrNot)->
         super()
-
+        @rotationScale = 0.003
         # Handle mouse events
         @mouse = new CC.views.draw.Mouse()
 
@@ -70,6 +70,6 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @render()
     
     render:=>
-        @mesh.rotation.x = @mouse.rotationX()
-        @mesh.rotation.y = @mouse.rotationY()
+        @mesh.rotation.x = @mouse.btn3.absoluteDelta.h * @rotationScale
+        @mesh.rotation.y = @mouse.btn3.absoluteDelta.w * @rotationScale
         @renderer.render(@scene,@camera)

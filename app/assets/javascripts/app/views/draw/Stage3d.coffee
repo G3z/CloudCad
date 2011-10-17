@@ -31,6 +31,15 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @geometry = new THREE.CubeGeometry( 200, 200, 200 )
         @material = new THREE.MeshLambertMaterial( { color: 0x8866ff, wireframe :false } )
         @mesh = new THREE.Mesh( @geometry, @material )
+        
+        @other_geometry = new THREE.CubeGeometry( 50, 50, 50 )
+        @other_material = new THREE.MeshLambertMaterial( { color: 0x2266ff, wireframe :false } )
+        @other_mesh = new THREE.Mesh( @other_geometry, @other_material ) 
+
+        @other_mesh.position.set(125,-100+25,0)
+        
+        @mesh.addChild(@other_mesh)
+
         @scene.add( @mesh )
 
         # Add a light

@@ -1,4 +1,3 @@
-
 class CC.views.draw.Edge extends CC.views.draw.DisplayObject
 
     ###

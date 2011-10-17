@@ -31,8 +31,6 @@
   })();
   Cad19_Mouse = (function() {
     function Cad19_Mouse() {
-      this.rotationY = __bind(this.rotationY, this);
-      this.rotationX = __bind(this.rotationX, this);      this.rotationScale = 0.003;
       this.btn1 = new Cad19_Mouse_Button();
       this.btn2 = new Cad19_Mouse_Button();
       this.btn2 = new Cad19_Mouse_Button();
@@ -59,61 +57,67 @@
       if (button === 1) {
         this.btn1.down = true;
         this.btn1.click.start = point;
-        this.btn1.click.currentPos = point;
+        this.btn1.click.currentpos = point;
       }
       if (button === 2) {
         this.btn2.down = true;
         this.btn2.click.start = point;
-        this.btn2.click.currentPos = point;
+        this.btn2.click.currentpos = point;
       }
       if (button === 3) {
         this.btn3.down = true;
         this.btn3.click.start = point;
-        return this.btn3.click.currentPos = point;
+        return this.btn3.click.currentpos = point;
       }
     };
     Cad19_Mouse.prototype.mouseDragged = function(point, button) {
       if (button === 1 && this.btn1.down) {
-        this.btn1.click.currentPos = point;
+        this.btn1.click.currentpos = point;
         this.btn1.click.delta = {
-          w: this.btn1.click.oldDelta.w + point.x - this.btn1.click.start.x,
+          w: this.btn1.click.oldDelta.w + point.x - this.btn1.click.start.w,
           h: this.btn1.click.oldDelta.h + point.y - this.btn1.click.start.y
         };
       }
       if (button === 2 && this.btn2.down) {
-        this.btn2.click.currentPos = point;
+        this.btn2.click.currentpos = point;
         this.btn2.click.delta = {
-          w: this.btn2.click.oldDelta.w + point.x - this.btn2.click.start.x,
+          w: this.btn2.click.oldDelta.w + point.x - this.btn2.click.start.w,
           h: this.btn2.click.oldDelta.h + point.y - this.btn2.click.start.y
         };
       }
       if (button === 3 && this.btn3.down) {
-        this.btn3.click.currentPos = point;
-        return this.btn3.click.delta = {
-          w: this.btn3.click.oldDelta.w + point.x - this.btn3.click.start.x,
+        this.btn3.click.currentpos = point;
+        this.btn3.click.delta = {
+          w: this.btn3.click.oldDelta.w + point.x - this.btn3.click.start.w,
           h: this.btn3.click.oldDelta.h + point.y - this.btn3.click.start.y
         };
+      }
+      if (button === 1 && this.btn1.down) {
+        return console.log(this.btn1.click.oldDelta.w(+"+" + point.x(+"-" + this.btn1.click.start.w)));
       }
     };
     Cad19_Mouse.prototype.mouseUp = function(point, button) {
       if (button === 1 && this.btn1.down) {
         this.btn1.down = false;
-        this.btn1.click.oldDelta = this.btn1.click.delta;
+        this.btn1.click.oldDelta = {
+          w: point.x,
+          h: point.y
+        };
       }
       if (button === 2 && this.btn2.down) {
         this.btn2.down = false;
-        this.btn3.click.oldDelta = this.btn3.click.delta;
+        this.btn2.click.oldDelta = {
+          w: point.x,
+          h: point.y
+        };
       }
       if (button === 3 && this.btn3.down) {
         this.btn3.down = false;
-        return this.btn3.click.oldDelta = this.btn3.click.delta;
+        return this.btn3.click.oldDelta = {
+          w: point.x,
+          h: point.y
+        };
       }
-    };
-    Cad19_Mouse.prototype.rotationX = function() {
-      return this.btn1.click.delta.h * this.rotationScale;
-    };
-    Cad19_Mouse.prototype.rotationY = function() {
-      return this.btn1.click.delta.w * this.rotationScale;
     };
     return Cad19_Mouse;
   })();
@@ -170,8 +174,6 @@
       return this.render();
     };
     Cad19.prototype.render = function() {
-      this.mesh.rotation.x = this.mouse.rotationX();
-      this.mesh.rotation.y = this.mouse.rotationY();
       return this.renderer.render(this.scene, this.camera);
     };
     return Cad19;

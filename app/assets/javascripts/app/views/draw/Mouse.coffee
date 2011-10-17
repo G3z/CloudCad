@@ -1,4 +1,3 @@
-
 class CC.views.draw.Mouse
     
     constructor:->

@@ -1,4 +1,3 @@
-
 class CC.views.draw.DisplayObject extends CC.views.Abstract
     ###
     This class is the parent class for every class that renders inside the draw

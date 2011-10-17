@@ -2,7 +2,7 @@
     *-- FUNZIONI PER IL MOUSE --*
     Per chiarezza sarebbero da spostare su un altro file
 ###
-class Cad19_Mouse_Button
+class Cad19_MouseButton
     constructor:->
         @down = false
         @click = {
@@ -28,9 +28,9 @@ class Cad19_Mouse
     
     constructor:->
         @rotationScale = 0.003
-        @btn1 = new Cad19_Mouse_Button()
-        @btn2 = new Cad19_Mouse_Button()
-        @btn3 = new Cad19_Mouse_Button()
+        @btn1 = new Cad19_MouseButton()
+        @btn2 = new Cad19_MouseButton()
+        @btn3 = new Cad19_MouseButton()
 
         $(document.body).attr("oncontextmenu","return false")
         $(document).mousedown( (event)=> @mouseDown({x:event.clientX,y:event.clientY},event.which) )
@@ -155,7 +155,11 @@ class Cad19
         @mesh.rotation.y = @mouse.rotationY()   
         @renderer.render(@scene,@camera)
     
+root = exports ? this
+root.Cad19 = Cad19
 
-cadView = new Cad19()
-cadView.animate()
-
+###
+    
+###
+cad = new root.Cad19()
+cad.animate()

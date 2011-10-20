@@ -1,14 +1,7 @@
-class CC.views.draw.DisplayObject extends CC.views.Abstract
+class CC.views.draw.DisplayObject extends THREE.Object3D
     ###
     This class is the parent class for every class that renders inside the draw
     ###
-
-    id = null
-    x = 0
-    y = 0
-    z = 0
-    visible = true
-
 
     @constructor:->
         super()

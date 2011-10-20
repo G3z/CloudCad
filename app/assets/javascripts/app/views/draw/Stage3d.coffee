@@ -1,5 +1,4 @@
 class CC.views.draw.Stage3d extends CC.views.Abstract
-
     ###
     This class represent the Stage area where all the elements are represented
     ###
@@ -13,32 +12,38 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
     @light
     @ambientLight
     @origin
+   
 
     constructor:(@glOrNot)->
         super()
         @rotationScale = 0.003
+        @zoom = 1
         # Handle mouse events
         @mouse = new CC.views.draw.Mouse()
 
         # Setup camera
-        @camera = new CC.views.draw.Camera(35, (window.innerWidth-50) / (window.innerHeight-50), 1, 10000)
-        @camera.position.z = 1000
+        @camera = new CC.views.draw.Camera(35, (window.innerWidth-50) / (window.innerHeight-50), 1, 15000)
+        
+        @camera.position.z = 1000 * @zoom
 
         # Create the real Scene
         @scene = new THREE.Scene()
 
         # Create the cube
-        @geometry = new THREE.CubeGeometry( 200, 200, 200 )
-        @material = new THREE.MeshLambertMaterial( { color: 0x8866ff, wireframe :false } )
-        @mesh = new THREE.Mesh( @geometry, @material )
+        @geometry = new THREE.Geometry()
         
-        @other_geometry = new THREE.CubeGeometry( 50, 50, 50 )
-        @other_material = new THREE.MeshLambertMaterial( { color: 0x2266ff, wireframe :false } )
-        @other_mesh = new THREE.Mesh( @other_geometry, @other_material ) 
+        @geometry.vertices =[
+            new THREE.Vertex( new THREE.Vector3(0,0,0) )
+            new THREE.Vertex( new THREE.Vector3(200,0,0))
+            new THREE.Vertex( new THREE.Vector3(200,150,0))
+            new THREE.Vertex( new THREE.Vector3(0,100,0))
+            #new THREE.Vertex( new THREE.Vector3(0,0,0))
+        ]
+        @geometry.dynamic = true
 
-        @other_mesh.position.set(125,-100+25,0)
-        
-        @mesh.addChild(@other_mesh)
+        @material = new THREE.LineBasicMaterial( { color: 0x8866ff, wireframe :false } )
+        @mesh = new THREE.Line( @geometry, @material )
+        @mesh.dynamic = true
 
         @scene.add( @mesh )
 
@@ -64,7 +69,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                 clearAlpha: 0.2,
                 maxLights: 4,
                 stencil: true,
-                preserveDrawingBuffer: true
+                preserveDrawingBuffer: false
             })
             #@renderer.setFaceCulling("back","cw")
 
@@ -73,6 +78,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
         # Add the element to the DOM
         document.body.appendChild( @renderer.domElement )
+        Spine.bind 'mouse:btn1_click', =>
+            @createGeom() 
 
     animate:=>
         requestAnimFrame(@animate)
@@ -82,3 +89,14 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @mesh.rotation.x = @mouse.btn3.absoluteDelta.h * @rotationScale
         @mesh.rotation.y = @mouse.btn3.absoluteDelta.w * @rotationScale
         @renderer.render(@scene,@camera)
+        @mesh.geometry.__dirtyVertices = true
+
+    createGeom:=>
+        newVertX = @mouse.currentPos.x - window.innerWidth/2
+        newVertY = @mouse.currentPos.y - window.innerHeight/2
+        
+        @mesh.geometry.vertices.push new THREE.Vertex new THREE.Vector3 newVertX,newVertY,0
+        @mesh.geometry.__dirtyNormals = true
+        @mesh.geometry.__dirtyVertices = true
+        @mesh.update()
+        console.log @mesh

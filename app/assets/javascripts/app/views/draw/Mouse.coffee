@@ -4,7 +4,8 @@
 Mouse Class is used to filter events such as mousemove o mousedown and present them in a meaningfull way to the system
 ###
 
-class CC.views.draw.Mouse
+class CC.views.draw.Mouse extends Spine.Module
+    @extend(Spine.Events)
     ###
         When this class is created it disables right-mouse context menu so that it's possible to use that mouse button
     ###
@@ -34,14 +35,17 @@ class CC.views.draw.Mouse
         if button == 1                          #click sinistro
             @btn1.down = true
             @btn1.start = point
+            Spine.trigger 'mouse:btn1_click'
 
         if button == 2                          #click centrale
             @btn2.down = true
             @btn2.start = point
+            Spine.trigger 'mouse:btn2_click'
 
         if button == 3                          #click centrale
             @btn3.down = true
             @btn3.start = point
+            Spine.trigger 'mouse:btn3_click'
         
 
     mouseDragged:(point,button)=>

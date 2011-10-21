@@ -18,6 +18,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         super()
         @rotationScale = 0.003
         @zoom = 1
+        @lastvert =0
         # Handle mouse events
         @mouse = new CC.views.draw.Mouse()
 
@@ -33,11 +34,21 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @geometry = new THREE.Geometry()
         
         @geometry.vertices =[
-            new THREE.Vertex( new THREE.Vector3(0,0,0) )
-            new THREE.Vertex( new THREE.Vector3(200,0,0))
-            new THREE.Vertex( new THREE.Vector3(200,150,0))
-            new THREE.Vertex( new THREE.Vector3(0,100,0))
-            #new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
+            new THREE.Vertex( new THREE.Vector3(0,0,0))
         ]
         @geometry.dynamic = true
 
@@ -88,15 +99,20 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
     render:=>
         @mesh.rotation.x = @mouse.btn3.absoluteDelta.h * @rotationScale
         @mesh.rotation.y = @mouse.btn3.absoluteDelta.w * @rotationScale
+        @geometry.__dirtyVertices = true;
+        @geometry.__dirtyMorphTargets = true;
+        @geometry.__dirtyElements = true;
+        @geometry.__dirtyUvs = true;
+        @geometry.__dirtyNormals = true;
+        @geometry.__dirtyTangents = true;
+        @geometry.__dirtyColors = true;
         @renderer.render(@scene,@camera)
-        @mesh.geometry.__dirtyVertices = true
+        
 
     createGeom:=>
         newVertX = @mouse.currentPos.x - window.innerWidth/2
         newVertY = @mouse.currentPos.y - window.innerHeight/2
         
-        @mesh.geometry.vertices.push new THREE.Vertex new THREE.Vector3 newVertX,newVertY,0
-        @mesh.geometry.__dirtyNormals = true
-        @mesh.geometry.__dirtyVertices = true
-        @mesh.update()
-        console.log @mesh
+        @mesh.geometry.vertices[@lastvert] = new THREE.Vertex new THREE.Vector3 newVertX,newVertY*-1,0
+        @lastvert+=1
+        console.log newVertX+" "+newVertY

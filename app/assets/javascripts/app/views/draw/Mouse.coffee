@@ -9,6 +9,7 @@ class CC.views.draw.Mouse extends Spine.Module
     ###
         When this class is created it disables right-mouse context menu so that it's possible to use that mouse button
     ###
+
     constructor:->
         @currentPos = {
             x:0
@@ -17,7 +18,7 @@ class CC.views.draw.Mouse extends Spine.Module
         @btn1 = new CC.views.draw.MouseButton()
         @btn2 = new CC.views.draw.MouseButton()
         @btn3 = new CC.views.draw.MouseButton()
-
+        @anyDown = false
         $(document.body).attr("oncontextmenu","return false")
         $(document).mousedown( (event)=> @mouseDown({x:event.clientX,y:event.clientY},event.which))
 
@@ -35,16 +36,19 @@ class CC.views.draw.Mouse extends Spine.Module
         if buttonNr == 1                          #click sinistro
             @btn1.down = true
             @btn1.start = point
+            @anyDown =true
             Spine.trigger 'mouse:btn1_down'
 
         if buttonNr == 2                          #click centrale
             @btn2.down = true
             @btn2.start = point
+            @anyDown =true
             Spine.trigger 'mouse:btn2_down'
 
         if buttonNr == 3                          #click centrale
             @btn3.down = true
             @btn3.start = point
+            @anyDown =true
             Spine.trigger 'mouse:btn3_down'
         
 
@@ -110,5 +114,6 @@ class CC.views.draw.Mouse extends Spine.Module
             @btn3.oldDelta = @btn3.absoluteDelta
             @btn3.end = point
             Spine.trigger 'mouse:btn3_up'
-
+        if !@btn1.down && !@btn2.down && !@btn1.down
+            @anyDown =false
         

@@ -5,18 +5,26 @@
 
 class CC.controllers.Main extends CC.controllers.Abstract
 
-    @stage
+    @stage3d
+    @stage2d
 
     constructor: (view) ->
         super @view
-
+        ###
         # Create the stage with the correct rendering
         if Modernizr.webgl
-            @stage = new CC.views.draw.Stage3d()
+            @stage3d = new CC.views.draw.Stage3d()
         else
             if Modernizr.canvas
-                @stage = new CC.views.draw.Stage3d("canvas")
+                @stage3d = new CC.views.draw.Stage3d("canvas")
             else
-                @stage = new CC.views.draw.Stage3d("svg")
+                @stage3d = new CC.views.draw.Stage3d("svg")
 
-        @stage.animate()
+        @stage3d.animate()
+        ###
+        @stage2d = new CC.views.draw.Stage2d()
+
+    to3d:=>
+        return
+    to2d:=>
+        return

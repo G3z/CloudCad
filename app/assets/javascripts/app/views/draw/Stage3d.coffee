@@ -24,7 +24,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
         # Setup camera
         @camera = new CC.views.draw.Camera(35, (window.innerWidth-50) / (window.innerHeight-50), 1, 15000)
-        
+        #@camera = new CC.views.draw.Camera((window.innerWidth-50),(window.innerHeight-50),35, 1, 15000,1, 15000)
         @camera.position.z = 1000 * @zoom
 
         # Create the real Scene
@@ -68,18 +68,21 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @scene.add(@ambientLight)
 
         # Setup a renderer
+
+        canvas = document.createElement( 'canvas' )
+        $(canvas).attr("id","canvas3d")
         if glOrNot == "canvas"
-            @renderer =new THREE.CanvasRenderer()
+            @renderer =new THREE.CanvasRenderer({canvas:canvas})
         else if glOrNot == "svg"
-            @renderer =new THREE.SVGRenderer()
+            @renderer =new THREE.SVGRenderer({canvas:canvas})
         else
             @renderer = new THREE.WebGLRenderer({
-                antialias: true,
-                canvas: document.createElement( 'canvas' ),
-                clearColor: 0x111188,
-                clearAlpha: 0.2,
-                maxLights: 4,
-                stencil: true,
+                antialias: true
+                canvas: canvas
+                clearColor: 0x111188
+                clearAlpha: 0.2
+                maxLights: 4
+                stencil: true
                 preserveDrawingBuffer: false
             })
             #@renderer.setFaceCulling("back","cw")
@@ -89,7 +92,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
         # Add the element to the DOM
         document.body.appendChild( @renderer.domElement )
-        Spine.bind 'mouse:btn1_click', =>
+        Spine.bind 'mouse:btn1_down', =>
             @createGeom() 
 
     animate:=>

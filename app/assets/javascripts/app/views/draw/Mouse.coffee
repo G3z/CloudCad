@@ -21,74 +21,71 @@ class CC.views.draw.Mouse extends Spine.Module
         $(document.body).attr("oncontextmenu","return false")
         $(document).mousedown( (event)=> @mouseDown({x:event.clientX,y:event.clientY},event.which))
 
-        $(document).mousemove( (event)=> @mouseDragged({x:event.clientX,y:event.clientY},event.which) )
+        $(document).mousemove( (event)=> @mouseMoved({x:event.clientX,y:event.clientY}) )
 
         $(document).mouseup( (event)=>  @mouseUp({x:event.clientX,y:event.clientY},event.which))
 
-    mouseDown:(point,button)->
+    mouseDown:(point,buttonNr)->
         ###
             *mouseDown* method takes two arguments 
             #the *point* on the screen where the events was fired
             #the *button* wich was pushed
             it changes the down state of the proper button and updates the start point of the event
         ###
-        if button == 1                          #click sinistro
+        if buttonNr == 1                          #click sinistro
             @btn1.down = true
             @btn1.start = point
-            Spine.trigger 'mouse:btn1_click'
+            Spine.trigger 'mouse:btn1_down'
 
-        if button == 2                          #click centrale
+        if buttonNr == 2                          #click centrale
             @btn2.down = true
             @btn2.start = point
-            Spine.trigger 'mouse:btn2_click'
+            Spine.trigger 'mouse:btn2_down'
 
-        if button == 3                          #click centrale
+        if buttonNr == 3                          #click centrale
             @btn3.down = true
             @btn3.start = point
-            Spine.trigger 'mouse:btn3_click'
+            Spine.trigger 'mouse:btn3_down'
         
 
-    mouseDragged:(point,button)=>
+    mouseMoved:(point)=>
+        ###
+            *mouseMove* method takes one argument 
+            #the *point* on the screen where the mouse is
+            it updates currentPos of the mouse
+            if any button is pushed, mouseDragged is called
+        ###
+        @currentPos = point
+        if @btn1.down
+            @mouseDragged(point,@btn1)
+            Spine.trigger 'mouse:btn1_drag'
+        if @btn2.down
+            @mouseDragged(point,@btn2)
+            Spine.trigger 'mouse:btn2_drag'
+        if @btn3.down
+            @mouseDragged(point,@btn3)
+            Spine.trigger 'mouse:btn3_drag'
+
+    mouseDragged:(point,btn)=>
         ###
             *mouseDragged* method takes two arguments 
             #the *point* on the screen where the events was fired
-            #the *button* wich was pushed
+            #the *btn* instance wich was pushed
             it updates delta property of the proper btn while the mouse is beeing dragged
             it updates the absoluteDelta propery usefull for 3d rotation
             it updates currentPos of the mouse
         ###
-        if button ==1 && @btn1.down
-            @btn1.absoluteDelta = {
-                w:@btn1.oldDelta.w + point.x - @btn1.start.x
-                h:@btn1.oldDelta.h + point.y - @btn1.start.y
-            }
-            @btn1.delta = {
-                w:point.x - @btn1.start.x
-                h:point.y - @btn1.start.y
-            }
+        
+        btn.absoluteDelta = {
+            w:btn.oldDelta.w + point.x - btn.start.x
+            h:btn.oldDelta.h + point.y - btn.start.y
+        }
+        btn.delta = {
+            w:point.x - btn.start.x
+            h:point.y - btn.start.y
+        }
 
-        if button ==2 && @btn2.down
-            @btn2.absoluteDelta = {
-                w:@btn2.oldDelta.w + point.x - @btn2.start.x
-                h:@btn2.oldDelta.h + point.y - @btn2.start.y
-            }
-            @btn2.delta = {
-                w:point.x - @btn2.start.x
-                h:point.y - @btn2.start.y
-            }
-
-        if button ==3 && @btn3.down
-            @btn3.absoluteDelta = {
-                w:@btn3.oldDelta.w + point.x - @btn3.start.x
-                h:@btn3.oldDelta.h + point.y - @btn3.start.y
-            }
-            @btn3.delta = {
-                w:point.x - @btn3.start.x
-                h:point.y - @btn3.start.y
-            }
-        @currentPos = point
-
-    mouseUp:(point,button)->
+    mouseUp:(point,buttonNr)->
         ###
             *mouseUp* method takes two arguments 
             #the *point* on the screen where the events was fired
@@ -96,19 +93,22 @@ class CC.views.draw.Mouse extends Spine.Module
             it updates oldDelta property of btn when it's released
             it updates end property of btn when it's released
         ###
-        if button == 1 && @btn1.down
+        if buttonNr == 1 && @btn1.down
             @btn1.down =false
             @btn1.oldDelta = @btn1.absoluteDelta
             @btn1.end = point
+            Spine.trigger 'mouse:btn1_up'
 
-        if button == 2 && @btn2.down
+        if buttonNr == 2 && @btn2.down
             @btn2.down =false
             @btn2.oldDelta = @btn2.absoluteDelta
             @btn2.end = point
+            Spine.trigger 'mouse:btn2_up'
 
-        if button == 3 && @btn3.down
+        if buttonNr == 3 && @btn3.down
             @btn3.down =false
             @btn3.oldDelta = @btn3.absoluteDelta
             @btn3.end = point
+            Spine.trigger 'mouse:btn3_up'
 
         

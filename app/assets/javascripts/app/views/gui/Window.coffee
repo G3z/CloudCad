@@ -29,14 +29,29 @@ class CC.views.gui.Window extends CC.views.Abstract
 
         # Add event listeners
         $("#" + id + ".toolbar")
-            .bind('mousedown', (evt):=>
-                @mouseDown = true
+            .bind('mousedown', (evt)=>
+                @mouseDown = evt
+                evt.stopImmediatePropagation()
             )
-            .bind('mouseup', (evt):=>
+            .bind('mouseup', (evt)=>
                 @mouseDown = false
+                evt.stopImmediatePropagation()
             )
-            .bind('mousemove', (evt):=>
-                console.log(evt)
+        $(document.body).bind('mousemove', (evt)=>
+                if !@mouseDown then return
+
+                deltaX = @mouseDown.clientX - evt.clientX
+                deltaY = @mouseDown.clientY - evt.clientY
+                @mouseDown = evt
+
+#                console.log(deltaX + " - " + deltaY)
+
+                position = $(@element).position()
+                $(@element)
+                    .css('left', position.left - deltaX)
+                    .css('top', position.top - deltaY)
+
+                evt.stopImmediatePropagation()
             )
 
 

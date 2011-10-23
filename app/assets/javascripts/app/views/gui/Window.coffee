@@ -29,6 +29,19 @@ class CC.views.gui.Window extends CC.views.Abstract
         CC.views.gui.WindowsManager.add(id, @element)
 
         # Add event listeners
+
+        # Prevent the canvas behind to react
+        $(@element)
+            .bind('mousedown', (evt)=>
+                evt.stopImmediatePropagation()
+                return false
+            )
+            .bind('mouseup', (evt)=>
+                evt.stopImmediatePropagation()
+                return false
+            )
+
+        # Handle drag and drop with the toolbar
         $("#" + id + ".toolbar")
             .bind('mousedown', (evt)=>
                 @mouseDown = evt

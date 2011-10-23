@@ -15,7 +15,8 @@ class WindowsManager extends CC.views.Abstract
         vW = $(window).width()
         eW = $(windowElement).width()
 
-        $(windowElement).css('left', (vW / 2 - eW / 2) + "px");
+        $(windowElement)
+            .css('left', (vW / 2 - eW / 2) + "px")
 
     hide:(id)=>
         element = @windows[id]

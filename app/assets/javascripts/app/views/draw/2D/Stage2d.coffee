@@ -7,11 +7,12 @@ class CC.views.draw.Stage2d extends CC.views.Abstract
         $(document.body).append($("<canvas></canvas>").attr("id","canvas2d").attr("resize","true"))
         paper.setup("canvas2d")
         
-        @clickTolerance = 30
+        @clickTolerance = 20
         @snapTolerance = 10
 
         #Gestione dei tools
         @pathTool = new CC.views.draw.PathTool(this)
+        @selectTool = new CC.views.draw.SelectTool(this)
         @activeTool = @pathTool
 
 
@@ -24,5 +25,5 @@ class CC.views.draw.Stage2d extends CC.views.Abstract
             @activeTool.mouseUp(@mouse.currentPos)
 
     update:=>
-        paper.view.draw()   
+        @path = @pathTool.path
         

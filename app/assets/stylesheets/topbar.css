@@ -1,0 +1,12 @@
+/*
+ * CodeEditor
+ * */
+
+.codeeditor{
+
+}
+
+.codeeditor input{
+  margin-top:5px;
+  float: right;
+}

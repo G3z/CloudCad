@@ -1,0 +1,36 @@
+.cc_window{
+  position: absolute;
+  min-width: 400px;
+  min-height: 200px;
+  z-index: 100;
+  top: 50px;
+  background-color: #282828;
+  padding: 5px;
+  border: 1px solid black;
+}
+
+.cc_window .toolbar{
+  width: 100%;
+  height: 16px;
+}
+
+.cc_window .toolbar .toolbarButton{
+  float:right;
+  height: 16px;
+  width: 16px;
+  margin-right: 2px;
+  padding: 0px;
+  background: none;
+  display: block;
+  opacity: 1;
+}
+
+.cc_window .toolbar .hide{
+  background-image: url(/fugue-icons/icons/control-270.png);
+}
+
+.cc_window .toolbar .close{
+  background-image: url(/fugue-icons/icons/cross-circle.png);
+}
+
+

@@ -32,14 +32,4 @@ class CC.views.draw.Stage2d extends CC.views.Abstract
 
     update:=>
         paper.view.draw()   
-
-    pointMove:(point,destPoint)=>
-        if point=="last"
-            @path.lastSegment.point = destPoint
-        else
-            @path.segments[@selected].point.x = destPoint.x
-            @path.segments[@selected].point.y = destPoint.y
-            @path.selected=true
-
-        @update()
         

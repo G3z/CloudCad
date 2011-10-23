@@ -14,7 +14,7 @@ class CC.views.gui.Window extends CC.views.Abstract
         id = "win_" + new Date().getTime()
         # Add toolbar
 
-        toolbar = "<div class='toolbar'>"
+        toolbar = "<div class='toolbar' id='" + id + "'>"
         toolbar += "<a href='javascript:CC.views.gui.WindowsManager.close(\"" + id + "\");' class='toolbarButton close'>&nbsp;</a>"
         toolbar += "<a href='javascript:CC.views.gui.WindowsManager.hide(\"" + id + "\");' class='toolbarButton hide'>&nbsp;<a/>"
         toolbar += "</div>";
@@ -23,14 +23,13 @@ class CC.views.gui.Window extends CC.views.Abstract
 
         @element = document.createElement("div")
         $(@element)
-            .attr('id', id)
             .addClass("cc_window")
             .html(html)
 
         CC.views.gui.WindowsManager.add(id, @element)
 
         # Add event listeners
-        $("#" + id + " .toolbar")
+        $("#" + id + ".toolbar")
             .bind('mousedown', (evt)=>
                 @mouseDown = evt
                 evt.stopImmediatePropagation()

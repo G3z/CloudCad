@@ -25,6 +25,5 @@ class TopBar extends CC.views.Abstract
 
         editor = CodeMirror.fromTextArea($('#' + id).get(0))
 
-
 # Store the instance
 CC.views.gui.TopBar = new TopBar()

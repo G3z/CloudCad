@@ -15,3 +15,4 @@
 tmp/*
 /.bundle/
 tmp/cache
+.DS_Store

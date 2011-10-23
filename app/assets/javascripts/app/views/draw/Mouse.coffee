@@ -50,7 +50,6 @@ class CC.views.draw.Mouse extends Spine.Module
             @btn3.start = point
             @anyDown =true
             Spine.trigger 'mouse:btn3_down'
-        
 
     mouseMoved:(point)=>
         ###

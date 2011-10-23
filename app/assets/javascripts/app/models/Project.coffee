@@ -6,7 +6,6 @@ class CC.models.Project extends CC.models.Abstract
     ###
 
     @configure "Project", "commands"
-
     constructor:->
         super()
 

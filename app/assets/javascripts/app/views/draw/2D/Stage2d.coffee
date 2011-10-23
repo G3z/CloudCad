@@ -8,6 +8,7 @@ class CC.views.draw.Stage2d extends CC.views.Abstract
         paper.setup("canvas2d")
         
         @clickTolerance = 30
+        @snapTolerance = 10
 
         #Gestione dei tools
         @pathTool = new CC.views.draw.PathTool(this)

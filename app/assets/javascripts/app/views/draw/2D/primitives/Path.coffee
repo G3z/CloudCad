@@ -5,6 +5,7 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
     @lastPoint
     @selectedPoint
     @selectedSegment
+
     constructor:(point,@name)->
         super()
         @points = []
@@ -13,7 +14,6 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
         @paperPath.strokeColor = 'black'
         @paperPath.fillColor = '#eeeeee'
         @paperPath.closed = true
-        #@path.selected = true
         @paperPath.strokeWidth = 2
         #@path.strokeCap = 'round';
         @start(point)
@@ -28,10 +28,10 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
         @update()
                 
     move:(el,newPos)=>
-        if typeof(el) == "CC.views.draw.primitives.Point"
-            @movePoint(el,newpos)
-        if typeof(el) == "CC.views.draw.primitives.Segment"
-            @moveSegment(el,newpos)
+        if el instanceof CC.views.draw.primitives.Point
+            @movePoint(el,newPos)
+        if el instanceof CC.views.draw.primitives.Segment
+            @moveSegment(el,newPos)
 
     movePoint:(point,newPoint)=>
         point.moveTo(newPoint)
@@ -57,6 +57,12 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
         return null
 
     update:=>
-        @lastPoint = @paperPath.lastSegment.point
+        @lastPoint = @point("last")
         @segments = @paperPath.segments
         paper.view.draw()
+
+    selected:(activate)=>
+        unless activate
+            @paperPath.selected = false
+        else
+            @paperPath.selected = true

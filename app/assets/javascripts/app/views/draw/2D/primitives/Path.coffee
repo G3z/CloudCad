@@ -11,7 +11,7 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
         @points = []
         @segments = []
         @paperPath = new paper.Path()
-        @paperPath.strokeColor = 'black'
+        @paperPath.strokeColor = 'blue'
         @paperPath.fillColor = '#eeeeee'
         @paperPath.closed = true
         @paperPath.strokeWidth = 2

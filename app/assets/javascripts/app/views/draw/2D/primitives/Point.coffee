@@ -4,7 +4,7 @@ class CC.views.draw.primitives.Point extends CC.views.draw.primitives.AbstractPr
     @name
     @father
     @idx
-    
+
     constructor:(@x,@y,@name,@father)->
         super()
 
@@ -18,5 +18,17 @@ class CC.views.draw.primitives.Point extends CC.views.draw.primitives.AbstractPr
 
     coords:=>
         [@x,@y]
-    
+
+    isNear:(cord,point,tollerance)=>
+        if cord == "x"
+            if @x <= point.x + tollerance && @x >= point.x - tollerance
+                return true
+        else if cord == "y"
+            if @y <= point.y + tollerance && @y >= point.y - tollerance
+                return true
+        else if cord == "xy"
+            if @x <= point.x + tollerance && @x >= point.x - tollerance && @y <= point.y + tollerance && @y >= point.y - tollerance
+                return true
+        return false
+
     angleWith:(point)=>

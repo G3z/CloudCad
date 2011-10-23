@@ -13,22 +13,24 @@ class CC.views.gui.Window extends CC.views.Abstract
 
         id = "win_" + new Date().getTime()
         # Add toolbar
-        toolbar = "<div class='toolbar' id='" + id + "'>"
-        toolbar += "<a href='javascript:CC.views.gui.WindowsManager.close(\"" + id + "\");' class='toolbarButton close'>"
-        toolbar += "<a href='javascript:CC.views.gui.WindowsManager.hide(\"" + id + "\");' class='toolbarButton hide'>"
+
+        toolbar = "<div class='toolbar'>"
+        toolbar += "<a href='javascript:CC.views.gui.WindowsManager.close(\"" + id + "\");' class='toolbarButton close'>&nbsp;</a>"
+        toolbar += "<a href='javascript:CC.views.gui.WindowsManager.hide(\"" + id + "\");' class='toolbarButton hide'>&nbsp;<a/>"
         toolbar += "</div>";
 
         html = toolbar + html
 
         @element = document.createElement("div")
         $(@element)
+            .attr('id', id)
             .addClass("cc_window")
             .html(html)
 
         CC.views.gui.WindowsManager.add(id, @element)
 
         # Add event listeners
-        $("#" + id + ".toolbar")
+        $("#" + id + " .toolbar")
             .bind('mousedown', (evt)=>
                 @mouseDown = evt
                 evt.stopImmediatePropagation()
@@ -43,8 +45,6 @@ class CC.views.gui.Window extends CC.views.Abstract
                 deltaX = @mouseDown.clientX - evt.clientX
                 deltaY = @mouseDown.clientY - evt.clientY
                 @mouseDown = evt
-
-#                console.log(deltaX + " - " + deltaY)
 
                 position = $(@element).position()
                 $(@element)

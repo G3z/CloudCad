@@ -8,10 +8,10 @@ class CC.views.draw.primitives.Point extends CC.views.draw.primitives.AbstractPr
         super()
     moveTo:(@x,@y)=>
         if @father?
-            if typeof(father) == CC.views.draw.primitives.Path
-               @father.paperPath.segments[0].point.x = @x
-               @father.paperPath.segments[0].point.y = @y
+            if @father instanceof CC.views.draw.primitives.Path
+               @father.paperPath.segments[@idx].point.x = @x
+               @father.paperPath.segments[@idx].point.y = @y
                @father.update()
-        console.log @father,@x,@y
+
     coords:=>
         [@x,@y]

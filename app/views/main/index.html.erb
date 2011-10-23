@@ -6,8 +6,16 @@
             <div class="container">
                 <h3><a href="#">CloudCad</a></h3>
                 <ul class="nav">
-                    <li class="active"><a href="#">Project</a></li>
+
+                  <li class='dropdown'>
+                      <a href='#' class='dropdown-toggle'>Project</a>
+                      <ul class='dropdown-menu'>
+                        <li><a href="javascript:CC.views.gui.TopBar.runScript()">Run script</a></li>
+                      </ul>
+                    </li>
+
                     <li><a href="#">Edit</a></li>
+
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle">View</a>
                         <ul class="dropdown-menu">

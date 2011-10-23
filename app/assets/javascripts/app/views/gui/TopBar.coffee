@@ -1,6 +1,5 @@
 
 
-# The publicly accessible Singleton fetcher
 class TopBar extends CC.views.Abstract
 
     ###
@@ -13,6 +12,14 @@ class TopBar extends CC.views.Abstract
 
     help:->
         alert("HELLO")
+
+    runScript:->
+        id = new Date().getTime()
+        html = "<textarea id='" + id + "'></textarea>"
+        win = new CC.views.gui.Window(html)
+
+        editor = CodeMirror.fromTextArea($('#' + id).get(0))
+
 
 # Store the instance
 CC.views.gui.TopBar = new TopBar()

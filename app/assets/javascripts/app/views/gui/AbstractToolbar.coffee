@@ -1,2 +1,2 @@
 
-class CC.view.gui.AbstractToolbar extends CC.views.Abstract
+class CC.views.gui.AbstractToolbar extends CC.views.Abstract

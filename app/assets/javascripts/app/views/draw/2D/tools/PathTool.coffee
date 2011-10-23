@@ -30,31 +30,54 @@ class CC.views.draw.PathTool extends CC.views.draw.Tool2D
         if @selectedIdx != null
             @path.segments[@selectedIdx].selected=false
             @checkAlignment(@path.point("selected"))
+            @removeIfDouble(@path.point("selected"))
             @selectedIdx = null
         else
             @checkAlignment(@path.point("last"))
+            @removeIfDouble(@path.point("last"))
         @path.selected(false)
         @stage2d.update()
 
     checkAlignment:(point)->
-        if point.idx !=0
-            previousPoint = @path.point(point.idx-1)
-        else
-            previousPoint = @path.lastPoint
+        if @path.points.length > 1
+            tollerance = @stage2d.snapTolerance
+            if point.idx !=0
+                previousPoint = @path.point(point.idx-1)
+            else
+                previousPoint = @path.lastPoint
 
-        if point.idx != @path.points.length-1
-            nextPoint = @path.point(point.idx+1)
-        else
-            nextPoint = @path.point(0)
+            if point.idx != @path.points.length-1
+                nextPoint = @path.point(point.idx+1)
+            else
+                nextPoint = @path.point(0)
 
-        if point.isNear("x",previousPoint,@stage2d.snapTolerance)
-           point.moveTo(previousPoint.x,point.y)
+            if point.isNear("x",previousPoint,tollerance)
+               point.moveTo(previousPoint.x,point.y)
 
-        if point.isNear("y",previousPoint,@stage2d.snapTolerance)
-            point.moveTo(point.x,previousPoint.y)
+            if point.isNear("y",previousPoint,tollerance)
+                point.moveTo(point.x,previousPoint.y)
 
-        if point.isNear("x",nextPoint,@stage2d.snapTolerance)
-            point.moveTo(nextPoint.x,point.y)
+            if point.isNear("x",nextPoint,tollerance)
+                point.moveTo(nextPoint.x,point.y)
 
-        if point.isNear("y",nextPoint,@stage2d.snapTolerance)
-            point.moveTo(point.x,nextPoint.y)
+            if point.isNear("y",nextPoint,tollerance)
+                point.moveTo(point.x,nextPoint.y)
+
+    removeIfDouble:(point)->
+        if @path.points.length > 1
+            if point.idx !=0
+                previousPoint = @path.point(point.idx-1)
+            else
+                previousPoint = @path.lastPoint
+
+            if point.idx != @path.points.length-1
+                nextPoint = @path.point(point.idx+1)
+            else
+                nextPoint = @path.point(0)
+            
+            if point.isNear("xy",previousPoint,0)
+                point.remove()
+            
+            if point.isNear("xy",nextPoint,0)
+                point.remove()
+            

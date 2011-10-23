@@ -26,6 +26,6 @@ Math.guid=->
 
 window.debug = (obj, message)->
     console.log(obj, message)
-
+Array::remove = (e) -> @[t..t] = [] if (t = @indexOf(e)) > -1
 $(document).ready ->
     mainController = new CC.controllers.Main()

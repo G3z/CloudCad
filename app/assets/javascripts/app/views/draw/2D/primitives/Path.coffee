@@ -17,6 +17,12 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
         @paperPath.strokeWidth = 2
         #@path.strokeCap = 'round';
         @start(point)
+    
+    update:=>
+        @lastPoint = @point("last")
+        @segments = @paperPath.segments
+        paper.view.draw()
+
     start:(point)=>
         @add(point)
 
@@ -26,16 +32,28 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
         @points.push(point)
         @paperPath.add(point)
         @update()
-                
+
+    remove:(el)=>
+        if el instanceof CC.views.draw.primitives.Point
+            @removePoint(el)
+        else if el instanceof CC.views.draw.primitives.Segment
+            @removeSegment(el)
+
+    removePoint:(point)=>
+        @points.remove(point) if point in @points
+        @paperPath.removeSegment(point.idx)
+
     move:(el,newPos)=>
         if el instanceof CC.views.draw.primitives.Point
             @movePoint(el,newPos)
-        if el instanceof CC.views.draw.primitives.Segment
+        else if el instanceof CC.views.draw.primitives.Segment
             @moveSegment(el,newPos)
 
     movePoint:(point,newPoint)=>
         point.moveTo(newPoint)
         @update()
+
+    moveSegment:(el,newPos)=>
 
     point:(selector)->
         unless selector?
@@ -56,13 +74,10 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
                 return @selectedPoint
         return null
 
-    update:=>
-        @lastPoint = @point("last")
-        @segments = @paperPath.segments
-        paper.view.draw()
-
     selected:(activate)=>
         unless activate
             @paperPath.selected = false
         else
             @paperPath.selected = true
+
+    

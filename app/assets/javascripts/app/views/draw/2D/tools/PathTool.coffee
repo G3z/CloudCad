@@ -19,7 +19,6 @@ class CC.views.draw.PathTool extends CC.views.draw.Tool2D
     mouseDragged:(eventPoint)=>
         if @selectedIdx != null
             @path.point("selected").moveTo(eventPoint.x,eventPoint.y)
-            console.log @path.point("selected")
             @path.selected=true
         else
             @path.lastPoint=eventPoint

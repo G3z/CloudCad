@@ -56,7 +56,7 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
                 return @selectedPoint
         return null
 
-    update:()=>
+    update:=>
         @lastPoint = @paperPath.lastSegment.point
         @segments = @paperPath.segments
         paper.view.draw()

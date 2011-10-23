@@ -15,15 +15,23 @@ class TopBar extends CC.views.Abstract
 
     runScript:->
         id = new Date().getTime()
-        html = "<div class='codeeditor'>"
-        html += "<textarea id='" + id + "'></textarea>"
+        html = "<div class='codeeditor' id='codeeditor_" + id + "'>"
+        html += "<textarea id='textarea_" + id + "'></textarea>"
         html += "<br />"
         html += "<input type='Submit' class='btn primary' value='Run' />"
         html += "</div>"
 
         win = new CC.views.gui.Window(html)
 
-        editor = CodeMirror.fromTextArea($('#' + id).get(0))
+        editor = CodeMirror.fromTextArea(
+            $('#textarea_' + id).get(0),{
+                theme: "cobalt"
+            })
+
+        $('#codeeditor_' + id + " input").bind('click', (evt)=>
+            text = editor.getValue()
+            CC.controllers.CommandExecutor.eval(text)
+        )
 
 # Store the instance
 CC.views.gui.TopBar = new TopBar()

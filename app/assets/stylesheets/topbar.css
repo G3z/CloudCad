@@ -10,3 +10,24 @@
   margin-top:5px;
   float: right;
 }
+
+/*
+ * Custom color theme for CodeMonkey based on cobals
+ */
+.codeeditor .cm-s-cobalt { background: #565656; color: white; }
+.codeeditor .cm-s-cobalt span.CodeMirror-selected { background: #b36539 !important; }
+.codeeditor .cm-s-cobalt .CodeMirror-gutter { background: #565656; border-right: 1px solid #aaa; }
+.codeeditor .cm-s-cobalt .CodeMirror-gutter-text { color: #d0d0d0; }
+.codeeditor .cm-s-cobalt .CodeMirror-cursor { border-left: 1px solid white !important; }
+.codeeditor .cm-s-cobalt span.cm-comment { color: #08f; }
+.codeeditor .cm-s-cobalt span.cm-atom { color: #845dc4; }
+.codeeditor .cm-s-cobalt span.cm-number, .cm-s-cobalt span.cm-attribute { color: #ff80e1; }
+.codeeditor .cm-s-cobalt span.cm-keyword { color: #ffee80; }
+.codeeditor .cm-s-cobalt span.cm-string { color: #3ad900; }
+.codeeditor .cm-s-cobalt span.cm-meta { color: #ff9d00; }
+.codeeditor .cm-s-cobalt span.cm-variable-2, .cm-s-cobalt span.cm-tag { color: #9effff; }
+.codeeditor .cm-s-cobalt span.cm-variable-3, .cm-s-cobalt span.cm-def { color: white; }
+.codeeditor .cm-s-cobalt span.cm-error { color: #9d1e15; }
+.codeeditor .cm-s-cobalt span.cm-bracket { color: #d8d8d8; }
+.codeeditor .cm-s-cobalt span.cm-builtin, .cm-s-cobalt span.cm-special { color: #ff9e59; }
+

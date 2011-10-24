@@ -2,10 +2,11 @@ class CC.views.draw.Stage2d extends CC.views.Abstract
     @path
     @mouse
     constructor:()->
-        @mouse = new CC.views.draw.Mouse()
         #paper.install(window)
         $(document.body).append($("<canvas></canvas>").attr("id","canvas2d").attr("resize","true"))
         paper.setup("canvas2d")
+
+        @mouse = new CC.views.draw.Mouse()
         
         @clickTolerance = 20
         @snapTolerance = 10

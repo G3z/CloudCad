@@ -19,8 +19,6 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @rotationScale = 0.003
         @zoom = 1
         @lastvert =0
-        # Handle mouse events
-        @mouse = new CC.views.draw.Mouse()
 
         # Setup camera
         @camera = new CC.views.draw.Camera(35, (window.innerWidth-50) / (window.innerHeight-50), 1, 15000)
@@ -92,6 +90,10 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
         # Add the element to the DOM
         document.body.appendChild( @renderer.domElement )
+        
+        # Handle mouse events
+        @mouse = new CC.views.draw.Mouse()
+
         Spine.bind 'mouse:btn1_down', =>
             @createGeom() 
 

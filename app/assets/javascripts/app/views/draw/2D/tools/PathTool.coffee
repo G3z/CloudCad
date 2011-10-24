@@ -41,6 +41,8 @@ class CC.views.draw.PathTool extends CC.views.draw.Tool2D
             @checkAlignment(@path.point("last"))
             @removeIfDouble(@path.point("last"))
         @path.selected(false)
+        for segment in @path.paperPath.segments
+            segment.selected = false
         @stage2d.update()
 
     checkAlignment:(point)->

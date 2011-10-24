@@ -42,6 +42,10 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
     removePoint:(point)=>
         @points.remove(point) if point in @points
         @paperPath.removeSegment(point.idx)
+        i=0
+        for point in @points    
+            point.idx = i 
+            i++
 
     move:(el,newPos)=>
         if el instanceof CC.views.draw.primitives.Point

@@ -10,8 +10,13 @@ class CC.views.draw.PathTool extends CC.views.draw.Tool2D
         if @path.segments.length != 0
             @selectedIdx = @path.pointNear(mousePoint,@stage2d.clickTolerance)
             if @selectedIdx == null
-                @path.add(mousePoint)
-                @checkAlignment(@path.lastPoint)
+                if @path.segments.length >= 1 && @path.segmentNear({x:mousePoint.x,y:mousePoint.y},@stage2d.clickTolerance) != false
+                    idx = @path.segmentNear({x:mousePoint.x,y:mousePoint.y},@stage2d.clickTolerance)
+                    @path.insert(idx,mousePoint)
+                    @selectedIdx = @path.pointNear(mousePoint,@stage2d.clickTolerance)
+                else
+                    @path.add(mousePoint)
+                    @checkAlignment(@path.lastPoint)
         else
             @path.add(mousePoint)
             @checkAlignment(@path.lastPoint)

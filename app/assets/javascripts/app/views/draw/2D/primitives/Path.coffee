@@ -16,7 +16,8 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
         @paperPath.closed = true
         @paperPath.strokeWidth = 2
         #@path.strokeCap = 'round';
-        @start(point)
+        if @arrayToPoint(point)
+            @start(point)
     
     update:=>
         @lastPoint = @point("last")
@@ -24,14 +25,32 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
         paper.view.draw()
 
     start:(point)=>
-        @add(point)
+        if @arrayToPoint(point)
+            @add(point)
 
     add:(point)=>
-        point.idx = @points.length
-        point.father = this
-        @points.push(point)
-        @paperPath.add(point)
-        @update()
+        if @arrayToPoint(point)
+            point.idx = @points.length
+            point.father = this
+            @points.push(point)
+            @paperPath.add(point)
+            @update()
+
+    insert:(idx,point)=>
+        #debugger
+        split = idx
+        idx++
+
+        if @arrayToPoint(point)
+            point.father = this
+            point.idx = idx
+            points_before = @points[0..split]
+            points_before.push(point)
+            points_after = @points[idx..@points.length-1]
+            @points = points_before.concat(points_after)
+            @paperPath.insert(idx,point)
+            @rearrangePoints()
+            @update()
 
     remove:(el)=>
         if el instanceof CC.views.draw.primitives.Point
@@ -42,10 +61,7 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
     removePoint:(point)=>
         @points.remove(point) if point in @points
         @paperPath.removeSegment(point.idx)
-        i=0
-        for point in @points    
-            point.idx = i 
-            i++
+        @rearrangePoints()
 
     move:(el,newPos)=>
         if el instanceof CC.views.draw.primitives.Point
@@ -59,7 +75,7 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
 
     moveSegment:(el,newPos)=>
 
-    point:(selector)->
+    point:(selector)=>
         unless selector?
             return null
         else if selector == "last"
@@ -77,11 +93,50 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
                 @selectedPoint = i
                 return @selectedPoint
         return null
+    
+    segmentNear:(point,tollerance)=>
+        #debugger
+        nearPoint = @paperPath.getNearestPoint(new paper.Point(point.x,point.y))
+        circle = new paper.Path.Circle(nearPoint, 3);
+        @update()
+        if nearPoint.isClose(point,tollerance)
+            for segment in @paperPath.segments
+                start = segment.point
+                if segment.index < @paperPath.segments.length
+                    end = segment.next.point
+                else
+                    end = @paperPath.segments[0].point
+                crossproduct = (nearPoint.y - start.y) * (end.x - start.x) - (nearPoint.x - start.x) * (end.y - start.y)
+                dotproduct = (nearPoint.x - start.x) * (end.x - start.x) + (nearPoint.y - start.y)*(end.y - start.y)
+                squaredlengthba = (end.x - start.x)*(end.x - start.x) + (end.y - start.y)*(end.y - start.y)
+
+                if Math.abs(crossproduct) <= 0.000001 && dotproduct <= squaredlengthba && dotproduct >= 0
+                    return segment.index
+
+        else
+            false
 
     selected:(activate)=>
         unless activate
             @paperPath.selected = false
         else
             @paperPath.selected = true
+    arrayToPoint:(point)=>
+        if point instanceof Array
+            if point.length == 2
+                if @name?
+                    return point = new CC.views.draw.primitives.Point(point[0],point[1],name + points.length,this) 
+                else
+                    return point = new CC.views.draw.primitives.Point(point[0],point[1],null,this)
+        else if point instanceof CC.views.draw.primitives.Point
+            return point
+        else
+            return false
+
+    rearrangePoints:=>
+        i=0
+        for point in @points    
+            point.idx = i 
+            i++
 
     

@@ -9,8 +9,10 @@ class CC.views.draw.Mouse extends Spine.Module
     ###
         When this class is created it disables right-mouse context menu so that it's possible to use that mouse button
     ###
-    @canvasMarginTop
+    
     constructor:->
+        @canvasMarginTop = 0
+        @canvasMarginLeft = 0
         @currentPos = {
             x:0
             y:0
@@ -20,26 +22,29 @@ class CC.views.draw.Mouse extends Spine.Module
         @btn3 = new CC.views.draw.MouseButton()
         @anyDown = false
 
-        
-        unless @canvasMarginTop?
+        if @canvasMarginTop == 0
             margin_str = $('canvas').css("margin-top")
             @canvasMarginTop = parseInt(margin_str[0...margin_str.length-2])
+
+        if @canvasMarginLeft == 0
+            margin_str = $('canvas').css("margin-left")
+            @canvasMarginLeft = parseInt(margin_str[0...margin_str.length-2])
     
 
         $(document.body).attr("oncontextmenu","return false")
         $(document).mousedown( (event)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
-                @mouseDown({x:event.clientX,y:event.clientY-@canvasMarginTop},event.which)
+                @mouseDown({x:event.clientX-@canvasMarginLeft,y:event.clientY-@canvasMarginTop},event.which)
         )
 
         $(document).mousemove( (event)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
-                @mouseMoved({x:event.clientX,y:event.clientY-@canvasMarginTop})
+                @mouseMoved({x:event.clientX-@canvasMarginLeft,y:event.clientY-@canvasMarginTop})
         )
 
         $(document).mouseup( (event)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
-                @mouseUp({x:event.clientX,y:event.clientY-@canvasMarginTop},event.which)
+                @mouseUp({x:event.clientX-@canvasMarginLeft,y:event.clientY-@canvasMarginTop},event.which)
         )
             
 

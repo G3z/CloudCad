@@ -4,10 +4,20 @@
 
 .cc_toolbar{
   position: absolute;
+  background-color: #282828;
+  z-index: 10;
+  top: 150px;
+  padding: 5px;
+  -webkit-border-radius: 5px
 }
 
 
 .cc_toolbar .toolbar{
   width: 100%;
   height: 10px;
+}
+
+.cc_toolbar .toolbarButton{
+  width: 24px;
+  height: 24px;
 }

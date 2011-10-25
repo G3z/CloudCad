@@ -15,13 +15,13 @@
   -webkit-border-radius: 5px
 }
 
-.cc_window .toolbar{
+.cc_window .header{
   width: 100%;
   height: 16px;
   margin-bottom: 4px;
 }
 
-.cc_window .toolbar .toolbarButton{
+.cc_window .header .headerButton{
   float:right;
   height: 16px;
   width: 16px;
@@ -32,11 +32,11 @@
   opacity: 1;
 }
 
-.cc_window .toolbar .hide{
+.cc_window .header .hide{
   background-image: url(/fugue-icons/icons/control-270.png);
 }
 
-.cc_window .toolbar .close{
+.cc_window .header .close{
   background-image: url(/fugue-icons/icons/cross-circle.png);
 }
 

@@ -16,7 +16,7 @@ class CC.views.gui.AbstractWindow extends CC.views.Abstract
 
         @element = document.createElement("div")
         $(@element)
-            .addClass("cc_window")
+            .addClass(css_class)
             .html(html)
 
         CC.views.gui.WindowsManager.add(id, @element)

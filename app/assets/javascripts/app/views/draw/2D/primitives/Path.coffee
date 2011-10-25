@@ -6,17 +6,29 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
     @selectedPoint
     @selectedSegment
 
-    constructor:(point,@name)->
+    constructor:(point,name,paperPath)->
         super()
         @points = []
         @segments = []
-        @paperPath = new paper.Path()
+        if paperPath? && paperPath instanceof paper.Path
+            @paperPath = paperPath
+            for segment in @paperPath.segments
+                pathPoint = segment.point
+                pathPoint=@arrayToPoint([pathPoint.x,pathPoint.y])
+                pathPoint.idx = @points.length
+                pathPoint.father = this
+                @points.push(pathPoint)
+        else
+            @paperPath = new paper.Path() 
         @paperPath.strokeColor = 'blue'
         @paperPath.fillColor = '#eeeeee'
         @paperPath.closed = true
         @paperPath.strokeWidth = 2
+        if name?
+            @name = name
+            @paperPath.name = @name
         #@path.strokeCap = 'round';
-        if @arrayToPoint(point)
+        if point? && @arrayToPoint(point)
             @start(point)
     
     update:=>

@@ -15,7 +15,7 @@ class CommandExecutor extends CC.controllers.Abstract
     # make them available to code
     addToGlobalNamespace:(code, namespaceString)->
 
-        debugger
+        #debugger
 
         namespace = eval(namespaceString)
 

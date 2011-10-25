@@ -1,5 +1,5 @@
 class CC.views.draw.Stage2d extends CC.views.Abstract
-    @path
+    @activePath
     @mouse
     constructor:()->
         #paper.install(window)
@@ -14,7 +14,7 @@ class CC.views.draw.Stage2d extends CC.views.Abstract
         #Gestione dei tools
         @pathTool = new CC.views.draw.PathTool(this)
         @selectTool = new CC.views.draw.SelectTool(this)
-        @activeTool = @pathTool
+        @activeTool = @selectTool
 
 
         #Gestione degli eventi
@@ -25,6 +25,4 @@ class CC.views.draw.Stage2d extends CC.views.Abstract
         Spine.bind 'mouse:btn1_up', =>
             @activeTool.mouseUp(@mouse.currentPos)
 
-    update:=>
-        @path = @pathTool.path
         

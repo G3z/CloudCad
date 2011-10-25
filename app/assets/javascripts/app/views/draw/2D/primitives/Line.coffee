@@ -19,6 +19,8 @@ class CC.views.draw.primitives.Line extends CC.views.draw.primitives.AbstractPri
         @paperPath = new paper.Path.Line(@start,@end)
         @paperPath.strokeColor = 'blue'
         @paperPath.strokeWidth = 2
+        if @name?
+            @paperPath.name = @name
         @update()
     
     isPointInLine:(point)=>

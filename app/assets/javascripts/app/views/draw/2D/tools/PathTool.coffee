@@ -6,7 +6,12 @@ class CC.views.draw.PathTool extends CC.views.draw.Tool2D
 
     mouseDown:(eventpoint)=>
         mousePoint = new CC.views.draw.primitives.Point(@stage2d.mouse.currentPos.x, @stage2d.mouse.currentPos.y,"")
-        @path = new CC.views.draw.primitives.Path(mousePoint) unless @path? 
+        if @stage2d.activePath? 
+            @path =  @stage2d.activePath
+        else
+           @path = new CC.views.draw.primitives.Path(mousePoint)
+           @stage2d.activePath = @path
+
         if @path.segments.length != 0
             @selectedIdx = @path.pointNear(mousePoint,@stage2d.clickTolerance)
             if @selectedIdx == null
@@ -43,13 +48,11 @@ class CC.views.draw.PathTool extends CC.views.draw.Tool2D
         @path.selected(false)
         for segment in @path.paperPath.segments
             segment.selected = false
-        @stage2d.update()
 
     checkAlignment:(point)->
         if @path.points.length > 1
             tollerance = @stage2d.snapTolerance
             for pathPoint in @path.points
-
                 if point.isNear("x",pathPoint,tollerance)
                    point.moveTo(pathPoint.x,point.y)
 

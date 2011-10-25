@@ -26,14 +26,13 @@ class CC.views.draw.primitives.Point extends CC.views.draw.primitives.AbstractPr
         else if cord == "y"
             if @y <= point.y + tollerance && @y >= point.y - tollerance
                 return true
-        else if cord == "xy" || cord == "xy" || cord == "all" || cord == "both"
+        else if cord == "xy" || cord == "yx" || cord == "all" || cord == "both"
             if @x <= point.x + tollerance && @x >= point.x - tollerance && @y <= point.y + tollerance && @y >= point.y - tollerance
                 return true
         return false
 
     remove:->
-        if @father?
-            if @father instanceof CC.views.draw.primitives.Path
-                @father.removePoint(this)
+        if @father? && @father instanceof CC.views.draw.primitives.Path
+            @father.removePoint(this)
 
     angleWith:(point)=>

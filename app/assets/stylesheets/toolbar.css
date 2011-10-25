@@ -6,18 +6,28 @@
   position: absolute;
   background-color: #282828;
   z-index: 10;
-  top: 150px;
+  top: 100px;
+  left: 20px;
   padding: 5px;
-  -webkit-border-radius: 5px
+  -webkit-border-radius: 5px;
 }
 
 
-.cc_toolbar .toolbar{
+.cc_toolbar .header{
   width: 100%;
   height: 10px;
 }
 
 .cc_toolbar .toolbarButton{
-  width: 24px;
-  height: 24px;
+  display: block;
+  width: 16px;
+  height: 16px;
+  padding: 5px;
+  background-color: white;
+  border: 1px solid #999;
+  -webkit-border-radius: 5px
+}
+
+.cc_toolbar .toolbarButton img{
+  cursor:pointer;
 }

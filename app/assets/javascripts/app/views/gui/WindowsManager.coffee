@@ -11,12 +11,6 @@ class WindowsManager extends CC.views.Abstract
         @windows[id] = windowElement
         $(document.body).append(windowElement)
 
-        # Center the new window
-        vW = $(window).width()
-        eW = $(windowElement).width()
-
-        $(windowElement)
-            .css('left', (vW / 2 - eW / 2) + "px")
 
     hide:(id)=>
         element = @windows[id]

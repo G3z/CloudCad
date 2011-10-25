@@ -25,7 +25,7 @@ class CC.controllers.Main extends CC.controllers.Abstract
         @stage2d = new CC.views.draw.Stage2d()
 
         # Create the toolbar
-        tb = new CC.views.gui.Toolbar("Hello world")
+        tb = new CC.views.gui.MainToolbar()
 
     to3d:=>
         return

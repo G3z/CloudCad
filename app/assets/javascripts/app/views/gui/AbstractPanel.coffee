@@ -1,5 +1,5 @@
 
-class CC.views.gui.AbstractWindow extends CC.views.Abstract
+class CC.views.gui.AbstractPanel extends CC.views.Abstract
 
     ###
     Handle windows on screen
@@ -11,7 +11,6 @@ class CC.views.gui.AbstractWindow extends CC.views.Abstract
     constructor:(html, id, css_class)->
         super()
 
-        id = "win_" + new Date().getTime()
         # Add toolbar
 
         @element = document.createElement("div")
@@ -37,7 +36,7 @@ class CC.views.gui.AbstractWindow extends CC.views.Abstract
 
 
         # Handle drag and drop with the toolbar
-        $("#" + id + ".toolbar")
+        $("#" + id + ".header")
             .bind('mousedown', (evt)=>
                 @mouseDown = evt
                 evt.stopImmediatePropagation()

@@ -1,5 +1,5 @@
 
-class CC.views.gui.Window extends CC.views.gui.AbstractWindow
+class CC.views.gui.Window extends CC.views.gui.AbstractPanel
 
     ###
     Handle windows on screen
@@ -13,10 +13,18 @@ class CC.views.gui.Window extends CC.views.gui.AbstractWindow
         toolbar = "<div class='header' id='" + id + "'>"
         toolbar += "<a href='javascript:CC.views.gui.WindowsManager.close(\"" + id + "\");' class='headerButton close'>&nbsp;</a>"
         toolbar += "<a href='javascript:CC.views.gui.WindowsManager.hide(\"" + id + "\");' class='headerButton hide'>&nbsp;<a/>"
-        toolbar += "</div>";
+        toolbar += "</div>"
 
         html = toolbar + html
 
         super(html, id, "cc_window")
 
+        windowElement = $("#" + id).parent()
+
+        # Center the new window
+        vW = $(window).width()
+        eW = $(windowElement).width()
+
+        $(windowElement)
+            .css('left', (vW / 2 - eW / 2) + "px")
 

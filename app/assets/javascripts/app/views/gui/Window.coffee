@@ -41,6 +41,8 @@ class CC.views.gui.Window extends CC.views.Abstract
                 return false
             )
 
+
+
         # Handle drag and drop with the toolbar
         $("#" + id + ".toolbar")
             .bind('mousedown', (evt)=>

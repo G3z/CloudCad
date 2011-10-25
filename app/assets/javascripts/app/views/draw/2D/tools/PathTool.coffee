@@ -48,27 +48,13 @@ class CC.views.draw.PathTool extends CC.views.draw.Tool2D
     checkAlignment:(point)->
         if @path.points.length > 1
             tollerance = @stage2d.snapTolerance
-            if point.idx !=0
-                previousPoint = @path.point(point.idx-1)
-            else
-                previousPoint = @path.lastPoint
+            for pathPoint in @path.points
 
-            if point.idx != @path.points.length-1
-                nextPoint = @path.point(point.idx+1)
-            else
-                nextPoint = @path.point(0)
+                if point.isNear("x",pathPoint,tollerance)
+                   point.moveTo(pathPoint.x,point.y)
 
-            if point.isNear("x",previousPoint,tollerance)
-               point.moveTo(previousPoint.x,point.y)
-
-            if point.isNear("y",previousPoint,tollerance)
-                point.moveTo(point.x,previousPoint.y)
-
-            if point.isNear("x",nextPoint,tollerance)
-                point.moveTo(nextPoint.x,point.y)
-
-            if point.isNear("y",nextPoint,tollerance)
-                point.moveTo(point.x,nextPoint.y)
+                if point.isNear("y",pathPoint,tollerance)
+                    point.moveTo(point.x,pathPoint.y)
 
     removeIfDouble:(point)->
         if @path.points.length > 1

@@ -19,7 +19,15 @@ class CC.views.draw.primitives.Line extends CC.views.draw.primitives.AbstractPri
         @paperPath = new paper.Path.Line(@start,@end)
         @paperPath.strokeColor = 'blue'
         @paperPath.strokeWidth = 2
-        @_update()
+        @update()
+    
+    isPointInLine:(point)=>
+        crossproduct = (point.y - @start.y) * (@end.x - @start.x) - (point.x - @start.x) * (@end.y - @start.y)
+        dotproduct = (point.x - @start.x) * (@end.x - @start.x) + (point.y - @start.y)*(@end.y - @start.y)
+        squaredlengthba = (@end.x - @start.x)*(@end.x - @start.x) + (@end.y - @start.y)*(@end.y - @start.y)
+        if Math.abs(crossproduct) <= 0.000001 && dotproduct <= squaredlengthba && dotproduct >= 0
+            return true
+        false
 
-    _update:->
+    update:->
         paper.view.draw()

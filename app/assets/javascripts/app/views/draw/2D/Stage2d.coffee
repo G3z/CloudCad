@@ -8,8 +8,8 @@ class CC.views.draw.Stage2d extends CC.views.Abstract
 
         @mouse = new CC.views.draw.Mouse()
         
-        @clickTolerance = 20
-        @snapTolerance = 10
+        @clickTolerance = 15
+        @snapTolerance = 8
 
         #Gestione dei tools
         @pathTool = new CC.views.draw.PathTool(this)

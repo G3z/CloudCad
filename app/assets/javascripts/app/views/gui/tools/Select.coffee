@@ -12,7 +12,7 @@ class Select extends CC.views.gui.tools.AbstractTool
         return html
 
     do:=>
-        console.log("TEST")
+        CC.mainController.stage2d.activeTool = CC.mainController.stage2d.selectTool
 
 # Singleton
 CC.views.gui.tools.Select = new Select()

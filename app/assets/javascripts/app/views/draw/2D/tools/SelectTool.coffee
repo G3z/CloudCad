@@ -6,19 +6,41 @@ class CC.views.draw.SelectTool extends CC.views.draw.Tool2D
 
     mouseDown:(eventpoint)=>
         mousePoint = new CC.views.draw.primitives.Point(@stage2d.mouse.currentPos.x, @stage2d.mouse.currentPos.y,"")
+        #debugger
+        @path = @stage2d.activePath
         if paper.project.hitTest(mousePoint)?
             if @path?
                 @path.selected(false)
                 for segment in @path.paperPath.segments
                     segment.selected = false
+                @path.update()
+                @stage2d.activePath = null
+                @path = null
             @path = new CC.views.draw.primitives.Path(null,null,paper.project.hitTest(mousePoint).item)
-        if @path?    
-            @path.paperPath.selected=true
-            @path.update()
-            @stage2d.activePath = @path
-            if @path.segments.length != 0
-                @selectedIdx = @path.pointNear(mousePoint,@stage2d.clickTolerance)
-            @path.update()
+        if @path?
+            if paper.project.hitTest(mousePoint)?
+                if paper.project.hitTest(mousePoint).item.father.id == @path.id
+                    @path.paperPath.selected=true
+                    @path.update()
+                    @stage2d.activePath = @path
+                    if @path.segments.length != 0
+                        @selectedIdx = @path.pointNear(mousePoint,@stage2d.clickTolerance)
+                    @path.update()
+                else
+                    @path.selected(false)
+                    for segment in @path.paperPath.segments
+                        segment.selected = false
+                    @path.update()
+                    @path =null
+                    @stage2d.activePath = null
+            else
+                @path.selected(false)
+                for segment in @path.paperPath.segments
+                    segment.selected = false
+                @path.update()
+                @path =null
+                @stage2d.activePath = null
+                    
 
     mouseDragged:(eventPoint)=>
 

@@ -12,12 +12,12 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
         @segments = []
         if paperPath? && paperPath instanceof paper.Path
             @paperPath = paperPath
-            @paperPath.father = this
+            @paperPath.ccObject = this
             for segment in @paperPath.segments
                 pathPoint = segment.point
                 pathPoint=@arrayToPoint([pathPoint.x,pathPoint.y])
                 pathPoint.idx = @points.length
-                pathPoint.father = this
+                pathPoint.ccObject = this
                 @points.push(pathPoint)
         else
             @paperPath = new paper.Path() 
@@ -25,7 +25,7 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
         @paperPath.fillColor = '#eeeeee'
         @paperPath.closed = true
         @paperPath.strokeWidth = 2
-        @paperPath.father = this
+        @paperPath.ccObject = this
         if name?
             @name = name
             @paperPath.name = @name
@@ -135,6 +135,7 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
             @paperPath.selected = false
         else
             @paperPath.selected = true
+            
     arrayToPoint:(point)=>
         if point instanceof Array
             if point.length == 2

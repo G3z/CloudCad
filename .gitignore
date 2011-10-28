@@ -16,3 +16,5 @@ tmp/*
 /.bundle/
 tmp/cache
 .DS_Store
+public/fugue-icons/.DS_Store
+public/fugue-icons/icons/.DS_Store

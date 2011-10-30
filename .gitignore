@@ -1,6 +1,4 @@
-/public/js/.DS_Store
-/public/.DS_Store
-/app/assets/.DS_Store
+.DS_Store
 /Gemfile.lock
 /log/development.log
 /tmp/cache/assets/C68/
@@ -11,10 +9,6 @@
 /tmp/cache/assets/DC6/
 /tmp/cache/assets/E04/890/sprockets%2F2f5173deea6c795b8fdde723bb4b63af
 /tmp/cache/assets/E35/
-/.DS_Store
 tmp/*
 /.bundle/
 tmp/cache
-.DS_Store
-public/fugue-icons/.DS_Store
-public/fugue-icons/icons/.DS_Store

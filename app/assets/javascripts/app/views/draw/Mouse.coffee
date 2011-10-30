@@ -17,9 +17,11 @@ class CC.views.draw.Mouse extends Spine.Module
             x:0
             y:0
         }
+
         @btn1 = new CC.views.draw.MouseButton()
         @btn2 = new CC.views.draw.MouseButton()
         @btn3 = new CC.views.draw.MouseButton()
+        @wheel = new CC.views.draw.MouseWheel()
         @anyDown = false
 
         if @canvasMarginTop == 0
@@ -32,6 +34,7 @@ class CC.views.draw.Mouse extends Spine.Module
     
 
         $(document.body).attr("oncontextmenu","return false")
+
         $(document).mousedown( (event)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
                 @mouseDown({x:event.clientX-@canvasMarginLeft,y:event.clientY-@canvasMarginTop},event.which)
@@ -46,7 +49,11 @@ class CC.views.draw.Mouse extends Spine.Module
             if @getTargetForEvent(event).tagName == "CANVAS"
                 @mouseUp({x:event.clientX-@canvasMarginLeft,y:event.clientY-@canvasMarginTop},event.which)
         )
-            
+        $(document).mousewheel( (event,delta)=>
+            console.log delta
+            if @getTargetForEvent(event).tagName == "CANVAS"
+                @mouseWheel(event,delta)
+        )
 
     mouseDown:(point,buttonNr)->
         ###
@@ -137,7 +144,13 @@ class CC.views.draw.Mouse extends Spine.Module
             Spine.trigger 'mouse:btn3_up'
         if !@btn1.down && !@btn2.down && !@btn1.down
             @anyDown =false
-    
+
+    mouseWheel:(event,delta)->
+        @wheel.direction = if delta > 0 then "UP" else "DOWN"
+        @wheel.speed = Math.abs(delta)
+        Spine.trigger 'mouse:wheel_changed'
+        false
+
     getTargetForEvent:(e)->
         ev = arguments[0] || window.event
         origEl = ev.target || ev.srcElement

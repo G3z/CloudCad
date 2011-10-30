@@ -1,7 +1,7 @@
 class CC.views.draw.MouseButton
 
     ###
-    Represent the Mouse state
+    Represent the Mouse Button state
     ###
 
     constructor:->

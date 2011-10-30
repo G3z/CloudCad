@@ -50,7 +50,6 @@ class CC.views.draw.Mouse extends Spine.Module
                 @mouseUp({x:event.clientX-@canvasMarginLeft,y:event.clientY-@canvasMarginTop},event.which)
         )
         $(document).mousewheel( (event,delta)=>
-            console.log delta
             if @getTargetForEvent(event).tagName == "CANVAS"
                 @mouseWheel(event,delta)
         )

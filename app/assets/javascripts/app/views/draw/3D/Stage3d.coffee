@@ -17,47 +17,25 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
     constructor:(@glOrNot)->
         super()
         @rotationScale = 0.003
+        @zoomScale = 4
         @zoom = 1
         @lastvert =0
 
         # Setup camera
-        @camera = new CC.views.draw.Camera(35, (window.innerWidth-50) / (window.innerHeight-50), 1, 15000)
-        #@camera = new CC.views.draw.Camera((window.innerWidth-50),(window.innerHeight-50),35, 1, 15000,1, 15000)
+        #camera = new CC.views.draw.Camera(35, (window.innerWidth-50) / (window.innerHeight-50), 1, 15000)
+        @camera = new CC.views.draw.Camera((window.innerWidth-50),(window.innerHeight-50),35, 1, 15000,1, 15000).threeCamera
         @camera.position.z = 1000 * @zoom
 
         # Create the real Scene
         @scene = new THREE.Scene()
 
-        # Create the cube
-        @geometry = new THREE.Geometry()
-        
-        @geometry.vertices =[
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-            new THREE.Vertex( new THREE.Vector3(0,0,0))
-        ]
-        @geometry.dynamic = true
-
-        @material = new THREE.LineBasicMaterial( { color: 0x8866ff, wireframe :false } )
-        @mesh = new THREE.Line( @geometry, @material )
-        @mesh.dynamic = true
-
-        @scene.add( @mesh )
-
+        #
+        #@mesh.dynamic = true
+        #@mesh.append(new THREE.Axes())
+        @world = new THREE.Object3D()
+        @scene.add(@world)
         # Add a light
-        @light = new THREE.PointLight(0xFFFF00, 0.4)
+        @light = new THREE.DirectionalLight(0xFFFF00)
         @light.position.set( 400, 300, 400 )
         @scene.add( @light )
 
@@ -66,7 +44,6 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @scene.add(@ambientLight)
 
         # Setup a renderer
-
         canvas = document.createElement( 'canvas' )
         $(canvas).attr("id","canvas3d")
         if glOrNot == "canvas"
@@ -93,31 +70,79 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         
         # Handle mouse events
         @mouse = new CC.views.draw.Mouse()
+        @createGeom()
+        
+        Spine.bind 'mouse:wheel_changed', =>
+            @updateCameraZoom() 
 
-        Spine.bind 'mouse:btn1_down', =>
-            @createGeom() 
+        #Spine.bind 'mouse:btn1_down', =>
+        #    @createGeom() 
 
     animate:=>
         requestAnimFrame(@animate)
         @render()
     
     render:=>
-        @mesh.rotation.x = @mouse.btn3.absoluteDelta.h * @rotationScale
-        @mesh.rotation.y = @mouse.btn3.absoluteDelta.w * @rotationScale
-        @geometry.__dirtyVertices = true;
-        @geometry.__dirtyMorphTargets = true;
-        @geometry.__dirtyElements = true;
-        @geometry.__dirtyUvs = true;
-        @geometry.__dirtyNormals = true;
-        @geometry.__dirtyTangents = true;
-        @geometry.__dirtyColors = true;
+        if @world?
+            @world.rotation.x = @mouse.btn3.absoluteDelta.h * @rotationScale
+            @world.rotation.y = @mouse.btn3.absoluteDelta.w * @rotationScale
+
         @renderer.render(@scene,@camera)
-        
+
+    updateCameraZoom:=>
+        if @mouse.wheel.direction == "UP"
+            multiplier = 1
+        else
+            multiplier = -1
+
+        @camera.position.z += 1 * multiplier * @mouse.wheel.speed * @zoomScale
 
     createGeom:=>
-        newVertX = @mouse.currentPos.x - window.innerWidth/2
-        newVertY = @mouse.currentPos.y - window.innerHeight/2
+        @vertices =[
+            new THREE.Vector2(0,0)
+            new THREE.Vector2(100,0)
+            new THREE.Vector2(100,100)
+            new THREE.Vector2(0,100)
+            new THREE.Vector2(0,0)
+        ]
+        color = 0x8866ff
+        x=0
+        y=0
+        z=0
+        rx=0
+        ry=0
+        rz=0
+        s=1 
+        shape = new THREE.Shape(@vertices)
+        points = shape.createPointsGeometry()
+
+        line = new THREE.Line( points, new THREE.LineBasicMaterial( { color: color, linewidth: 2 } ) );
+        line.position.set( x, y, z + 25 );
+        line.rotation.set( rx, ry, rz );
+        line.scale.set( s, s, s );
+        @world.add( line );
+
+        line = new THREE.Line( points, new THREE.LineBasicMaterial( { color: color, opacity: 0.5 } ) );
+        line.position.set( x, y, z + 75 );
+        line.rotation.set( rx, ry, rz );
+        line.scale.set( s, s, s );
+        @world.add( line );
         
-        @mesh.geometry.vertices[@lastvert] = new THREE.Vertex new THREE.Vector3 newVertX,newVertY*-1,0
-        @lastvert+=1
-        console.log newVertX+" "+newVertY
+        pgeo = THREE.GeometryUtils.clone( points );
+        particles = new THREE.ParticleSystem( pgeo, new THREE.ParticleBasicMaterial( { color: color, size: 3, opacity: 0.75 } ) );
+        particles.position.set( x, y, z + 75 );
+        particles.rotation.set( rx, ry, rz );
+        particles.scale.set( s, s, s );
+        @world.add( particles );
+
+        ###
+        @material = new THREE.LineBasicMaterial( { color: 0x8866ff, linewidth: 2 } )
+
+        shape = new THREE.Shape(@vertices)
+        mesh = new THREE.Mesh( shape.extrude({amount:10,  material: @material, extrudeMaterial: @material }), @material )
+        #@path = new THREE.Path(vertices)
+        if @world.children.length > 0
+            mesh.position.z = @world.children[@world.children.length-1].position.z -100
+
+        @world.add( mesh )
+        ###

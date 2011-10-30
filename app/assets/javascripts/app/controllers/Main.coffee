@@ -10,7 +10,7 @@ class CC.controllers.Main extends CC.controllers.Abstract
 
     constructor: (view) ->
         super @view
-        ###
+        
         # Create the stage with the correct rendering
         if Modernizr.webgl
             @stage3d = new CC.views.draw.Stage3d()
@@ -21,8 +21,8 @@ class CC.controllers.Main extends CC.controllers.Abstract
                 @stage3d = new CC.views.draw.Stage3d("svg")
 
         @stage3d.animate()
-        ###
-        @stage2d = new CC.views.draw.Stage2d()
+        
+        #@stage2d = new CC.views.draw.Stage2d()
 
         # Create the toolbar
         tb = new CC.views.gui.MainToolbar()

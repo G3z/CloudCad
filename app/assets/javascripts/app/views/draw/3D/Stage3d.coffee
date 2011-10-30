@@ -28,7 +28,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
         # Create the real Scene
         @scene = new THREE.Scene()
-
+        @projector = new THREE.Projector();
         #
         #@mesh.dynamic = true
         #@mesh.append(new THREE.Axes())
@@ -44,8 +44,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @scene.add(@ambientLight)
 
         # Setup a renderer
-        canvas = document.createElement( 'canvas' )
-        $(canvas).attr("id","canvas3d")
+        @canvas = document.createElement( 'canvas' )
+        $(@canvas).attr("id","canvas3d")
         if glOrNot == "canvas"
             @renderer =new THREE.CanvasRenderer({canvas:canvas})
         else if glOrNot == "svg"
@@ -53,7 +53,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         else
             @renderer = new THREE.WebGLRenderer({
                 antialias: true
-                canvas: canvas
+                canvas: @canvas
                 clearColor: 0x111188
                 clearAlpha: 0.2
                 maxLights: 4
@@ -80,6 +80,21 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
     animate:=>
         requestAnimFrame(@animate)
+        #@world.children[0]
+        for mesh in @world.children
+            mesh.materials[0].color.setHex(0x8866ff)
+        $(@canvas).width()/2
+        vector = new THREE.Vector3( parseInt(@mouse.currentPos.x-$(@canvas).width()/2), parseInt(@mouse.currentPos.y-$(@canvas).height()/2), 0.5 );
+        #vector = new THREE.Vector3( @mouse.currentPos.x, @mouse.currentPos.y, 0.5 );
+        #console.log(vector.x + " " + vector.y)
+        @projector.unprojectVector( vector, @camera )
+        ray = new THREE.Ray( @camera.position, vector.subSelf( @camera.position ).normalize() )
+        c = THREE.Collisions.rayCastNearest( ray )
+        if( c )
+            c.mesh.materials[0].color.setHex( 0xbb0000 )
+            #console.log(@mouse.currentPos.x + " " + @mouse.currentPos.y)
+        else
+        
         @render()
     
     render:=>
@@ -95,7 +110,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         else
             multiplier = -1
 
-        @camera.position.z += 1 * multiplier * @mouse.wheel.speed * @zoomScale
+        @camera.position.z += multiplier * @mouse.wheel.speed * @zoomScale
 
     createGeom:=>
         @vertices =[
@@ -105,6 +120,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             new THREE.Vector2(0,100)
             new THREE.Vector2(0,0)
         ]
+        
         color = 0x8866ff
         x=0
         y=0
@@ -113,6 +129,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         ry=0
         rz=0
         s=1 
+
         shape = new THREE.Shape(@vertices)
         points = shape.createPointsGeometry()
 
@@ -135,14 +152,17 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         particles.scale.set( s, s, s );
         @world.add( particles );
 
-        ###
-        @material = new THREE.LineBasicMaterial( { color: 0x8866ff, linewidth: 2 } )
+        
+        @material = new THREE.MeshLambertMaterial( { 
+            color: 0x8866ff
+            blending: 3
+            shading: 1
+        } )
 
-        shape = new THREE.Shape(@vertices)
-        mesh = new THREE.Mesh( shape.extrude({amount:10,  material: @material, extrudeMaterial: @material }), @material )
+        mesh = new THREE.Mesh( shape.extrude({amount:10, bevel:0,  material: @material, extrudeMaterial: @material }), @material )
         #@path = new THREE.Path(vertices)
-        if @world.children.length > 0
-            mesh.position.z = @world.children[@world.children.length-1].position.z -100
 
         @world.add( mesh )
-        ###
+        mc = THREE.CollisionUtils.MeshColliderWBox(mesh);
+        THREE.Collisions.colliders.push( mc );
+        

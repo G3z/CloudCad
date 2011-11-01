@@ -10,6 +10,7 @@
 #= require spine/route
 #
 
+#= require_tree ./utils
 #= require_tree ./libs
 #= require_tree ./models
 #= require_tree ./controllers

@@ -12,7 +12,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
     @light
     @ambientLight
     @origin
-
+    @selectedMesh
 
     constructor:(@glOrNot)->
         super()
@@ -28,7 +28,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
         # Create the real Scene
         @scene = new THREE.Scene()
-        @projector = new THREE.Projector();
+        @projector = new THREE.Projector()
         #
         #@mesh.dynamic = true
         #@mesh.append(new THREE.Axes())
@@ -72,8 +72,71 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @mouse = new CC.views.draw.Mouse()
         @createGeom()
 
+        # Event listeners
         Spine.bind 'mouse:wheel_changed', =>
             @updateCameraZoom()
+
+        Spine.bind 'mouse:btn1_down', =>
+            debug("MOUSE DOWN")
+            vector = new THREE.Vector3(
+                @mouse.currentPos.stage3Dx,
+                @mouse.currentPos.stage3Dy,
+                0.5
+            )
+
+            #vector = new THREE.Vector3( @mouse.currentPos.x, @mouse.currentPos.y, 0.5 )
+            #console.log(vector.x + " " + vector.y)
+            @projector.unprojectVector(vector, @camera)
+            ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
+
+            c = THREE.Collisions.rayCastNearest(ray)
+
+            if c?
+                if c.mesh?
+
+                    if @selectedMesh?
+                        @selectedMesh.materials[0].color.setHex(0x53aabb)
+
+                    c.mesh.materials[0].color.setHex(0x0000bb)
+                    @selectedMesh = c.mesh
+
+                else if c.particle?
+                    c.particle.line.materials[0].color.setHex(0xbb0000)
+                else
+                    @selectedMesh = null
+                #console.log(@mouse.currentPos.stage3Dx + " " + @mouse.currentPos.stage3Dy + " - " + @mouse.currentPos.x + " " + @mouse.currentPos.y)
+                #console.log(c)
+                #c[0].particle.line.materials[0].color.setHex(0xbb0000)
+            else
+                @selectedMesh = null
+
+        Spine.bind 'mouse:btn1_up', =>
+            if @selectedMesh?
+                @selectedMesh.materials[0].color.setHex(0x53aabb)
+
+        Spine.bind 'mouse:btn1_drag', =>
+            debug(@mouse.btn1.delta.w)
+            if !@selectedMesh || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
+                return
+
+            @selectedMesh.position.x += @mouse.btn1.delta.w #TODO: da correggere
+            @selectedMesh.position.y -= @mouse.btn1.delta.h #TODO: da correggere
+
+            #Aggiorno la gemetria della linea
+            index = @selectedMesh.vertexIndex
+            # Dato che entrambe le linee usano lo stesso insieme di vertici modificandolo modifico entrambe
+            @linea.geometry.vertices[index].position.x = @selectedMesh.position.x
+            @linea.geometry.vertices[index].position.y = @selectedMesh.position.y
+            #@mesh.shape.geometry.vertices[index].position.x = @selectedMesh.position.x
+            #@mesh.shape.geometry.vertices[index].position.y = @selectedMesh.position.y
+
+            # Forzo il ridisegno della gemetry http://aerotwist.com/lab/getting-started-with-three-js/
+
+            @linea.geometry.__dirtyVertices = true
+            @linea.geometry.__dirtyNormals = true
+            #@mesh.geometry.__dirtyVertices = true
+            #@mesh.geometry.__dirtyNormals = true
+
 
         #Spine.bind 'mouse:btn1_down', =>
         #    @createGeom()
@@ -81,28 +144,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
     animate:=>
         requestAnimFrame(@animate)
         #@world.children[0]
-        for mesh in @world.children
-            mesh.materials[0].color.setHex(0x8866ff)
-        $(@canvas).width()/2
-        vector = new THREE.Vector3(
-            @mouse.currentPos.stage3Dx,
-            @mouse.currentPos.stage3Dy,
-            0.5)
-
-        #vector = new THREE.Vector3( @mouse.currentPos.x, @mouse.currentPos.y, 0.5 );
-        #console.log(vector.x + " " + vector.y)
-        @projector.unprojectVector( vector, @camera )
-        ray = new THREE.Ray( @camera.position, vector.subSelf( @camera.position ).normalize() )
-        c = THREE.Collisions.rayCastNearest( ray )
-        if c?
-            if c.mesh?
-                c.mesh.materials[0].color.setHex( 0xbb0000 )
-            else if c.particle?
-                c.particle.line.materials[0].color.setHex(0xbb0000)
-            #console.log(@mouse.currentPos.stage3Dx + " " + @mouse.currentPos.stage3Dy + " - " + @mouse.currentPos.x + " " + @mouse.currentPos.y)
-            #console.log(c)
-            #c[0].particle.line.materials[0].color.setHex(0xbb0000)
-        else
+        #for mesh in @world.children
+        #    mesh.materials[0].color.setHex(0x8866ff)
 
         @render()
 
@@ -143,18 +186,19 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         points = shape.createPointsGeometry()
 
         # Linea spessa
-        line = new THREE.Line( points, new THREE.LineBasicMaterial( { color: color, linewidth: 2 } ) );
-        line.position.set( x, y, z + 25 );
-        line.rotation.set( rx, ry, rz );
-        line.scale.set( s, s, s );
-        @world.add( line );
+        line = new THREE.Line(points, new THREE.LineBasicMaterial( { color: color, linewidth: 2 }))
+        line.position.set(x, y, z + 25)
+        line.rotation.set(rx, ry, rz)
+        line.scale.set(s, s, s)
+        @world.add(line)
 
         # Linea con handlers
-        line = new THREE.Line( points, new THREE.LineBasicMaterial( { color: color, opacity: 0.5 } ) );
-        line.position.set( x, y, z + 75 );
-        line.rotation.set( rx, ry, rz );
-        line.scale.set( s, s, s );
-        @world.add( line );
+        @linea = new THREE.Line(points, new THREE.LineBasicMaterial( { color: color, opacity: 0.5 }))
+        @linea.position.set(x, y, z + 75)
+        @linea.rotation.set(rx, ry, rz)
+        @linea.scale.set(s, s, s)
+        @linea.geometry.dynamic = true
+        @world.add(@linea)
 
         # Handlers
         # // create the particle variables
@@ -165,28 +209,47 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         })
 
         for vertice, i in @vertices
-            particle = new THREE.Vertex(vertice)
-            particles.vertices.push(particle);
-            particle.line = line
+            #particle = new THREE.Vertex(vertice)
+            #particles.vertices.push(particle)
+            #particle.line = line
 
-            sphereCollider = new THREE.SphereCollider(vertice, 10) # size = radius
-            sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
-            THREE.Collisions.colliders.push(sphereCollider)
+            #sphereCollider = new THREE.SphereCollider(vertice, 10) # size = radius
+            #sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
+            #THREE.Collisions.colliders.push(sphereCollider)
 
-        particleSystem = new THREE.ParticleSystem(
-            particles,
-            pMaterial
-        )
+            radius = 10
+            segments = 16
+            rings = 16
+            sphere = new THREE.Mesh(
+                new THREE.SphereGeometry(radius,segments,rings),
+                new THREE.MeshLambertMaterial({
+                    color: 0x53aabb
+                })
+            )
+            sphere.vertexIndex = i
+            sphere.position.x = vertice.x
+            sphere.position.y = vertice.y
 
-        line.add(particleSystem);
+            @linea.add(sphere)
+
+            # registro le collisioni sulle sfere
+            mc = THREE.CollisionUtils.MeshColliderWBox(sphere)
+            THREE.Collisions.colliders.push(mc)
+
+        #particleSystem = new THREE.ParticleSystem(
+        #    particles,
+        #    pMaterial
+        #)
+
+        #line.add(particleSystem)
 
 
-        pgeo = THREE.GeometryUtils.clone( points );
-        particles = new THREE.ParticleSystem( pgeo, new THREE.ParticleBasicMaterial( { color: color, size: 3, opacity: 0.75 } ) );
-        particles.position.set( x, y, z );
-        particles.rotation.set( rx, ry, rz );
-        particles.scale.set( s, s, s );
-        line.add( particles );
+        #pgeo = THREE.GeometryUtils.clone( points )
+        #particles = new THREE.ParticleSystem( pgeo, new THREE.ParticleBasicMaterial( { color: color, size: 3, opacity: 0.75 } ) )
+        #particles.position.set( x, y, z )
+        #particles.rotation.set( rx, ry, rz )
+        #particles.scale.set( s, s, s )
+        #line.add( particles )
 
         @material = new THREE.MeshLambertMaterial({
             color: 0x8866ff
@@ -194,7 +257,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             shading: 1
         })
 
-        mesh = new THREE.Mesh(
+        @mesh = new THREE.Mesh(
             shape.extrude({
                 amount:10,
                 bevel:0,
@@ -205,7 +268,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         )
         #@path = new THREE.Path(vertices)
 
-        @world.add( mesh )
-        mc = THREE.CollisionUtils.MeshColliderWBox(mesh);
-        THREE.Collisions.colliders.push( mc );
+        @world.add( @mesh )
+        #mc = THREE.CollisionUtils.MeshColliderWBox(mesh)
+        #THREE.Collisions.colliders.push( mc )
 

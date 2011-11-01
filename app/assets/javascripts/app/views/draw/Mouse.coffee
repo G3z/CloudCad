@@ -35,21 +35,28 @@ class CC.views.draw.Mouse extends Spine.Module
 
         @canvas.mousedown( (event)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
-                @mouseDown({x:event.clientX-@canvasMarginLeft, y:event.clientY-@canvasMarginTop},event.which)
+                @mouseDown({
+                    x: event.pageX - @canvas.offset().left
+                    y: event.pageY - @canvas.offset().top
+                    },
+                    event.which)
         )
 
         @canvas.mousemove( (event)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
                 #@mouseMoved({x:event.clientX-@canvasMarginLeft, y:event.clientY-@canvasMarginTop})
                 @mouseMoved({
-                    x: event.offsetX,
-                    y: event.offsetY + 50
+                    x: event.pageX - @canvas.offset().left
+                    y: event.pageY - @canvas.offset().top
                 })
         )
 
         @canvas.mouseup( (event)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
-                @mouseUp({x:event.clientX-@canvasMarginLeft, y:event.clientY-@canvasMarginTop},event.which)
+                @mouseUp({
+                    x: event.pageX - @canvas.offset().left
+                    y: event.pageY - @canvas.offset().top
+                },event.which)
         )
         @canvas.mousewheel( (event,delta)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
@@ -92,9 +99,9 @@ class CC.views.draw.Mouse extends Spine.Module
             x:point.x
             y:point.y
             stage3Dx:(point.x / @canvas.width()) * 2 - 1
-            stage3Dy:(point.y / @canvas.height()) * 2 - 1
+            stage3Dy:-(point.y / @canvas.height()) * 2 + 1
         }
-        console.log(@currentPos.stage3Dx, @currentPos.stage3Dy)
+        #console.log(@currentPos.stage3Dx, @currentPos.stage3Dy)
 
         if @btn1.down
             @mouseDragged(point,@btn1)

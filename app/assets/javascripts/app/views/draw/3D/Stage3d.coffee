@@ -94,9 +94,11 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @projector.unprojectVector( vector, @camera )
         ray = new THREE.Ray( @camera.position, vector.subSelf( @camera.position ).normalize() )
         c = THREE.Collisions.rayCastNearest( ray )
-        if(c)
-
-            c.mesh.materials[0].color.setHex( 0xbb0000 )
+        if c?
+            if c.mesh?
+                c.mesh.materials[0].color.setHex( 0xbb0000 )
+            else if c.particle?
+                c.particle.line.materials[0].color.setHex(0xbb0000)
             #console.log(@mouse.currentPos.stage3Dx + " " + @mouse.currentPos.stage3Dy + " - " + @mouse.currentPos.x + " " + @mouse.currentPos.y)
             #console.log(c)
             #c[0].particle.line.materials[0].color.setHex(0xbb0000)
@@ -162,29 +164,29 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             size: 10
         })
 
-        #for vertice, i in @vertices
-        #    particle = new THREE.Vertex(vertice)
-        #    particles.vertices.push(particle);
-        #    particle.line = line
+        for vertice, i in @vertices
+            particle = new THREE.Vertex(vertice)
+            particles.vertices.push(particle);
+            particle.line = line
 
-            #sphereCollider = new THREE.SphereCollider(vertice, 10) # size = radius
-            #sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
-            #THREE.Collisions.colliders.push(sphereCollider)
+            sphereCollider = new THREE.SphereCollider(vertice, 10) # size = radius
+            sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
+            THREE.Collisions.colliders.push(sphereCollider)
 
-        #particleSystem = new THREE.ParticleSystem(
-        #    particles,
-        #    pMaterial
-        #)
+        particleSystem = new THREE.ParticleSystem(
+            particles,
+            pMaterial
+        )
 
-        #line.add(particleSystem);
+        line.add(particleSystem);
 
 
-        #pgeo = THREE.GeometryUtils.clone( points );
-        #particles = new THREE.ParticleSystem( pgeo, new THREE.ParticleBasicMaterial( { color: color, size: 3, opacity: 0.75 } ) );
-        #particles.position.set( x, y, z );
-        #particles.rotation.set( rx, ry, rz );
-        #particles.scale.set( s, s, s );
-        #line.add( particles );
+        pgeo = THREE.GeometryUtils.clone( points );
+        particles = new THREE.ParticleSystem( pgeo, new THREE.ParticleBasicMaterial( { color: color, size: 3, opacity: 0.75 } ) );
+        particles.position.set( x, y, z );
+        particles.rotation.set( rx, ry, rz );
+        particles.scale.set( s, s, s );
+        line.add( particles );
 
         @material = new THREE.MeshLambertMaterial({
             color: 0x8866ff
@@ -204,6 +206,6 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         #@path = new THREE.Path(vertices)
 
         @world.add( mesh )
-        mc = THREE.CollisionUtils.MeshOBB(mesh) #THREE.CollisionUtils.MeshColliderWBox(mesh);
+        mc = THREE.CollisionUtils.MeshColliderWBox(mesh);
         THREE.Collisions.colliders.push( mc );
 

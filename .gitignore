@@ -13,3 +13,4 @@ tmp/*
 /.bundle/
 tmp/cache
 app/assets/tags
+tags

@@ -115,7 +115,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                 @selectedMesh.materials[0].color.setHex(0x53aabb)
 
         Spine.bind 'mouse:btn1_drag', =>
-            debug(@mouse.btn1.delta.w)
+
             if !@selectedMesh || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
                 return
 
@@ -130,13 +130,24 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             #@mesh.shape.geometry.vertices[index].position.x = @selectedMesh.position.x
             #@mesh.shape.geometry.vertices[index].position.y = @selectedMesh.position.y
 
-            # Forzo il ridisegno della gemetry http://aerotwist.com/lab/getting-started-with-three-js/
-
+            # Forzo il ridisegno della gemetry http://aerotwist.com/lab/getting-started-with-three-js
             @linea.geometry.__dirtyVertices = true
             @linea.geometry.__dirtyNormals = true
             #@mesh.geometry.__dirtyVertices = true
             #@mesh.geometry.__dirtyNormals = true
-
+            debug(@linea.geometry.vertices)
+            # Ridisegno la mesh con i nuovi punti
+            shape = new THREE.Shape(@linea.geometry.vertices)
+            @world.remove(@mesh)
+            @mesh = new THREE.Mesh(
+                shape.extrude({
+                    amount:10,
+                    bevel:0,
+                    material: @material,
+                    extrudeMaterial: @material
+                }),
+                @material
+            )
 
         #Spine.bind 'mouse:btn1_down', =>
         #    @createGeom()

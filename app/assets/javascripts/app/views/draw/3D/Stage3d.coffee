@@ -23,7 +23,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
         # Setup camera
         #camera = new CC.views.draw.Camera(35, (window.innerWidth-50) / (window.innerHeight-50), 1, 15000)
-        @camera = new CC.views.draw.Camera((window.innerWidth-50),(window.innerHeight-50),35, 1, 15000,1, 15000).threeCamera
+        @camera = new CC.views.draw.Camera((window.innerWidth),(window.innerHeight-50),35, 1, 15000,1, 15000).threeCamera
         @camera.position.z = 1000 * @zoom
 
         # Create the real Scene
@@ -63,7 +63,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             #@renderer.setFaceCulling("back","cw")
 
         # Define rendere size
-        @renderer.setSize( window.innerWidth-50, window.innerHeight-50 )
+        @renderer.setSize( window.innerWidth, window.innerHeight-50 )
 
         # Add the element to the DOM
         document.body.appendChild( @renderer.domElement )
@@ -93,10 +93,11 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         #console.log(vector.x + " " + vector.y)
         @projector.unprojectVector( vector, @camera )
         ray = new THREE.Ray( @camera.position, vector.subSelf( @camera.position ).normalize() )
-        c = THREE.Collisions.rayCastAll( ray )
-        if(c && c.length > 0)
-            c[0].mesh.materials[0].color.setHex( 0xbb0000 )
-            #console.log(@mouse.currentPos.x + " " + @mouse.currentPos.y)
+        c = THREE.Collisions.rayCastNearest( ray )
+        if(c)
+
+            c.mesh.materials[0].color.setHex( 0xbb0000 )
+            #console.log(@mouse.currentPos.stage3Dx + " " + @mouse.currentPos.stage3Dy + " - " + @mouse.currentPos.x + " " + @mouse.currentPos.y)
             #console.log(c)
             #c[0].particle.line.materials[0].color.setHex(0xbb0000)
         else

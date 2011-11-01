@@ -9,7 +9,7 @@ class CC.views.draw.Mouse extends Spine.Module
     ###
         When this class is created it disables right-mouse context menu so that it's possible to use that mouse button
     ###
-    
+
     constructor:->
         @canvasMarginTop = 0
         @canvasMarginLeft = 0
@@ -27,30 +27,29 @@ class CC.views.draw.Mouse extends Spine.Module
         @anyDown = false
         @canvas = $('canvas')
 
-        if @canvasMarginTop == 0
-            margin_str = @canvas.css("margin-top")
-            @canvasMarginTop = parseInt(margin_str[0...margin_str.length-2])
+        #@canvasMarginTop = @canvas.offset().left
+        #@canvasMarginLeft = @canvas.offset().top
 
-        if @canvasMarginLeft == 0
-            margin_str = @canvas.css("margin-left")
-            @canvasMarginLeft = parseInt(margin_str[0...margin_str.length-2])
-    
 
         $(document.body).attr("oncontextmenu","return false")
 
         @canvas.mousedown( (event)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
-                @mouseDown({x:event.clientX-@canvasMarginLeft,y:event.clientY-@canvasMarginTop},event.which)
+                @mouseDown({x:event.clientX-@canvasMarginLeft, y:event.clientY-@canvasMarginTop},event.which)
         )
 
         @canvas.mousemove( (event)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
-                @mouseMoved({x:event.clientX-@canvasMarginLeft,y:event.clientY-@canvasMarginTop})
+                #@mouseMoved({x:event.clientX-@canvasMarginLeft, y:event.clientY-@canvasMarginTop})
+                @mouseMoved({
+                    x: event.offsetX,
+                    y: event.offsetY + 50
+                })
         )
 
         @canvas.mouseup( (event)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
-                @mouseUp({x:event.clientX-@canvasMarginLeft,y:event.clientY-@canvasMarginTop},event.which)
+                @mouseUp({x:event.clientX-@canvasMarginLeft, y:event.clientY-@canvasMarginTop},event.which)
         )
         @canvas.mousewheel( (event,delta)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
@@ -59,7 +58,7 @@ class CC.views.draw.Mouse extends Spine.Module
 
     mouseDown:(point,buttonNr)->
         ###
-            *mouseDown* method takes two arguments 
+            *mouseDown* method takes two arguments
             #the *point* on the screen where the events was fired
             #the *button* wich was pushed
             it changes the down state of the proper button and updates the start point of the event
@@ -84,7 +83,7 @@ class CC.views.draw.Mouse extends Spine.Module
 
     mouseMoved:(point)=>
         ###
-            *mouseMove* method takes one argument 
+            *mouseMove* method takes one argument
             #the *point* on the screen where the mouse is
             it updates currentPos of the mouse
             if any button is pushed, mouseDragged is called
@@ -92,9 +91,11 @@ class CC.views.draw.Mouse extends Spine.Module
         @currentPos = {
             x:point.x
             y:point.y
-            stage3Dx:parseInt(point.x-@canvas.width()/2)
-            stage3Dy:parseInt(point.x-@canvas.height()/2)
+            stage3Dx:(point.x / @canvas.width()) * 2 - 1
+            stage3Dy:(point.y / @canvas.height()) * 2 - 1
         }
+        console.log(@currentPos.stage3Dx, @currentPos.stage3Dy)
+
         if @btn1.down
             @mouseDragged(point,@btn1)
             Spine.trigger 'mouse:btn1_drag'
@@ -107,14 +108,14 @@ class CC.views.draw.Mouse extends Spine.Module
 
     mouseDragged:(point,btn)=>
         ###
-            *mouseDragged* method takes two arguments 
+            *mouseDragged* method takes two arguments
             #the *point* on the screen where the events was fired
             #the *btn* instance wich was pushed
             it updates delta property of the proper btn while the mouse is beeing dragged
             it updates the absoluteDelta propery usefull for 3d rotation
             it updates currentPos of the mouse
         ###
-        
+
         btn.absoluteDelta = {
             w:btn.oldDelta.w + point.x - btn.start.x
             h:btn.oldDelta.h + point.y - btn.start.y
@@ -126,7 +127,7 @@ class CC.views.draw.Mouse extends Spine.Module
 
     mouseUp:(point,buttonNr)->
         ###
-            *mouseUp* method takes two arguments 
+            *mouseUp* method takes two arguments
             #the *point* on the screen where the events was fired
             #the *button* wich was pushed
             it updates oldDelta property of btn when it's released

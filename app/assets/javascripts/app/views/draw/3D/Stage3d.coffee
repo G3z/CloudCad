@@ -84,17 +84,21 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         for mesh in @world.children
             mesh.materials[0].color.setHex(0x8866ff)
         $(@canvas).width()/2
-        vector = new THREE.Vector3(@mouse.currentPos.stage3dx, @mouse.currentPos.stage3dy, 0.5 )
+        vector = new THREE.Vector3(
+            @mouse.currentPos.stage3Dx,
+            @mouse.currentPos.stage3Dy,
+            0.5)
+
         #vector = new THREE.Vector3( @mouse.currentPos.x, @mouse.currentPos.y, 0.5 );
         #console.log(vector.x + " " + vector.y)
         @projector.unprojectVector( vector, @camera )
         ray = new THREE.Ray( @camera.position, vector.subSelf( @camera.position ).normalize() )
         c = THREE.Collisions.rayCastAll( ray )
         if(c && c.length > 0)
-            # c.mesh.materials[0].color.setHex( 0xbb0000 )
+            c[0].mesh.materials[0].color.setHex( 0xbb0000 )
             #console.log(@mouse.currentPos.x + " " + @mouse.currentPos.y)
             #console.log(c)
-            c[0].particle.line.materials[0].color.setHex(0xbb0000)
+            #c[0].particle.line.materials[0].color.setHex(0xbb0000)
         else
 
         @render()
@@ -157,21 +161,21 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             size: 10
         })
 
-        for vertice, i in @vertices
-            particle = new THREE.Vertex(vertice)
-            particles.vertices.push(particle);
-            particle.line = line
+        #for vertice, i in @vertices
+        #    particle = new THREE.Vertex(vertice)
+        #    particles.vertices.push(particle);
+        #    particle.line = line
 
-            sphereCollider = new THREE.SphereCollider(vertice, 10) # size = radius
-            sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
-            THREE.Collisions.colliders.push(sphereCollider)
+            #sphereCollider = new THREE.SphereCollider(vertice, 10) # size = radius
+            #sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
+            #THREE.Collisions.colliders.push(sphereCollider)
 
-        particleSystem = new THREE.ParticleSystem(
-            particles,
-            pMaterial
-        )
+        #particleSystem = new THREE.ParticleSystem(
+        #    particles,
+        #    pMaterial
+        #)
 
-        line.add(particleSystem);
+        #line.add(particleSystem);
 
 
         #pgeo = THREE.GeometryUtils.clone( points );
@@ -199,6 +203,6 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         #@path = new THREE.Path(vertices)
 
         @world.add( mesh )
-        #mc = THREE.CollisionUtils.MeshOBB(mesh) #THREE.CollisionUtils.MeshColliderWBox(mesh);
-        #THREE.Collisions.colliders.push( mc );
+        mc = THREE.CollisionUtils.MeshOBB(mesh) #THREE.CollisionUtils.MeshColliderWBox(mesh);
+        THREE.Collisions.colliders.push( mc );
 

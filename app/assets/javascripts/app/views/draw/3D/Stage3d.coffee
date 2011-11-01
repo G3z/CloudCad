@@ -125,8 +125,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             #Aggiorno la gemetria della linea
             index = @selectedMesh.vertexIndex
             # Dato che entrambe le linee usano lo stesso insieme di vertici modificandolo modifico entrambe
-            @linea.geometry.vertices[index].position.x = @selectedMesh.position.x
-            @linea.geometry.vertices[index].position.y = @selectedMesh.position.y
+            @linea.geometry.vertices[index-1].position.x = @selectedMesh.position.x
+            @linea.geometry.vertices[index-1].position.y = @selectedMesh.position.y
             #@mesh.shape.geometry.vertices[index].position.x = @selectedMesh.position.x
             #@mesh.shape.geometry.vertices[index].position.y = @selectedMesh.position.y
 

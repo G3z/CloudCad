@@ -16,6 +16,8 @@ class CC.views.draw.Mouse extends Spine.Module
         @currentPos = {
             x:0
             y:0
+            stage3Dx:0
+            stage3Dy:0
         }
 
         @btn1 = new CC.views.draw.MouseButton()
@@ -23,33 +25,34 @@ class CC.views.draw.Mouse extends Spine.Module
         @btn3 = new CC.views.draw.MouseButton()
         @wheel = new CC.views.draw.MouseWheel()
         @anyDown = false
+        @canvas = $('canvas')
 
         if @canvasMarginTop == 0
-            margin_str = $('canvas').css("margin-top")
+            margin_str = @canvas.css("margin-top")
             @canvasMarginTop = parseInt(margin_str[0...margin_str.length-2])
 
         if @canvasMarginLeft == 0
-            margin_str = $('canvas').css("margin-left")
+            margin_str = @canvas.css("margin-left")
             @canvasMarginLeft = parseInt(margin_str[0...margin_str.length-2])
     
 
         $(document.body).attr("oncontextmenu","return false")
 
-        $(document).mousedown( (event)=>
+        @canvas.mousedown( (event)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
                 @mouseDown({x:event.clientX-@canvasMarginLeft,y:event.clientY-@canvasMarginTop},event.which)
         )
 
-        $(document).mousemove( (event)=>
+        @canvas.mousemove( (event)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
                 @mouseMoved({x:event.clientX-@canvasMarginLeft,y:event.clientY-@canvasMarginTop})
         )
 
-        $(document).mouseup( (event)=>
+        @canvas.mouseup( (event)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
                 @mouseUp({x:event.clientX-@canvasMarginLeft,y:event.clientY-@canvasMarginTop},event.which)
         )
-        $(document).mousewheel( (event,delta)=>
+        @canvas.mousewheel( (event,delta)=>
             if @getTargetForEvent(event).tagName == "CANVAS"
                 @mouseWheel(event,delta)
         )
@@ -86,7 +89,12 @@ class CC.views.draw.Mouse extends Spine.Module
             it updates currentPos of the mouse
             if any button is pushed, mouseDragged is called
         ###
-        @currentPos = point
+        @currentPos = {
+            x:point.x
+            y:point.y
+            stage3Dx:parseInt(point.x-@canvas.width()/2)
+            stage3Dy:parseInt(point.x-@canvas.height()/2)
+        }
         if @btn1.down
             @mouseDragged(point,@btn1)
             Spine.trigger 'mouse:btn1_drag'

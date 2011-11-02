@@ -1,4 +1,4 @@
-class CC.views.draw.primitives.Point extends CC.views.draw.primitives.AbstractPrimitives
+class CC.views.draw.primitives.Point2D extends CC.views.draw.primitives.AbstractPrimitives
     @x
     @y
     @name

@@ -5,7 +5,7 @@ class CC.views.draw.SelectTool extends CC.views.draw.Tool2D
         @selectedIdx=null
 
     mouseDown:(eventpoint)=>
-        mousePoint = new CC.views.draw.primitives.Point(@stage2d.mouse.currentPos.x, @stage2d.mouse.currentPos.y,"")
+        mousePoint = new CC.views.draw.primitives.Point2D(@stage2d.mouse.currentPos.x, @stage2d.mouse.currentPos.y,"")
         #debugger
         @path = @stage2d.activePath
         hitTest = paper.project.hitTest(mousePoint)

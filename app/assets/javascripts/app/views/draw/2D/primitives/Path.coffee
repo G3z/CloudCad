@@ -67,7 +67,7 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
             @update()
 
     remove:(el)=>
-        if el instanceof CC.views.draw.primitives.Point
+        if el instanceof CC.views.draw.primitives.Point2D
             @removePoint(el)
         else if el instanceof CC.views.draw.primitives.Segment
             @removeSegment(el)
@@ -78,7 +78,7 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
         @rearrangePoints()
 
     move:(el,newPos)=>
-        if el instanceof CC.views.draw.primitives.Point
+        if el instanceof CC.views.draw.primitives.Point2D
             @movePoint(el,newPos)
         else if el instanceof CC.views.draw.primitives.Segment
             @moveSegment(el,newPos)
@@ -140,9 +140,9 @@ class CC.views.draw.primitives.Path extends CC.views.draw.primitives.AbstractPri
         if point instanceof Array
             if point.length == 2
                 if @name?
-                    return point = new CC.views.draw.primitives.Point(point[0],point[1],name + points.length,this) 
+                    return point = new CC.views.draw.primitives.Point2D(point[0],point[1],name + points.length,this) 
                 else
-                    return point = new CC.views.draw.primitives.Point(point[0],point[1],null,this)
+                    return point = new CC.views.draw.primitives.Point2D(point[0],point[1],null,this)
         else if point instanceof CC.views.draw.primitives.Point
             return point
         else

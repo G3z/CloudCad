@@ -5,7 +5,7 @@ class CC.views.draw.PathTool extends CC.views.draw.Tool2D
         @selectedIdx=null
 
     mouseDown:(eventpoint)=>
-        mousePoint = new CC.views.draw.primitives.Point(@stage2d.mouse.currentPos.x, @stage2d.mouse.currentPos.y,"")
+        mousePoint = new CC.views.draw.primitives.Point2D(@stage2d.mouse.currentPos.x, @stage2d.mouse.currentPos.y,"")
         if @stage2d.activePath? 
             @path =  @stage2d.activePath
         else

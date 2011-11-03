@@ -14,3 +14,5 @@ tmp/*
 tmp/cache
 app/assets/tags
 tags
+iOS app/cloudCad.xcodeproj/xcuserdata/
+iOS app/cloudCad.xcodeproj/project.xcworkspace/xcuserdata/

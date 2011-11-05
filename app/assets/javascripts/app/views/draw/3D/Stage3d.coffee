@@ -20,7 +20,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @zoomScale = 4
         @zoom = 1
         @lastvert =0
-
+        @offset = new THREE.Vector3()
         # Setup camera
         #camera = new CC.views.draw.Camera(35, (window.innerWidth-50) / (window.innerHeight-50), 1, 15000)
         @camera = new CC.views.draw.Camera((window.innerWidth),(window.innerHeight-50),35, 1, 15000,1, 15000).threeCamera
@@ -35,13 +35,18 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @world = new THREE.Object3D()
         @scene.add(@world)
         # Add a light
-        @light = new THREE.DirectionalLight(0xFFFF00)
+        @light = new THREE.SpotLight(0xFFFF00,1.0)
         @light.position.set( 400, 300, 400 )
         @scene.add( @light )
 
         # Add ambient light
-        @ambientLight = new THREE.AmbientLight( 0x888888, )
+        @ambientLight = new THREE.AmbientLight( 0x888888 )
         @scene.add(@ambientLight)
+        
+        @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: true, wireframe: true } ) );
+        @cameraPlane.lookAt( @camera.position );
+        @cameraPlane.visible = false;
+        @scene.add(@cameraPlane)
 
         # Setup a renderer
         @canvas = document.createElement( 'canvas' )
@@ -64,7 +69,17 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
         # Define rendere size
         @renderer.setSize( window.innerWidth, window.innerHeight-50 )
+        @renderer.shadowMapEnabled = true;
+        @renderer.shadowMapSoft = true;
 
+        @renderer.shadowCameraNear = 3;
+        @renderer.shadowCameraFar = @camera.far;
+        @renderer.shadowCameraFov = 50;
+
+        @renderer.shadowMapBias = 0.0039;
+        @renderer.shadowMapDarkness = 0.5;
+        @renderer.shadowMapWidth = 1024;
+        @renderer.shadowMapHeight = 1024;
         # Add the element to the DOM
         document.body.appendChild( @renderer.domElement )
 
@@ -79,8 +94,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         Spine.bind 'mouse:btn1_down', =>
             debug("MOUSE DOWN")
             vector = new THREE.Vector3(
-                @mouse.currentPos.stage3Dx,
-                @mouse.currentPos.stage3Dy,
+                @mouse.currentPos.stage3Dx
+                @mouse.currentPos.stage3Dy
                 0.5
             )
 
@@ -99,7 +114,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
                     c.mesh.materials[0].color.setHex(0x0000bb)
                     @selectedMesh = c.mesh
-
+                    intersects = ray.intersectObject( @cameraPlane )
+                    @offset.copy( intersects[ 0 ].point ).subSelf( @cameraPlane.position )
                 else if c.particle?
                     c.particle.line.materials[0].color.setHex(0xbb0000)
                 else
@@ -115,12 +131,27 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                 @selectedMesh.materials[0].color.setHex(0x53aabb)
 
         Spine.bind 'mouse:btn1_drag', =>
-
+            
+            vector = new THREE.Vector3(
+                @mouse.currentPos.stage3Dx
+                @mouse.currentPos.stage3Dy
+                0.5
+            )
+            @projector.unprojectVector(vector, @camera)
+            ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
+            
             if !@selectedMesh || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
                 return
+            
+            intersects = ray.intersectObject( @cameraPlane )
 
-            @selectedMesh.position.x += @mouse.btn1.delta.w #TODO: da correggere
-            @selectedMesh.position.y -= @mouse.btn1.delta.h #TODO: da correggere
+            @selectedMesh.position.copy( intersects[ 0 ].point.subSelf( @offset ) )
+
+            originalX = @selectedMesh.position.x
+            originalY = @selectedMesh.position.y
+
+            #@selectedMesh.position.x += @mouse.btn1.absoluteDelta.w * @rotationScale #TODO: da correggere
+            #@selectedMesh.position.y -= @mouse.btn1.absoluteDelta.h * @rotationScale #TODO: da correggere
 
             #Aggiorno la gemetria della linea
             index = @selectedMesh.vertexIndex
@@ -240,7 +271,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             sphere.vertexIndex = i
             sphere.position.x = vertice.x
             sphere.position.y = vertice.y
-
+            #sphere.castShadow = true;
+            #sphere.receiveShadow = true;
             @linea.add(sphere)
 
             # registro le collisioni sulle sfere
@@ -277,6 +309,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             }),
             @material
         )
+        #@mesh.castShadow = true;
+        #@mesh.receiveShadow = true;
         #@path = new THREE.Path(vertices)
 
         @world.add( @mesh )

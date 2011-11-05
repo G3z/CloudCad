@@ -25,6 +25,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         #camera = new CC.views.draw.Camera(35, (window.innerWidth-50) / (window.innerHeight-50), 1, 15000)
         @camera = new CC.views.draw.Camera((window.innerWidth),(window.innerHeight-50),35, 1, 15000,1, 15000).threeCamera
         @camera.position.z = 1000 * @zoom
+        #@camera.toOrthographic()
 
         # Create the real Scene
         @scene = new THREE.Scene()
@@ -43,7 +44,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @ambientLight = new THREE.AmbientLight( 0x888888 )
         @scene.add(@ambientLight)
         
-        @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: true, wireframe: true } ) );
+        @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: true, wireframe: true } ) );
         @cameraPlane.lookAt( @camera.position );
         @cameraPlane.visible = false;
         @scene.add(@cameraPlane)
@@ -86,13 +87,13 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         # Handle mouse events
         @mouse = new CC.views.draw.Mouse()
         @createGeom()
-
-        # Event listeners
+        window.stage3d = this
+        # Event listeners   
         Spine.bind 'mouse:wheel_changed', =>
             @updateCameraZoom()
 
         Spine.bind 'mouse:btn1_down', =>
-            debug("MOUSE DOWN")
+            #debug("MOUSE DOWN")
             vector = new THREE.Vector3(
                 @mouse.currentPos.stage3Dx
                 @mouse.currentPos.stage3Dy
@@ -125,13 +126,18 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                 #c[0].particle.line.materials[0].color.setHex(0xbb0000)
             else
                 @selectedMesh = null
-
+        
         Spine.bind 'mouse:btn1_up', =>
             if @selectedMesh?
                 @selectedMesh.materials[0].color.setHex(0x53aabb)
 
         Spine.bind 'mouse:btn1_drag', =>
             
+            
+            if !@selectedMesh || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
+                return
+            
+            @cameraPlane.position.copy( @selectedMesh.position )
             vector = new THREE.Vector3(
                 @mouse.currentPos.stage3Dx
                 @mouse.currentPos.stage3Dy
@@ -139,46 +145,51 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             )
             @projector.unprojectVector(vector, @camera)
             ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
-            
-            if !@selectedMesh || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
-                return
-            
+
             intersects = ray.intersectObject( @cameraPlane )
+            if intersects[0]?
+                debug(@offset)
+                debug(intersects[0].point)
+                
+                newPoint = intersects[0].point.clone()
+                ###
+                newPoint.x +=  @offset.x
+                newPoint.y +=  @offset.y
+                newPoint.z +=  @offset.z
+                ###
+                debug(newPoint)
+                
+                @selectedMesh.position.copy( newPoint )
+                
+                #if @selectedMesh.position.x <2 and @selectedMesh.position.x > -2
+                #    debugger
+                #Aggiorno la gemetria della linea
+                index = @selectedMesh.vertexIndex
+                # Dato che entrambe le linee usano lo stesso insieme di vertici modificandolo modifico entrambe
+                @linea.geometry.vertices[index-1].position.x = @selectedMesh.position.x
+                @linea.geometry.vertices[index-1].position.y = @selectedMesh.position.y
+                @linea.geometry.vertices[index-1].position.z = @selectedMesh.position.z
+                #@mesh.shape.geometry.vertices[index].position.x = @selectedMesh.position.x
+                #@mesh.shape.geometry.vertices[index].position.y = @selectedMesh.position.y
 
-            @selectedMesh.position.copy( intersects[ 0 ].point.subSelf( @offset ) )
-
-            originalX = @selectedMesh.position.x
-            originalY = @selectedMesh.position.y
-
-            #@selectedMesh.position.x += @mouse.btn1.absoluteDelta.w * @rotationScale #TODO: da correggere
-            #@selectedMesh.position.y -= @mouse.btn1.absoluteDelta.h * @rotationScale #TODO: da correggere
-
-            #Aggiorno la gemetria della linea
-            index = @selectedMesh.vertexIndex
-            # Dato che entrambe le linee usano lo stesso insieme di vertici modificandolo modifico entrambe
-            @linea.geometry.vertices[index-1].position.x = @selectedMesh.position.x
-            @linea.geometry.vertices[index-1].position.y = @selectedMesh.position.y
-            #@mesh.shape.geometry.vertices[index].position.x = @selectedMesh.position.x
-            #@mesh.shape.geometry.vertices[index].position.y = @selectedMesh.position.y
-
-            # Forzo il ridisegno della gemetry http://aerotwist.com/lab/getting-started-with-three-js
-            @linea.geometry.__dirtyVertices = true
-            @linea.geometry.__dirtyNormals = true
-            #@mesh.geometry.__dirtyVertices = true
-            #@mesh.geometry.__dirtyNormals = true
-            debug(@linea.geometry.vertices)
-            # Ridisegno la mesh con i nuovi punti
-            shape = new THREE.Shape(@linea.geometry.vertices)
-            @world.remove(@mesh)
-            @mesh = new THREE.Mesh(
-                shape.extrude({
-                    amount:10,
-                    bevel:0,
-                    material: @material,
-                    extrudeMaterial: @material
-                }),
-                @material
-            )
+                # Forzo il ridisegno della gemetry http://aerotwist.com/lab/getting-started-with-three-js
+                @linea.geometry.__dirtyVertices = true
+                @linea.geometry.__dirtyNormals = true
+                #@mesh.geometry.__dirtyVertices = true
+                #@mesh.geometry.__dirtyNormals = true
+                #debug(@linea.geometry.vertices)
+                # Ridisegno la mesh con i nuovi punti
+                shape = new THREE.Shape(@linea.geometry.vertices)
+                @world.remove(@mesh)
+                @mesh = new THREE.Mesh(
+                    shape.extrude({
+                        amount:10,
+                        bevel:0,
+                        material: @material,
+                        extrudeMaterial: @material
+                    }),
+                    @material
+                )
 
         #Spine.bind 'mouse:btn1_down', =>
         #    @createGeom()
@@ -212,7 +223,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             new THREE.Vector2(100,0)
             new THREE.Vector2(100,100)
             new THREE.Vector2(0,100)
-            new THREE.Vector2(0,0)
+            #new THREE.Vector2(0,0)
         ]
 
         color = 0x8866ff

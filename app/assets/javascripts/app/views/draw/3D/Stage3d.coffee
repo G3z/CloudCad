@@ -21,20 +21,24 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @zoom = 1
         @lastvert =0
         @offset = new THREE.Vector3()
-        # Setup camera
-        #camera = new CC.views.draw.Camera(35, (window.innerWidth-50) / (window.innerHeight-50), 1, 15000)
-        @camera = new CC.views.draw.Camera((window.innerWidth),(window.innerHeight-50),35, 1, 15000,1, 15000).threeCamera
-        @camera.position.z = 1000 * @zoom
+        
+        
+
         #@camera.toOrthographic()
 
         # Create the real Scene
         @scene = new THREE.Scene()
         @projector = new THREE.Projector()
-        #
-        #@mesh.dynamic = true
-        #@mesh.append(new THREE.Axes())
+        
+
         @world = new THREE.Object3D()
         @scene.add(@world)
+
+        # Setup camera
+        @camera = new CC.views.draw.Camera((window.innerWidth),(window.innerHeight-50),35, 1, 15000,1, 15000).threeCamera
+        @camera.position.z = -1000 * @zoom
+        #@camera.lookAt(@world)
+
         # Add a light
         @light = new THREE.SpotLight(0xFFFF00,1.0)
         @light.position.set( 400, 300, 400 )
@@ -63,10 +67,16 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                 clearColor: 0x111188
                 clearAlpha: 0.2
                 maxLights: 4
-                stencil: true
+                #stencil: true
                 preserveDrawingBuffer: false
+                sortObjects:true
             })
             #@renderer.setFaceCulling("back","cw")
+
+        @control = new THREE.TrackballControls(@camera)
+        @control.movementSpeed = 75;
+        @control.lookSpeed = 0.125;
+        @control.lookVertical = false;
 
         # Define rendere size
         @renderer.setSize( window.innerWidth, window.innerHeight-50 )
@@ -105,20 +115,25 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             @projector.unprojectVector(vector, @camera)
             ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
 
-            c = THREE.Collisions.rayCastNearest(ray)
+            c = THREE.Collisions.rayCastAll(ray)
 
-            if c?
-                if c.mesh?
+            if c[0]?
+                if c[0].mesh?
 
                     if @selectedMesh?
                         @selectedMesh.materials[0].color.setHex(0x53aabb)
-
-                    c.mesh.materials[0].color.setHex(0x0000bb)
-                    @selectedMesh = c.mesh
+                    #debugger
+                    c[0].mesh.materials[0].color.setHex(0x0000bb)
+                    @selectedMesh = c[0].mesh
                     intersects = ray.intersectObject( @cameraPlane )
                     @offset.copy( intersects[ 0 ].point ).subSelf( @cameraPlane.position )
-                else if c.particle?
-                    c.particle.line.materials[0].color.setHex(0xbb0000)
+
+                else if c[0].particle?
+                    if @selectedParticle?
+                        @selectedParticle.materials[0].color.setHex(0x53aabb)
+                    c[0].particle.father.materials[0].color.setHex(0xbb0000)
+                    @selectedParticle = c[0].particle
+                    #debugger
                 else
                     @selectedMesh = null
                 #console.log(@mouse.currentPos.stage3Dx + " " + @mouse.currentPos.stage3Dy + " - " + @mouse.currentPos.x + " " + @mouse.currentPos.y)
@@ -132,52 +147,45 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                 @selectedMesh.materials[0].color.setHex(0x53aabb)
 
         Spine.bind 'mouse:btn1_drag', =>
-            
-            
-            if !@selectedMesh || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
+            if (!@selectedMesh and !@selectedParticle) || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
                 return
+
+            if @selectedMesh?
+                @cameraPlane.position.copy( @selectedMesh.position )
+
+            else if @selectedParticle?
+                @cameraPlane.position.copy( @selectedParticle.position )
             
-            @cameraPlane.position.copy( @selectedMesh.position )
             vector = new THREE.Vector3(
                 @mouse.currentPos.stage3Dx
                 @mouse.currentPos.stage3Dy
                 0.5
             )
+
             @projector.unprojectVector(vector, @camera)
             ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
 
             intersects = ray.intersectObject( @cameraPlane )
-            if intersects[0]?
-                debug(@offset)
-                debug(intersects[0].point)
-                
+            #debugger
+            if intersects[0]? and intersects[0].father?
+                idx = intersects[0].idx
+                intersects[0].father.geometry.vertices[idx].position.copy(intrsects[0].position)
+            if intersects[0]? 
                 newPoint = intersects[0].point.clone()
-                ###
-                newPoint.x +=  @offset.x
-                newPoint.y +=  @offset.y
-                newPoint.z +=  @offset.z
-                ###
-                debug(newPoint)
-                
                 @selectedMesh.position.copy( newPoint )
                 
-                #if @selectedMesh.position.x <2 and @selectedMesh.position.x > -2
-                #    debugger
                 #Aggiorno la gemetria della linea
                 index = @selectedMesh.vertexIndex
+                
                 # Dato che entrambe le linee usano lo stesso insieme di vertici modificandolo modifico entrambe
                 @linea.geometry.vertices[index-1].position.x = @selectedMesh.position.x
                 @linea.geometry.vertices[index-1].position.y = @selectedMesh.position.y
                 @linea.geometry.vertices[index-1].position.z = @selectedMesh.position.z
-                #@mesh.shape.geometry.vertices[index].position.x = @selectedMesh.position.x
-                #@mesh.shape.geometry.vertices[index].position.y = @selectedMesh.position.y
 
                 # Forzo il ridisegno della gemetry http://aerotwist.com/lab/getting-started-with-three-js
                 @linea.geometry.__dirtyVertices = true
                 @linea.geometry.__dirtyNormals = true
-                #@mesh.geometry.__dirtyVertices = true
-                #@mesh.geometry.__dirtyNormals = true
-                #debug(@linea.geometry.vertices)
+
                 # Ridisegno la mesh con i nuovi punti
                 shape = new THREE.Shape(@linea.geometry.vertices)
                 @world.remove(@mesh)
@@ -203,11 +211,15 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @render()
 
     render:=>
-        if @world?
-            @world.rotation.x = @mouse.btn3.absoluteDelta.h * @rotationScale
-            @world.rotation.y = @mouse.btn3.absoluteDelta.w * @rotationScale
-
+        ###if @world?
+            @camera.rotation.x = @mouse.btn3.absoluteDelta.h * @rotationScale
+            @camera.rotation.y = @mouse.btn3.absoluteDelta.w * @rotationScale
+        ###
+        #debugger
+        @cameraPlane.lookAt( @camera.position );
+        @control.update()
         @renderer.render(@scene,@camera)
+        
 
     updateCameraZoom:=>
         if @mouse.wheel.direction == "UP"
@@ -257,19 +269,21 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         # // create the particle variables
         particles = new THREE.Geometry()
         pMaterial = new THREE.ParticleBasicMaterial({
-            color: 0xFFFFFF,
+            color: 0x8866ff,
             size: 10
         })
 
         for vertice, i in @vertices
-            #particle = new THREE.Vertex(vertice)
-            #particles.vertices.push(particle)
-            #particle.line = line
+            particle = new THREE.Vertex(vertice)
+            particles.vertices.push(particle)
+            particle.father = line
+            particle.idx = i
+            position = new THREE.Vector3(vertice.x,vertice.y,line.position.z)
 
-            #sphereCollider = new THREE.SphereCollider(vertice, 10) # size = radius
-            #sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
-            #THREE.Collisions.colliders.push(sphereCollider)
-
+            sphereCollider = new THREE.SphereCollider(position, 10) # size = radius
+            sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
+            THREE.Collisions.colliders.push(sphereCollider)
+            
             radius = 10
             segments = 16
             rings = 16
@@ -289,13 +303,13 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             # registro le collisioni sulle sfere
             mc = THREE.CollisionUtils.MeshColliderWBox(sphere)
             THREE.Collisions.colliders.push(mc)
+            
+        particleSystem = new THREE.ParticleSystem(
+            particles,
+            pMaterial
+        )
 
-        #particleSystem = new THREE.ParticleSystem(
-        #    particles,
-        #    pMaterial
-        #)
-
-        #line.add(particleSystem)
+        line.add(particleSystem)
 
 
         #pgeo = THREE.GeometryUtils.clone( points )
@@ -314,7 +328,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @mesh = new THREE.Mesh(
             shape.extrude({
                 amount:10,
-                bevel:0,
+                bevelEnabled:false,
                 material: @material,
                 extrudeMaterial: @material
             }),

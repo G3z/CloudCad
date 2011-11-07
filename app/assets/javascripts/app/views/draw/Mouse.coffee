@@ -32,35 +32,34 @@ class CC.views.draw.Mouse extends Spine.Module
 
 
         $(document.body).attr("oncontextmenu","return false")
-
-        @canvas.mousedown( (event)=>
-            if @getTargetForEvent(event).tagName == "CANVAS"
-                @mouseDown({
-                    x: event.pageX - @canvas.offset().left
-                    y: event.pageY - @canvas.offset().top
-                    },
-                    event.which)
+        @canvas.Hoverable()
+        @canvas.bind("mousedown touchstart", (event)=>
+            event.preventDefault()
+            @mouseDown({
+                x: event.pageX - @canvas.offset().left
+                y: event.pageY - @canvas.offset().top
+                },
+                event.which)
         )
 
-        @canvas.mousemove( (event)=>
-            if @getTargetForEvent(event).tagName == "CANVAS"
-                #@mouseMoved({x:event.clientX-@canvasMarginLeft, y:event.clientY-@canvasMarginTop})
-                @mouseMoved({
-                    x: event.pageX - @canvas.offset().left
-                    y: event.pageY - @canvas.offset().top
-                })
+        @canvas.bind("mousemove touchmove", (event)=>
+            event.preventDefault()
+            @mouseMoved({
+                x: event.pageX - @canvas.offset().left
+                y: event.pageY - @canvas.offset().top
+            })
         )
 
-        @canvas.mouseup( (event)=>
-            if @getTargetForEvent(event).tagName == "CANVAS"
-                @mouseUp({
-                    x: event.pageX - @canvas.offset().left
-                    y: event.pageY - @canvas.offset().top
-                },event.which)
+        @canvas.bind("mouseup touchend", (event)=>
+            event.preventDefault()
+            @mouseUp({
+                x: event.pageX - @canvas.offset().left
+                y: event.pageY - @canvas.offset().top
+            },event.which)
         )
         @canvas.mousewheel( (event,delta)=>
-            if @getTargetForEvent(event).tagName == "CANVAS"
-                @mouseWheel(event,delta)
+            event.preventDefault()
+            @mouseWheel(event,delta)
         )
 
     mouseDown:(point,buttonNr)->

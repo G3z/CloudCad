@@ -6,11 +6,17 @@ Mouse Class is used to filter events such as mousemove o mousedown and present t
 
 class CC.views.draw.Mouse extends Spine.Module
     @extend(Spine.Events)
+    @extend(THREE.TrackballControls)
     ###
         When this class is created it disables right-mouse context menu so that it's possible to use that mouse button
     ###
 
-    constructor:->
+    constructor:(@camera)->
+        #control variables
+        @movementSpeed = 75;
+        @lookSpeed = 0.125;
+        @lookVertical = false;
+
         @canvasMarginTop = 0
         @canvasMarginLeft = 0
         @currentPos = {

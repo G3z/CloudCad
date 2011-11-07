@@ -2,21 +2,23 @@ class CC.views.draw.primitives.Path3D extends CC.views.draw.primitives.AbstractP
     @ThreePath
     @points
     @segments
+    @plane
     @lastPoint
     @selectedPoint
     @selectedSegment
 
-    constructor:(point,name,ThreePath)->
+    constructor:(point,plane,name,ThreePath)->
         super()
-        ###
+        
         @points = []
+        ###
         @segments = []
         if paperPath? && paperPath instanceof paper.Path
             @paperPath = paperPath
             @paperPath.ccObject = this
             for segment in @paperPath.segments
                 pathPoint = segment.point
-                pathPoint=@arrayToPoint([pathPoint.x,pathPoint.y])
+                pathPoint=@validatePoint([pathPoint.x,pathPoint.y])
                 pathPoint.idx = @points.length
                 pathPoint.ccObject = this
                 @points.push(pathPoint)
@@ -33,7 +35,7 @@ class CC.views.draw.primitives.Path3D extends CC.views.draw.primitives.AbstractP
             @name = name
             @paperPath.name = @name
 
-        if point? && @arrayToPoint(point)
+        if point? && @validatePoint(point)
             @start(point)
         
     
@@ -45,14 +47,14 @@ class CC.views.draw.primitives.Path3D extends CC.views.draw.primitives.AbstractP
         ###
 
     start:(point)=>
-        ###
-        if @arrayToPoint(point)
+        
+        if @validatePoint(point)
             @add(point)
-        ###
+        
 
     add:(point)=>
         ###
-        if @arrayToPoint(point)
+        if @validatePoint(point)
             point.idx = @points.length
             point.father = this
             @points.push(point)
@@ -66,7 +68,7 @@ class CC.views.draw.primitives.Path3D extends CC.views.draw.primitives.AbstractP
         split = idx
         idx++
 
-        if @arrayToPoint(point)
+        if @validatePoint(point)
             point.father = this
             point.idx = idx
             points_before = @points[0..split]
@@ -80,7 +82,7 @@ class CC.views.draw.primitives.Path3D extends CC.views.draw.primitives.AbstractP
 
     remove:(el)=>
         ###
-        if el instanceof CC.views.draw.primitives.Point
+        if el instanceof CC.views.draw.primitives.Point3D
             @removePoint(el)
         else if el instanceof CC.views.draw.primitives.Segment
             @removeSegment(el)
@@ -94,18 +96,14 @@ class CC.views.draw.primitives.Path3D extends CC.views.draw.primitives.AbstractP
         ###
 
     move:(el,newPos)=>
-        ###
-        if el instanceof CC.views.draw.primitives.Point
+        if el instanceof CC.views.draw.primitives.Point3D
             @movePoint(el,newPos)
         else if el instanceof CC.views.draw.primitives.Segment
             @moveSegment(el,newPos)
-        ###
 
     movePoint:(point,newPoint)=>
-        ###
         point.moveTo(newPoint)
         @update()
-        ###
 
     moveSegment:(el,newPos)=>
 
@@ -164,17 +162,7 @@ class CC.views.draw.primitives.Path3D extends CC.views.draw.primitives.AbstractP
             @paperPath.selected = true
         ###
             
-    arrayToPoint:(point)=>
-        if point instanceof Array
-            if point.length == 2
-                if @name?
-                    return point = new CC.views.draw.primitives.Point(point[0],point[1],name + points.length,this) 
-                else
-                    return point = new CC.views.draw.primitives.Point(point[0],point[1],null,this)
-        else if point instanceof CC.views.draw.primitives.Point
-            return point
-        else
-            return false
+    
 
     rearrangePoints:=>
         i=0

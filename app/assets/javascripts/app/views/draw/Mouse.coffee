@@ -4,21 +4,15 @@
 Mouse Class is used to filter events such as mousemove o mousedown and present them in a meaningfull way to the system
 ###
 
-class CC.views.draw.Mouse extends Spine.Module
+class CC.views.draw.Mouse extends Spine.Module 
+    
     @extend(Spine.Events)
-    @extend(THREE.TrackballControls)
+    
     ###
         When this class is created it disables right-mouse context menu so that it's possible to use that mouse button
     ###
 
     constructor:(@camera)->
-        #control variables
-        @movementSpeed = 75;
-        @lookSpeed = 0.125;
-        @lookVertical = false;
-
-        @canvasMarginTop = 0
-        @canvasMarginLeft = 0
         @currentPos = {
             x:0
             y:0
@@ -31,10 +25,15 @@ class CC.views.draw.Mouse extends Spine.Module
         @btn3 = new CC.views.draw.MouseButton()
         @wheel = new CC.views.draw.MouseWheel()
         @anyDown = false
+
+
         @canvas = $('canvas')
 
-        #@canvasMarginTop = @canvas.offset().left
-        #@canvasMarginLeft = @canvas.offset().top
+        #control variables
+        @threeControl = THREE.TrackballControls(@camera,@canvas)
+        @threeControl.movementSpeed = 75;
+        @threeControl.lookSpeed = 0.125;
+        @threeControl.lookVertical = false;
 
 
         $(document.body).attr("oncontextmenu","return false")
@@ -174,3 +173,7 @@ class CC.views.draw.Mouse extends Spine.Module
     getTargetForEvent:(e)->
         ev = arguments[0] || window.event
         origEl = ev.target || ev.srcElement
+
+    update:()=>
+        @threeControl.update()
+

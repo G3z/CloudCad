@@ -38,7 +38,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @camera = new CC.views.draw.Camera((window.innerWidth),(window.innerHeight-50),35, 1, 15000,1, 15000).threeCamera
         @camera.position.z = -1000 * @zoom
         #@camera.lookAt(@world)
-        @mouse = new CC.views.draw.Mouse(@camera)
+        #@mouse = new CC.views.draw.Mouse(@camera)
         
         # Add a light
         @light = new THREE.SpotLight(0xFFFF00,1.0)
@@ -73,12 +73,12 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                 sortObjects:true
             })
             #@renderer.setFaceCulling("back","cw")
-        ### 
+         
         @control = new THREE.TrackballControls(@camera)
         @control.movementSpeed = 75;
         @control.lookSpeed = 0.125;
         @control.lookVertical = false;
-        ###
+        
 
         # Define rendere size
         @renderer.setSize( window.innerWidth, window.innerHeight-50 )
@@ -101,9 +101,10 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @createGeom()
         window.stage3d = this
         # Event listeners   
+        ###
         Spine.bind 'mouse:wheel_changed', =>
             @updateCameraZoom()
-
+        
         Spine.bind 'mouse:btn1_down', =>
             #debug("MOUSE DOWN")
             vector = new THREE.Vector3(
@@ -203,7 +204,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
         #Spine.bind 'mouse:btn1_down', =>
         #    @createGeom()
-
+        ###
     animate:=>
         requestAnimFrame(@animate)
         #@world.children[0]
@@ -219,7 +220,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         ###
         #debugger
         @cameraPlane.lookAt( @camera.position );
-        @mouse.update()
+        @control.update()
         @renderer.render(@scene,@camera)
         
 

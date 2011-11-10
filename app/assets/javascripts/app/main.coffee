@@ -14,5 +14,5 @@ window.CC.controllers = {}
 window.CC.models = {}
 
 # Startup dell'applicazione
-$(document).ready ->
+$(window).load ->
     CC.mainController = new CC.controllers.Main()

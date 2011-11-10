@@ -58,9 +58,9 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @canvas = document.createElement( 'canvas' )
         $(@canvas).attr("id","canvas3d")
         if glOrNot == "canvas"
-            @renderer =new THREE.CanvasRenderer({canvas:canvas})
+            @renderer =new THREE.CanvasRenderer({canvas:@canvas})
         else if glOrNot == "svg"
-            @renderer =new THREE.SVGRenderer({canvas:canvas})
+            @renderer =new THREE.SVGRenderer({canvas:@canvas})
         else
             @renderer = new THREE.WebGLRenderer({
                 antialias: true
@@ -74,7 +74,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             })
             #@renderer.setFaceCulling("back","cw")
          
-        @control = new THREE.TrackballControls(@camera)
+        @control = new CC.views.draw.Mouse(@camera,$(@canvas))
         @control.movementSpeed = 75;
         @control.lookSpeed = 0.125;
         @control.lookVertical = false;

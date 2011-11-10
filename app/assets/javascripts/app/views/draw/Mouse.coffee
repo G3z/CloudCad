@@ -5,175 +5,244 @@ Mouse Class is used to filter events such as mousemove o mousedown and present t
 ###
 
 class CC.views.draw.Mouse extends Spine.Module 
-    
     @extend(Spine.Events)
     
     ###
         When this class is created it disables right-mouse context menu so that it's possible to use that mouse button
     ###
 
-    constructor:(@camera)->
-        @currentPos = {
-            x:0
-            y:0
-            stage3Dx:0
-            stage3Dy:0
+    constructor:(@camera,@domElement)->
+
+        @STATE = { NONE : -1, ROTATE : 0, ZOOM : 1, PAN : 2 }
+        @screen = { 
+            width: window.innerWidth
+            height: window.innerHeight
+            offsetLeft: 0
+            offsetTop: 0
         }
+        @radius = ( @screen.width + @screen.height ) / 4
 
-        @btn1 = new CC.views.draw.MouseButton()
-        @btn2 = new CC.views.draw.MouseButton()
-        @btn3 = new CC.views.draw.MouseButton()
-        @wheel = new CC.views.draw.MouseWheel()
-        @anyDown = false
+        @rotateSpeed = 1.0
+        @zoomSpeed = 1.2
+        @panSpeed = 0.3
 
+        @noZoom = false
+        @noPan = false
 
-        @canvas = $('canvas')
+        @staticMoving = false
+        @dynamicDampingFactor = 0.2
 
-        #control variables
-        @threeControl = THREE.TrackballControls(@camera,@canvas)
-        @threeControl.movementSpeed = 75;
-        @threeControl.lookSpeed = 0.125;
-        @threeControl.lookVertical = false;
+        @minDistance = 0
+        @maxDistance = Infinity
 
+        @keys = [ 65 , 83 , 68 ] # A , S , D #
 
-        $(document.body).attr("oncontextmenu","return false")
-        @canvas.Hoverable()
-        @canvas.bind("mousedown touchstart", (event)=>
+        @target = new THREE.Vector3( 0, 0, 0 )
+
+        @_keyPressed = false
+        @_state = @STATE.NONE
+
+        @_eye = new THREE.Vector3()
+
+        @_rotateStart = new THREE.Vector3()
+        @_rotateEnd = new THREE.Vector3()
+
+        @_zoomStart = new THREE.Vector2()
+        @_zoomEnd = new THREE.Vector2()
+
+        @_panStart = new THREE.Vector2()
+        @_panEnd = new THREE.Vector2()
+
+        #debugger
+        @domElement.bind('contextmenu', ( event )=>
             event.preventDefault()
-            @mouseDown({
-                x: event.pageX - @canvas.offset().left
-                y: event.pageY - @canvas.offset().top
-                },
-                event.which)
+            #false
         )
 
-        @canvas.bind("mousemove touchmove", (event)=>
-            event.preventDefault()
-            @mouseMoved({
-                x: event.pageX - @canvas.offset().left
-                y: event.pageY - @canvas.offset().top
-            })
+        @domElement.bind( 'mousemove', (event) =>
+            @mouseMove(event)
+            #false
+        )
+        @domElement.bind( 'mousedown', ( event )=>
+            @mouseDown(event)
+            #false
+        )
+        @domElement.bind( 'mouseup', (event)=>
+            @mouseUp(event)
+            #false
         )
 
-        @canvas.bind("mouseup touchend", (event)=>
-            event.preventDefault()
-            @mouseUp({
-                x: event.pageX - @canvas.offset().left
-                y: event.pageY - @canvas.offset().top
-            },event.which)
+        $(window).bind( 'keydown', (event)=>
+            @keyDown(event)
+            #false
         )
-        @canvas.mousewheel( (event,delta)=>
-            event.preventDefault()
-            @mouseWheel(event,delta)
+        $(window).bind( 'keyup',   (event)=>
+            @keyUp(event)
+            #false
+        )
+        
+    handleEvent:( event )=>
+        if typeof this[ event.type ] == 'function'  
+            this[ event.type ]( event )
+
+    getMouseOnScreen:( clientX, clientY ) =>
+        return new THREE.Vector2(
+            ( clientX - @screen.offsetLeft ) / @radius * 0.5,
+            ( clientY - @screen.offsetTop ) / @radius * 0.5
         )
 
-    mouseDown:(point,buttonNr)->
-        ###
-            *mouseDown* method takes two arguments
-            #the *point* on the screen where the events was fired
-            #the *button* wich was pushed
-            it changes the down state of the proper button and updates the start point of the event
-        ###
-        if buttonNr == 1                          #click sinistro
-            @btn1.down = true
-            @btn1.start = point
-            @anyDown =true
-            Spine.trigger 'mouse:btn1_down'
+    getMouseProjectionOnBall:( clientX, clientY )=>
+        mouseOnBall = new THREE.Vector3(
+            ( clientX - @screen.width * 0.5 - @screen.offsetLeft ) / @radius,
+            ( @screen.height * 0.5 + @screen.offsetTop - clientY ) / @radius,
+            0.0
+        )
+        
+        length = mouseOnBall.length()
 
-        if buttonNr == 2                          #click centrale
-            @btn2.down = true
-            @btn2.start = point
-            @anyDown =true
-            Spine.trigger 'mouse:btn2_down'
+        if length > 1.0
+            mouseOnBall.normalize()
+        else
+            mouseOnBall.z = Math.sqrt( 1.0 - length * length )
 
-        if buttonNr == 3                          #click centrale
-            @btn3.down = true
-            @btn3.start = point
-            @anyDown =true
-            Spine.trigger 'mouse:btn3_down'
+        @_eye.copy( @camera.position ).subSelf( @target )
 
-    mouseMoved:(point)=>
-        ###
-            *mouseMove* method takes one argument
-            #the *point* on the screen where the mouse is
-            it updates currentPos of the mouse
-            if any button is pushed, mouseDragged is called
-        ###
-        @currentPos = {
-            x:point.x
-            y:point.y
-            stage3Dx:(point.x / @canvas.width()) * 2 - 1
-            stage3Dy:-(point.y / @canvas.height()) * 2 + 1
-        }
-        #console.log(@currentPos.stage3Dx, @currentPos.stage3Dy)
+        projection = @camera.up.clone().setLength( mouseOnBall.y )
+        projection.addSelf( @camera.up.clone().crossSelf( @_eye ).setLength( mouseOnBall.x ) )
+        projection.addSelf( @_eye.setLength( mouseOnBall.z ) )
 
-        if @btn1.down
-            @mouseDragged(point,@btn1)
-            Spine.trigger 'mouse:btn1_drag'
-        if @btn2.down
-            @mouseDragged(point,@btn2)
-            Spine.trigger 'mouse:btn2_drag'
-        if @btn3.down
-            @mouseDragged(point,@btn3)
-            Spine.trigger 'mouse:btn3_drag'
+        return projection
 
-    mouseDragged:(point,btn)=>
-        ###
-            *mouseDragged* method takes two arguments
-            #the *point* on the screen where the events was fired
-            #the *btn* instance wich was pushed
-            it updates delta property of the proper btn while the mouse is beeing dragged
-            it updates the absoluteDelta propery usefull for 3d rotation
-            it updates currentPos of the mouse
-        ###
+    rotateCamera:()=>
 
-        btn.absoluteDelta = {
-            w:btn.oldDelta.w + point.x - btn.start.x
-            h:btn.oldDelta.h + point.y - btn.start.y
-        }
-        btn.delta = {
-            w:point.x - btn.start.x
-            h:point.y - btn.start.y
-        }
+        angle = Math.acos( @_rotateStart.dot( @_rotateEnd ) / @_rotateStart.length() / @_rotateEnd.length() )
+        if angle
+            axis = ( new THREE.Vector3() ).cross( @_rotateStart, @_rotateEnd ).normalize()
+            quaternion = new THREE.Quaternion()
+            
+            angle *= @rotateSpeed
 
-    mouseUp:(point,buttonNr)->
-        ###
-            *mouseUp* method takes two arguments
-            #the *point* on the screen where the events was fired
-            #the *button* wich was pushed
-            it updates oldDelta property of btn when it's released
-            it updates end property of btn when it's released
-        ###
-        if buttonNr == 1 && @btn1.down
-            @btn1.down =false
-            @btn1.oldDelta = @btn1.absoluteDelta
-            @btn1.end = point
-            Spine.trigger 'mouse:btn1_up'
+            quaternion.setFromAxisAngle( axis, -angle )
+            quaternion.multiplyVector3( @_eye )
+            quaternion.multiplyVector3( @camera.up )
+            quaternion.multiplyVector3( @_rotateEnd )
 
-        if buttonNr == 2 && @btn2.down
-            @btn2.down =false
-            @btn2.oldDelta = @btn2.absoluteDelta
-            @btn2.end = point
-            Spine.trigger 'mouse:btn2_up'
+            if @staticMoving
+                @_rotateStart = @_rotateEnd
+            else
+                quaternion.setFromAxisAngle( axis, angle * ( @dynamicDampingFactor - 1.0 ) )
+                quaternion.multiplyVector3( @_rotateStart )
 
-        if buttonNr == 3 && @btn3.down
-            @btn3.down =false
-            @btn3.oldDelta = @btn3.absoluteDelta
-            @btn3.end = point
-            Spine.trigger 'mouse:btn3_up'
-        if !@btn1.down && !@btn2.down && !@btn1.down
-            @anyDown =false
+    zoomCamera:()=>
 
-    mouseWheel:(event,delta)->
-        @wheel.direction = if delta > 0 then "UP" else "DOWN"
-        @wheel.speed = Math.abs(delta)
-        Spine.trigger 'mouse:wheel_changed'
-        false
+        factor = 1.0 + ( @_zoomEnd.y - @_zoomStart.y ) * @zoomSpeed
 
-    getTargetForEvent:(e)->
-        ev = arguments[0] || window.event
-        origEl = ev.target || ev.srcElement
+        if factor != 1.0 and factor > 0.0
+            @_eye.multiplyScalar( factor )
+            if ( @staticMoving )
+                @_zoomStart = @_zoomEnd
+            else
+                @_zoomStart.y += ( @_zoomEnd.y - @_zoomStart.y ) * @dynamicDampingFactor
+
+    panCamera :()=>
+
+        mouseChange = @_panEnd.clone().subSelf( @_panStart )
+
+        if mouseChange.lengthSq()
+
+            mouseChange.multiplyScalar( @_eye.length() * @panSpeed )
+
+            pan = @_eye.clone().crossSelf( @camera.up ).setLength( mouseChange.x )
+            pan.addSelf( @camera.up.clone().setLength( mouseChange.y ) )
+
+            @camera.position.addSelf( pan )
+            @target.addSelf( pan )
+
+            if @staticMoving
+                @_panStart = @_panEnd
+            else
+                @_panStart.addSelf( mouseChange.sub( @_panEnd, @_panStart ).multiplyScalar( @dynamicDampingFactor ) )            
+
+    checkDistances:()=>
+        unless @noZoom or @noPan
+            if  @camera.position.lengthSq()>@maxDistance*@maxDistance
+                @camera.position.setLength( @maxDistance )
+
+            if @_eye.lengthSq()<@minDistance*@minDistance
+                @camera.position.add( @target, @_eye.setLength( @minDistance ) )
 
     update:()=>
-        @threeControl.update()
+
+        @_eye.copy( @camera.position ).subSelf( @target )
+        @rotateCamera()
+        
+        unless @noZoom
+            @zoomCamera()
+
+        unless @noPan
+            @panCamera()
+
+        @camera.position.add( @target, @_eye )
+        @checkDistances()
+        @camera.lookAt( @target )
+
+    keyDown:( event )=>
+
+        if @_state != @STATE.NONE
+            return
+
+        else if event.keyCode == @keys[ @STATE.ROTATE ]
+            @_state = @STATE.ROTATE
+
+        else if event.keyCode == @keys[ @STATE.ZOOM ] and !@noZoom
+            @_state = @STATE.ZOOM
+
+        else if event.keyCode == @keys[ @STATE.PAN ] and !@noPan
+            @_state = @STATE.PAN
+
+        if @_state != @STATE.NONE
+            @_keyPressed = true
+
+    keyUp:( event )=>
+        if @_state != @STATE.NONE
+            @_state = @STATE.NONE
+
+    mouseDown:( event )=>
+        event.preventDefault()
+        event.stopPropagation()
+        if @_state == @STATE.NONE
+            @_state = event.button
+            if @_state == @STATE.ROTATE
+                @_rotateStart = @_rotateEnd = @getMouseProjectionOnBall( event.clientX, event.clientY )
+
+            else if @_state == @STATE.ZOOM and !@noZoom
+                @_zoomStart = @_zoomEnd = @getMouseOnScreen( event.clientX, event.clientY )
+
+            else if !@noPan
+                @_panStart = @_panEnd = @getMouseOnScreen( event.clientX, event.clientY )
+
+    mouseMove:( event )=>
+        if @_keyPressed
+            @_rotateStart = @_rotateEnd = @getMouseProjectionOnBall( event.clientX, event.clientY )
+            @_zoomStart = @_zoomEnd = @getMouseOnScreen( event.clientX, event.clientY )
+            @_panStart = @_panEnd = @getMouseOnScreen( event.clientX, event.clientY )
+            @_keyPressed = false
+
+        if @_state == @STATE.NONE
+            return
+
+        else if @_state == @STATE.ROTATE
+            @_rotateEnd = @getMouseProjectionOnBall( event.clientX, event.clientY )
+
+        else if @_state == @STATE.ZOOM and !@noZoom
+            @_zoomEnd = @getMouseOnScreen( event.clientX, event.clientY )
+
+        else if @_state == @STATE.PAN and !@noPan
+            @_panEnd = @getMouseOnScreen( event.clientX, event.clientY )
+
+
+    mouseUp:( event )=>
+        event.preventDefault()
+        event.stopPropagation()
+        @_state = @STATE.NONE
 

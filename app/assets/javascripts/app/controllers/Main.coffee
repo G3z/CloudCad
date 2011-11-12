@@ -1,4 +1,3 @@
-
 #
 #   Main controller for the whole application
 #

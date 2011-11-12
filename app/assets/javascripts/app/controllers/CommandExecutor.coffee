@@ -1,4 +1,3 @@
-
 class CommandExecutor extends CC.controllers.Abstract
     constructor:->
         super()

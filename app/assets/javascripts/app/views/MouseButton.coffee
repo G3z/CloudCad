@@ -1,4 +1,4 @@
-class CC.views.draw.MouseButton
+class CC.views.MouseButton
 
     ###
     Represent the Mouse Button state

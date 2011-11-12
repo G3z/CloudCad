@@ -35,7 +35,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @scene.add(@world)
 
         # Setup camera
-        @camera = new CC.views.draw.Camera((window.innerWidth),(window.innerHeight-50),35, 1, 15000,1, 15000).threeCamera
+        @camera = new CC.views.draw.Camera((window.innerWidth),(window.innerHeight-40),35, 1, 15000,1, 15000).threeCamera
         @camera.position.z = -1000 * @zoom
         #@camera.lookAt(@world)
         #@mouse = new CC.views.draw.Mouse(@camera)
@@ -74,7 +74,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             })
             #@renderer.setFaceCulling("back","cw")
          
-        @control = new CC.views.draw.Mouse(@camera,$(@canvas))
+        @control = new CC.views.Mouse(@camera,$(@canvas))
         @control.movementSpeed = 75;
         @control.lookSpeed = 0.125;
         @control.lookVertical = false;

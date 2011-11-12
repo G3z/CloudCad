@@ -14,5 +14,5 @@
 #= require_tree ./libs
 #= require_tree ./models
 #= require_tree ./controllers
-#= require ./views/draw/ThreeMouse.coffee
+#= require ./views/ThreeMouse.coffee
 #= require_tree ./views

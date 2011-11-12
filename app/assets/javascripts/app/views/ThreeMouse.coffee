@@ -4,7 +4,7 @@
 ThreeMouse Class is used to filter events such as mousemove o mousedown and present them in a meaningfull way to the system
 ###
 
-class CC.views.draw.ThreeMouse extends Spine.Module 
+class CC.views.ThreeMouse extends Spine.Module 
     @extend(Spine.Events)
     
     ###
@@ -13,11 +13,13 @@ class CC.views.draw.ThreeMouse extends Spine.Module
 
     constructor:(@camera,@domElement)->
         @STATE = { NONE : -1, ROTATE : 0, ZOOM : 1, PAN : 2 }
+        @keyboard = new CC.views.Keyboard()
+        #debugger
         @screen = { 
             width: window.innerWidth
-            height: window.innerHeight
+            height: window.innerWidth-40        ## Da rendere dinamico
             offsetLeft: 0
-            offsetTop: 0
+            offsetTop: 40                       ## Da rendere dinamico
         }
         @radius = ( @screen.width + @screen.height ) / 4
 
@@ -35,6 +37,7 @@ class CC.views.draw.ThreeMouse extends Spine.Module
         @maxDistance = Infinity
 
         @keys = [ 65 , 83 , 68 ] # A , S , D #
+        @modifierKeys = { alt:18 , shift:16 , cmd:91, ctrl:17 } # Alt , Shift , Command , Ctrl #
 
         @target = new THREE.Vector3( 0, 0, 0 )
 
@@ -48,6 +51,7 @@ class CC.views.draw.ThreeMouse extends Spine.Module
 
         @_zoomStart = new THREE.Vector2()
         @_zoomEnd = new THREE.Vector2()
+        @_wheelDelta = 1.0
 
         @_panStart = new THREE.Vector2()
         @_panEnd = new THREE.Vector2()
@@ -66,12 +70,9 @@ class CC.views.draw.ThreeMouse extends Spine.Module
         @domElement.bind( 'mouseup', (event)=>
             @mouseUp(event)
         )
-
-        $(window).bind( 'keydown', (event)=>
-            @keyDown(event)
-        )
-        $(window).bind( 'keyup',   (event)=>
-            @keyUp(event)
+        @domElement.bind('mousewheel', (event,delta)=>
+            event.preventDefault()
+            @mouseWheel(event,delta)
         )
         
     handleEvent:( event )=>
@@ -107,8 +108,8 @@ class CC.views.draw.ThreeMouse extends Spine.Module
         return projection
 
     rotateCamera:()=>
-
         angle = Math.acos( @_rotateStart.dot( @_rotateEnd ) / @_rotateStart.length() / @_rotateEnd.length() )
+
         if angle
             axis = ( new THREE.Vector3() ).cross( @_rotateStart, @_rotateEnd ).normalize()
             quaternion = new THREE.Quaternion()
@@ -127,22 +128,25 @@ class CC.views.draw.ThreeMouse extends Spine.Module
                 quaternion.multiplyVector3( @_rotateStart )
 
     zoomCamera:()=>
-
-        factor = 1.0 + ( @_zoomEnd.y - @_zoomStart.y ) * @zoomSpeed
-
-        if factor != 1.0 and factor > 0.0
-            @_eye.multiplyScalar( factor )
+        unless factor?
+            factor = 1.0 + ( @_zoomEnd.y - @_zoomStart.y ) * @zoomSpeed
+            if factor != 1.0 and factor > 0.0
+                @_eye.multiplyScalar( factor )
+                if ( @staticMoving )
+                    @_zoomStart = @_zoomEnd
+                else
+                    @_zoomStart.y += ( @_zoomEnd.y - @_zoomStart.y ) * @dynamicDampingFactor
+        else
+            @_eye.multiplyScalar( factor/100 )
             if ( @staticMoving )
                 @_zoomStart = @_zoomEnd
             else
                 @_zoomStart.y += ( @_zoomEnd.y - @_zoomStart.y ) * @dynamicDampingFactor
 
     panCamera :()=>
-
         mouseChange = @_panEnd.clone().subSelf( @_panStart )
 
         if mouseChange.lengthSq()
-
             mouseChange.multiplyScalar( @_eye.length() * @panSpeed )
 
             pan = @_eye.clone().crossSelf( @camera.up ).setLength( mouseChange.x )
@@ -165,13 +169,12 @@ class CC.views.draw.ThreeMouse extends Spine.Module
                 @camera.position.add( @target, @_eye.setLength( @minDistance ) )
 
     update:()=>
-
         @_eye.copy( @camera.position ).subSelf( @target )
         @rotateCamera()
         
         unless @noZoom
             @zoomCamera()
-
+    
         unless @noPan
             @panCamera()
 
@@ -179,40 +182,22 @@ class CC.views.draw.ThreeMouse extends Spine.Module
         @checkDistances()
         @camera.lookAt( @target )
 
-    keyDown:( event )=>
-
-        if @_state != @STATE.NONE
-            return
-
-        else if event.keyCode == @keys[ @STATE.ROTATE ]
-            @_state = @STATE.ROTATE
-
-        else if event.keyCode == @keys[ @STATE.ZOOM ] and !@noZoom
-            @_state = @STATE.ZOOM
-
-        else if event.keyCode == @keys[ @STATE.PAN ] and !@noPan
-            @_state = @STATE.PAN
-
-        if @_state != @STATE.NONE
-            @_keyPressed = true
-
-    keyUp:( event )=>
-        if @_state != @STATE.NONE
-            @_state = @STATE.NONE
-
     mouseDown:( event )=>
         event.preventDefault()
         event.stopPropagation()
         if @_state == @STATE.NONE
             @_state = event.button
-            if @_state == @STATE.ROTATE
-                @_rotateStart = @_rotateEnd = @getMouseProjectionOnBall( event.clientX, event.clientY )
+            
+            if @_state == @STATE.ROTATE and @keyboard.isKeyDown(@modifierKeys.alt) and @keyboard.isKeyDown(@modifierKeys.shift)
+                @_panStart = @_panEnd = @getMouseOnScreen( event.clientX, event.clientY )
 
-            else if @_state == @STATE.ZOOM and !@noZoom
+            else if @_state == @STATE.ROTATE and @keyboard.isKeyDown(@modifierKeys.alt) and @keyboard.isKeyDown(@modifierKeys.ctrl)
                 @_zoomStart = @_zoomEnd = @getMouseOnScreen( event.clientX, event.clientY )
 
-            else if !@noPan
-                @_panStart = @_panEnd = @getMouseOnScreen( event.clientX, event.clientY )
+            else if @_state == @STATE.ROTATE and @keyboard.isKeyDown(@modifierKeys.alt)
+                @_rotateStart = @_rotateEnd = @getMouseProjectionOnBall( event.clientX, event.clientY )
+
+            
 
     mouseMove:( event )=>
         if @_keyPressed
@@ -221,21 +206,33 @@ class CC.views.draw.ThreeMouse extends Spine.Module
             @_panStart = @_panEnd = @getMouseOnScreen( event.clientX, event.clientY )
             @_keyPressed = false
 
-        if @_state == @STATE.NONE
+        if @_state == @STATE.NONE and @k_state == @STATE.NONE
             return
-
-        else if @_state == @STATE.ROTATE
-            @_rotateEnd = @getMouseProjectionOnBall( event.clientX, event.clientY )
-
-        else if @_state == @STATE.ZOOM and !@noZoom
-            @_zoomEnd = @getMouseOnScreen( event.clientX, event.clientY )
-
-        else if @_state == @STATE.PAN and !@noPan
+        else if @_state == @STATE.ROTATE and @keyboard.isKeyDown(@modifierKeys.alt) and @keyboard.isKeyDown(@modifierKeys.shift)
             @_panEnd = @getMouseOnScreen( event.clientX, event.clientY )
 
+        else if @_state == @STATE.ROTATE and @keyboard.isKeyDown(@modifierKeys.alt) and @keyboard.isKeyDown(@modifierKeys.ctrl)
+            @_zoomEnd = @getMouseOnScreen( event.clientX, event.clientY )
+        
+        else if @_state == @STATE.ROTATE and @keyboard.isKeyDown(@modifierKeys.alt)
+            @_rotateEnd = @getMouseProjectionOnBall( event.clientX, event.clientY )
+
+        
+
+        
 
     mouseUp:( event )=>
         event.preventDefault()
         event.stopPropagation()
         @_state = @STATE.NONE
 
+    mouseWheel:(event,delta)->
+        @wheel.direction = if delta > 0 then "UP" else "DOWN"
+        @wheel.speed = Math.abs(delta)
+        unless @noZoom
+            @_wheelDelta += delta/1000
+            if @_wheelDelta >1.0
+                @_wheelDelta = 1.0
+            else if @_wheelDelta <0.0
+                @_wheelDelta = 0.0
+        #console.log @_wheelDelta

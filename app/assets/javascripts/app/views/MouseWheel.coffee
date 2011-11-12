@@ -1,4 +1,4 @@
-class CC.views.draw.MouseWheel
+class CC.views.MouseWheel
 
     ###
     Represent the Mouse Wheel state

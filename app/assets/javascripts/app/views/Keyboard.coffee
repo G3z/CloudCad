@@ -19,6 +19,7 @@ class CC.views.Keyboard extends Spine.Module
         )
     
     keyDown:(keyCode)=>
+        #console.log keyCode
         @_keys[keyCode] = true
         Spine.trigger 'keyboard:' + keyCode + '_down'
 
@@ -27,7 +28,35 @@ class CC.views.Keyboard extends Spine.Module
         Spine.trigger 'keyboard:' + keyCode + '_up'
     
     isKeyDown:(keyCode)=>
+        if typeof keyCode == "string"
+            keyCode = @keycodeForKey(keyCode)
         @_keys[keyCode]
 
     isKeyUp:(keyCode)=>
+        if typeof keyCode == "string"
+            keyCode = @keycodeForKey(keyCode)
         !@_keys[keyCode]
+
+    keycodeForKey:(str)=>
+        return 8 if str == "backspace"
+        return 46 if str == "canc"
+        return 27 if str == "esc"
+
+        return 9 if str == "tab"
+        
+        return 16 if str == "shift"
+        return 17 if str == "ctrl"
+        return 18 if str == "alt"
+
+        return 91 if str == "lcmd"
+        return 93 if str == "rcmd"
+
+        return 32 if str == "spacebar"
+        return 13 if str == "return"
+
+        return 37 if str == "left"
+        return 38 if str == "up"
+        return 39 if str == "rigth"
+        return 40 if str == "down"
+        
+        

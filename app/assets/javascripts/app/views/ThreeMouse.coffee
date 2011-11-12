@@ -37,7 +37,7 @@ class CC.views.ThreeMouse extends Spine.Module
         @maxDistance = Infinity
 
         @keys = [ 65 , 83 , 68 ] # A , S , D #
-        @modifierKeys = { alt:18 , shift:16 , cmd:91, ctrl:17 } # Alt , Shift , Command , Ctrl #
+        
 
         @target = new THREE.Vector3( 0, 0, 0 )
 
@@ -188,13 +188,13 @@ class CC.views.ThreeMouse extends Spine.Module
         if @_state == @STATE.NONE
             @_state = event.button
             
-            if @_state == @STATE.ROTATE and @keyboard.isKeyDown(@modifierKeys.alt) and @keyboard.isKeyDown(@modifierKeys.shift)
+            if @_state == @STATE.ROTATE and @keyboard.isKeyDown("alt") and @keyboard.isKeyDown("shift")
                 @_panStart = @_panEnd = @getMouseOnScreen( event.clientX, event.clientY )
 
-            else if @_state == @STATE.ROTATE and @keyboard.isKeyDown(@modifierKeys.alt) and @keyboard.isKeyDown(@modifierKeys.ctrl)
+            else if @_state == @STATE.ROTATE and @keyboard.isKeyDown("alt") and @keyboard.isKeyDown("ctrl")
                 @_zoomStart = @_zoomEnd = @getMouseOnScreen( event.clientX, event.clientY )
 
-            else if @_state == @STATE.ROTATE and @keyboard.isKeyDown(@modifierKeys.alt)
+            else if @_state == @STATE.ROTATE and @keyboard.isKeyDown("alt")
                 @_rotateStart = @_rotateEnd = @getMouseProjectionOnBall( event.clientX, event.clientY )
 
             
@@ -208,18 +208,15 @@ class CC.views.ThreeMouse extends Spine.Module
 
         if @_state == @STATE.NONE and @k_state == @STATE.NONE
             return
-        else if @_state == @STATE.ROTATE and @keyboard.isKeyDown(@modifierKeys.alt) and @keyboard.isKeyDown(@modifierKeys.shift)
+        else if @_state == @STATE.ROTATE and @keyboard.isKeyDown("alt") and @keyboard.isKeyDown("shift")
             @_panEnd = @getMouseOnScreen( event.clientX, event.clientY )
 
-        else if @_state == @STATE.ROTATE and @keyboard.isKeyDown(@modifierKeys.alt) and @keyboard.isKeyDown(@modifierKeys.ctrl)
+        else if @_state == @STATE.ROTATE and @keyboard.isKeyDown("alt") and @keyboard.isKeyDown("lcmd")
             @_zoomEnd = @getMouseOnScreen( event.clientX, event.clientY )
         
-        else if @_state == @STATE.ROTATE and @keyboard.isKeyDown(@modifierKeys.alt)
+        else if @_state == @STATE.ROTATE and @keyboard.isKeyDown("alt")
             @_rotateEnd = @getMouseProjectionOnBall( event.clientX, event.clientY )
 
-        
-
-        
 
     mouseUp:( event )=>
         event.preventDefault()

@@ -17,6 +17,7 @@ class CC.views.Keyboard extends Spine.Module
         $(window).bind( 'keyup', (event)=>
             @keyUp(event.keyCode)
         )
+        window.keyboard = this
     
     keyDown:(keyCode)=>
         #console.log keyCode
@@ -58,5 +59,11 @@ class CC.views.Keyboard extends Spine.Module
         return 38 if str == "up"
         return 39 if str == "rigth"
         return 40 if str == "down"
-        
+    
+    isAnyDown:()=>
+        result = false
+        for key,value of @_keys
+            if value is true
+                result = true
+        return result
         

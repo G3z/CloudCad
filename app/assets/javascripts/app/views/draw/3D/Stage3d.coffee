@@ -36,7 +36,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
         # Setup camera
         @camera = new CC.views.draw.Camera((window.innerWidth),(window.innerHeight-40),35, 1, 15000,1, 15000).threeCamera
-        @camera.position.z = -1000 * @zoom
+        @camera.position.z = 1000 * @zoom
         #@camera.lookAt(@world)
         #@mouse = new CC.views.draw.Mouse(@camera)
         
@@ -100,107 +100,112 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         
         @createGeom()
         window.stage3d = this
+        
         # Event listeners   
-        ###
-        Spine.bind 'mouse:wheel_changed', =>
-            @updateCameraZoom()
-        ###
         Spine.bind 'mouse:btn1_down', =>
-            #debug("MOUSE DOWN")
-            vector = new THREE.Vector3(
-                @mouse.currentPos.stage3Dx
-                @mouse.currentPos.stage3Dy
-                0.5
-            )
+            unless window.keyboard.isAnyDown()
+                vector = new THREE.Vector3(
+                    @mouse.currentPos.stage3Dx
+                    @mouse.currentPos.stage3Dy
+                    0.5
+                )
 
-            #vector = new THREE.Vector3( @mouse.currentPos.x, @mouse.currentPos.y, 0.5 )
-            #console.log(vector.x + " " + vector.y)
-            @projector.unprojectVector(vector, @camera)
-            ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
+                #vector = new THREE.Vector3( @mouse.currentPos.x, @mouse.currentPos.y, 0.5 )
+                #console.log(vector.x + " " + vector.y)
+                @projector.unprojectVector(vector, @camera)
+                ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
 
-            c = THREE.Collisions.rayCastAll(ray)
+                c = THREE.Collisions.rayCastAll(ray)
 
-            if c[0]?
-                if c[0].mesh?
+                if c[0]?
+                    if c[0].mesh?
 
-                    if @selectedMesh?
-                        @selectedMesh.materials[0].color.setHex(0x53aabb)
-                    #debugger
-                    c[0].mesh.materials[0].color.setHex(0x0000bb)
-                    @selectedMesh = c[0].mesh
-                    intersects = ray.intersectObject( @cameraPlane )
-                    @offset.copy( intersects[ 0 ].point ).subSelf( @cameraPlane.position )
+                        if @selectedMesh?
+                            @selectedMesh.materials[0].color.setHex(0x53aabb)
+                        #debugger
+                        c[0].mesh.materials[0].color.setHex(0x0000bb)
+                        @selectedMesh = c[0].mesh
+                        intersects = ray.intersectObject( @cameraPlane )
+                        @offset.copy( intersects[ 0 ].point ).subSelf( @cameraPlane.position )
 
-                else if c[0].particle?
-                    if @selectedParticle?
-                        @selectedParticle.materials[0].color.setHex(0x53aabb)
-                    c[0].particle.father.materials[0].color.setHex(0xbb0000)
-                    @selectedParticle = c[0].particle
-                    #debugger
+                    else if c[0].particle?
+                        if @selectedParticle?
+                            @selectedParticle.materials[0].color.setHex(0x53aabb)
+                        c[0].particle.father.materials[0].color.setHex(0xbb0000)
+                        @selectedParticle = c[0].particle
+                        #debugger
+                    else
+                        @selectedMesh = null
+                    #console.log(@mouse.currentPos.stage3Dx + " " + @mouse.currentPos.stage3Dy + " - " + @mouse.currentPos.x + " " + @mouse.currentPos.y)
+                    #console.log(c)
+                    #c[0].particle.line.materials[0].color.setHex(0xbb0000)
                 else
                     @selectedMesh = null
-                #console.log(@mouse.currentPos.stage3Dx + " " + @mouse.currentPos.stage3Dy + " - " + @mouse.currentPos.x + " " + @mouse.currentPos.y)
-                #console.log(c)
-                #c[0].particle.line.materials[0].color.setHex(0xbb0000)
-            else
-                @selectedMesh = null
         
         Spine.bind 'mouse:btn1_up', =>
             if @selectedMesh?
                 @selectedMesh.materials[0].color.setHex(0x53aabb)
 
         Spine.bind 'mouse:btn1_drag', =>
-            if (!@selectedMesh and !@selectedParticle) || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
-                return
+            unless window.keyboard.isAnyDown()
+                if (!@selectedMesh and !@selectedParticle) || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
+                    return
 
-            if @selectedMesh?
-                @cameraPlane.position.copy( @selectedMesh.position )
+                if @selectedMesh?
+                    @cameraPlane.position.copy( @selectedMesh.position )
 
-            else if @selectedParticle?
-                @cameraPlane.position.copy( @selectedParticle.position )
-            
-            vector = new THREE.Vector3(
-                @mouse.currentPos.stage3Dx
-                @mouse.currentPos.stage3Dy
-                0.5
-            )
-
-            @projector.unprojectVector(vector, @camera)
-            ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
-
-            intersects = ray.intersectObject( @cameraPlane )
-            #debugger
-            if intersects[0]? and intersects[0].father?
-                idx = intersects[0].idx
-                intersects[0].father.geometry.vertices[idx].position.copy(intrsects[0].position)
-            if intersects[0]? 
-                newPoint = intersects[0].point.clone()
-                @selectedMesh.position.copy( newPoint )
+                else if @selectedParticle?
+                    @cameraPlane.position.copy( @selectedParticle.position )
                 
-                #Aggiorno la gemetria della linea
-                index = @selectedMesh.vertexIndex
-                
-                # Dato che entrambe le linee usano lo stesso insieme di vertici modificandolo modifico entrambe
-                @linea.geometry.vertices[index-1].position.x = @selectedMesh.position.x
-                @linea.geometry.vertices[index-1].position.y = @selectedMesh.position.y
-                @linea.geometry.vertices[index-1].position.z = @selectedMesh.position.z
-
-                # Forzo il ridisegno della gemetry http://aerotwist.com/lab/getting-started-with-three-js
-                @linea.geometry.__dirtyVertices = true
-                @linea.geometry.__dirtyNormals = true
-
-                # Ridisegno la mesh con i nuovi punti
-                shape = new THREE.Shape(@linea.geometry.vertices)
-                @world.remove(@mesh)
-                @mesh = new THREE.Mesh(
-                    shape.extrude({
-                        amount:10,
-                        bevel:0,
-                        material: @material,
-                        extrudeMaterial: @material
-                    }),
-                    @material
+                vector = new THREE.Vector3(
+                    @mouse.currentPos.stage3Dx
+                    @mouse.currentPos.stage3Dy
+                    0.5
                 )
+
+                @projector.unprojectVector(vector, @camera)
+                ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
+
+                intersects = ray.intersectObject( @cameraPlane )
+                #debugger
+                if intersects[0]? and intersects[0].father?
+                    idx = intersects[0].idx
+                    intersects[0].father.geometry.vertices[idx].position.copy(intrsects[0].position)
+                if intersects[0]? 
+                    newPoint = intersects[0].point.clone()
+                    @selectedMesh.position.copy( newPoint )
+                    
+                    #Aggiorno la gemetria della linea
+                    index = @selectedMesh.vertexIndex
+                    
+                    # Dato che entrambe le linee usano lo stesso insieme di vertici modificandolo modifico entrambe
+                    @vertices
+                    @vertices[index].x = parseInt(@selectedMesh.position.x)
+                    @vertices[index].y = parseInt(@selectedMesh.position.y)
+
+                    @linea.geometry.vertices[index-1].position.x = parseInt(@selectedMesh.position.x)
+                    @linea.geometry.vertices[index-1].position.y = parseInt(@selectedMesh.position.y)
+                    @linea.geometry.vertices[index-1].position.z = parseInt(@selectedMesh.position.z)
+
+                    # Forzo il ridisegno della gemetry http://aerotwist.com/lab/getting-started-with-three-js
+                    @linea.geometry.__dirtyVertices = true
+                    @linea.geometry.__dirtyNormals = true
+
+                    # Ridisegno la mesh con i nuovi punti
+                    #@linea.geometry.mergeVertices()
+                    #debugger
+                    shape = new THREE.Shape(@vertices)
+                    @world.remove(@mesh)
+                    @mesh = new THREE.Mesh(
+                        shape.extrude({
+                            amount:10,
+                            bevelEnabled:false,
+                            material: @material,
+                            extrudeMaterial: @material
+                        }),
+                        @material
+                    )
+                    @world.add(@mesh)
 
         #Spine.bind 'mouse:btn1_down', =>
         #    @createGeom()
@@ -213,13 +218,9 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @render()
 
     render:=>
-        ###if @world?
-            @camera.rotation.x = @mouse.btn3.absoluteDelta.h * @rotationScale
-            @camera.rotation.y = @mouse.btn3.absoluteDelta.w * @rotationScale
-        ###
-        #debugger
-        @cameraPlane.lookAt( @camera.position );
         @mouse.update()
+        @cameraPlane.lookAt( @camera.position );
+        
         @renderer.render(@scene,@camera)
 
     createGeom:=>
@@ -228,7 +229,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             new THREE.Vector2(100,0)
             new THREE.Vector2(100,100)
             new THREE.Vector2(0,100)
-            #new THREE.Vector2(0,0)
+            new THREE.Vector2(0,0)
         ]
 
         color = 0x8866ff

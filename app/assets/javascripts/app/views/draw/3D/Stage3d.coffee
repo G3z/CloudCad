@@ -74,10 +74,10 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             })
             #@renderer.setFaceCulling("back","cw")
          
-        @control = new CC.views.Mouse(@camera,$(@canvas))
-        @control.movementSpeed = 75;
-        @control.lookSpeed = 0.125;
-        @control.lookVertical = false;
+        @mouse = new CC.views.Mouse(@camera,$(@canvas))
+        @mouse.movementSpeed = 75;
+        @mouse.lookSpeed = 0.125;
+        @mouse.lookVertical = false;
         
 
         # Define rendere size
@@ -104,7 +104,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         ###
         Spine.bind 'mouse:wheel_changed', =>
             @updateCameraZoom()
-        
+        ###
         Spine.bind 'mouse:btn1_down', =>
             #debug("MOUSE DOWN")
             vector = new THREE.Vector3(
@@ -204,7 +204,6 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
         #Spine.bind 'mouse:btn1_down', =>
         #    @createGeom()
-        ###
     animate:=>
         requestAnimFrame(@animate)
         #@world.children[0]
@@ -220,17 +219,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         ###
         #debugger
         @cameraPlane.lookAt( @camera.position );
-        @control.update()
+        @mouse.update()
         @renderer.render(@scene,@camera)
-        
-
-    updateCameraZoom:=>
-        if @mouse.wheel.direction == "UP"
-            multiplier = 1
-        else
-            multiplier = -1
-
-        @camera.position.z += multiplier * @mouse.wheel.speed * @zoomScale
 
     createGeom:=>
         @vertices =[

@@ -4,14 +4,13 @@
 Mouse Class is used to filter events such as mousemove o mousedown and present them in a meaningfull way to the system
 ###
 
-class CC.views.Mouse extends CC.views.ThreeMouse 
+class CC.views.Mouse extends Spine.Module
     
     ###
         When this class is created it disables right-mouse context menu so that it's possible to use that mouse button
     ###
 
-    constructor:(camera,domElement)->
-        super(camera,domElement)
+    constructor:(@domElement)->
         @currentPos = {
             x:0
             y:0
@@ -25,36 +24,55 @@ class CC.views.Mouse extends CC.views.ThreeMouse
         @wheel = new CC.views.MouseWheel()
         @anyDown = false
 
+        @domElement.bind('contextmenu', ( event )=>
+            event.preventDefault()
+        )
+
+        @domElement.bind( 'mousemove', (event) =>
+            @mouseMove(event)
+        )
+
+        @domElement.bind( 'mousedown', ( event )=>
+            @mouseDown(event)
+        )
+
+        @domElement.bind( 'mouseup', (event)=>
+            @mouseUp(event)
+        )
+
+        @domElement.bind('mousewheel', (event,delta)=>
+            event.preventDefault()
+            @mouseWheel(event,delta)
+        )
+
     mouseDown:( event )=>
-        super(event)
         ###
             *mouseDown* method takes two arguments
             #the *point* on the screen where the events was fired
             #the *button* wich was pushed
             it changes the down state of the proper button and updates the start point of the event
         ###
-        buttonNr = event.which
+        buttonNr = event.button
 
-        if buttonNr == 1                          #click sinistro
+        if buttonNr == 0                          #click sinistro
             @btn1.down = true
             @btn1.start = @eventToPoint(event)
             @anyDown =true
             Spine.trigger 'mouse:btn1_down'
 
-        if buttonNr == 2                          #click centrale
+        if buttonNr == 1                          #click centrale
             @btn2.down = true
             @btn2.start = @eventToPoint(event)
             @anyDown =true
             Spine.trigger 'mouse:btn2_down'
 
-        if buttonNr == 3                          #click centrale
+        if buttonNr == 2                          #click destro
             @btn3.down = true
             @btn3.start = @eventToPoint(event)
             @anyDown =true
             Spine.trigger 'mouse:btn3_down'
 
     mouseMove:( event )=>
-        super(event)
         ###
             *mouseMove* method takes one argument
             #the *point* on the screen where the mouse is
@@ -101,7 +119,6 @@ class CC.views.Mouse extends CC.views.ThreeMouse
         }
 
     mouseUp:( event )=>
-        super(event)
         ###
             *mouseUp* method takes two arguments
             #the *point* on the screen where the events was fired
@@ -109,21 +126,21 @@ class CC.views.Mouse extends CC.views.ThreeMouse
             it updates oldDelta property of btn when it's released
             it updates end property of btn when it's released
         ###
-        buttonNr = event.which
+        buttonNr = event.button
 
-        if buttonNr == 1 && @btn1.down
+        if buttonNr == 0 && @btn1.down
             @btn1.down =false
             @btn1.oldDelta = @btn1.absoluteDelta
             @btn1.end = @eventToPoint(event)
             Spine.trigger 'mouse:btn1_up'
 
-        if buttonNr == 2 && @btn2.down
+        if buttonNr == 1 && @btn2.down
             @btn2.down =false
             @btn2.oldDelta = @btn2.absoluteDelta
             @btn2.end = @eventToPoint(event)
             Spine.trigger 'mouse:btn2_up'
 
-        if buttonNr == 3 && @btn3.down
+        if buttonNr == 2 && @btn3.down
             @btn3.down =false
             @btn3.oldDelta = @btn3.absoluteDelta
             @btn3.end = @eventToPoint(event)
@@ -133,7 +150,6 @@ class CC.views.Mouse extends CC.views.ThreeMouse
             @anyDown =false
     
     mouseWheel:(event,delta)->
-        super(event,delta)
         Spine.trigger 'mouse:wheel_changed'
 
     eventToPoint:( event )=>

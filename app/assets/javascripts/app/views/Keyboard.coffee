@@ -7,7 +7,7 @@ Keyboard Class is used to filter keyboard events such as keyup o keydown and pre
 class CC.views.Keyboard extends Spine.Module 
     @extend(Spine.Events)
 
-    constructor:()->
+    constructor:->
         @_keys = {}
         
         $(window).bind( 'keydown', (event)=>
@@ -31,12 +31,18 @@ class CC.views.Keyboard extends Spine.Module
     isKeyDown:(keyCode)=>
         if typeof keyCode == "string"
             keyCode = @keycodeForKey(keyCode)
-        @_keys[keyCode]
+        unless typeof @_keys[keyCode] == "undefined"
+            return @_keys[keyCode]
+        else
+            false
 
     isKeyUp:(keyCode)=>
         if typeof keyCode == "string"
             keyCode = @keycodeForKey(keyCode)
-        !@_keys[keyCode]
+        unless typeof @_keys[keyCode] == "undefined"
+            return !@_keys[keyCode]
+        else
+            true
 
     keycodeForKey:(str)=>
         return 8 if str == "backspace"
@@ -53,14 +59,14 @@ class CC.views.Keyboard extends Spine.Module
         return 93 if str == "rcmd"
 
         return 32 if str == "spacebar"
-        return 13 if str == "return"
+        return 13 if str == "return" or str == "enter"
 
         return 37 if str == "left"
         return 38 if str == "up"
         return 39 if str == "rigth"
         return 40 if str == "down"
     
-    isAnyDown:()=>
+    isAnyDown:=>
         result = false
         for key,value of @_keys
             if value is true

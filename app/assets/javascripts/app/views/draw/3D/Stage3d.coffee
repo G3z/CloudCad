@@ -22,8 +22,6 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @lastvert =0
         @offset = new THREE.Vector3()
         
-        
-
         #@camera.toOrthographic()
 
         # Create the real Scene
@@ -73,11 +71,14 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                 sortObjects:true
             })
             #@renderer.setFaceCulling("back","cw")
-         
-        @mouse = new CC.views.Mouse(@camera,$(@canvas))
-        @mouse.movementSpeed = 75;
-        @mouse.lookSpeed = 0.125;
-        @mouse.lookVertical = false;
+        
+        @mouse = new CC.views.Mouse($(@canvas))
+        @keyboard = new CC.views.Keyboard()
+
+        @cameraController = new CC.views.CameraController(this)
+        @cameraController.movementSpeed = 75;
+        @cameraController.lookSpeed = 0.125;
+        @cameraController.lookVertical = false;
         
 
         # Define rendere size
@@ -206,19 +207,12 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                         @material
                     )
                     @world.add(@mesh)
-
-        #Spine.bind 'mouse:btn1_down', =>
-        #    @createGeom()
     animate:=>
         requestAnimFrame(@animate)
-        #@world.children[0]
-        #for mesh in @world.children
-        #    mesh.materials[0].color.setHex(0x8866ff)
-
         @render()
 
     render:=>
-        @mouse.update()
+        @cameraController.update()
         @cameraPlane.lookAt( @camera.position );
         
         @renderer.render(@scene,@camera)
@@ -306,13 +300,6 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         line.add(particleSystem)
 
 
-        #pgeo = THREE.GeometryUtils.clone( points )
-        #particles = new THREE.ParticleSystem( pgeo, new THREE.ParticleBasicMaterial( { color: color, size: 3, opacity: 0.75 } ) )
-        #particles.position.set( x, y, z )
-        #particles.rotation.set( rx, ry, rz )
-        #particles.scale.set( s, s, s )
-        #line.add( particles )
-
         @material = new THREE.MeshLambertMaterial({
             color: 0x8866ff
             blending: 3
@@ -328,11 +315,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             }),
             @material
         )
-        #@mesh.castShadow = true;
-        #@mesh.receiveShadow = true;
-        #@path = new THREE.Path(vertices)
+
 
         @world.add( @mesh )
-        #mc = THREE.CollisionUtils.MeshColliderWBox(mesh)
-        #THREE.Collisions.colliders.push( mc )
 

@@ -174,7 +174,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                     intersects[0].father.geometry.vertices[idx].position.copy(intrsects[0].position)
                 if intersects[0]? 
                     newPoint = intersects[0].point.clone()
-                    @selectedMesh.position.copy( newPoint )
+                    @selectedMesh.position.x = newPoint.x
+                    @selectedMesh.position.y = newPoint.y
                     
                     #Aggiorno la gemetria della linea
                     index = @selectedMesh.vertexIndex
@@ -186,7 +187,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
                     @linea.geometry.vertices[index-1].position.x = parseInt(@selectedMesh.position.x)
                     @linea.geometry.vertices[index-1].position.y = parseInt(@selectedMesh.position.y)
-                    @linea.geometry.vertices[index-1].position.z = parseInt(@selectedMesh.position.z)
+                    #@linea.geometry.vertices[index-1].position.z = parseInt(@selectedMesh.position.z)
 
                     # Forzo il ridisegno della gemetry http://aerotwist.com/lab/getting-started-with-three-js
                     @linea.geometry.__dirtyVertices = true
@@ -277,10 +278,14 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             rings = 16
             sphere = new THREE.Mesh(
                 new THREE.SphereGeometry(radius,segments,rings),
-                new THREE.MeshLambertMaterial({
+                new THREE.MeshBasicMaterial({
                     color: 0x53aabb
+                    opacity: 0.25
+                    transparent: true
+                    wireframe: true
                 })
             )
+            sphere.visible = false
             sphere.vertexIndex = i
             sphere.position.x = vertice.x
             sphere.position.y = vertice.y

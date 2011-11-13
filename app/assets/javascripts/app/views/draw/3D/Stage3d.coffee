@@ -33,7 +33,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         @scene.add(@world)
 
         # Setup camera
-        @camera = new CC.views.draw.Camera((window.innerWidth),(window.innerHeight-40),35, 1, 15000,1, 15000).threeCamera
+        @camera = new CC.views.draw.Camera((window.innerWidth),(window.innerHeight-40),35, 1, 15000,1, 15000)
         @camera.position.z = 1000 * @zoom
         #@camera.lookAt(@world)
         #@mouse = new CC.views.draw.Mouse(@camera)
@@ -142,6 +142,13 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                     #c[0].particle.line.materials[0].color.setHex(0xbb0000)
                 else
                     @selectedMesh = null
+        
+        Spine.bind 'keyboard:67_up', =>
+            @camera.toggleType()
+
+        Spine.bind 'mouse:btn1_up', =>
+            if @selectedMesh?
+                @selectedMesh.materials[0].color.setHex(0x53aabb)
         
         Spine.bind 'mouse:btn1_up', =>
             if @selectedMesh?
@@ -274,8 +281,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             THREE.Collisions.colliders.push(sphereCollider)
             
             radius = 10
-            segments = 16
-            rings = 16
+            segments = 4
+            rings = 4
             sphere = new THREE.Mesh(
                 new THREE.SphereGeometry(radius,segments,rings),
                 new THREE.MeshBasicMaterial({
@@ -302,7 +309,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             pMaterial
         )
 
-        line.add(particleSystem)
+        @linea.add(particleSystem)
 
 
         @material = new THREE.MeshLambertMaterial({

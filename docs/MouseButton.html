@@ -1,0 +1,24 @@
+<!DOCTYPE html>  <html> <head>   <title>MouseButton.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="AbstractView.html">                 AbstractView.coffee               </a>                                           <a class="source" href="Camera.html">                 Camera.coffee               </a>                                           <a class="source" href="CameraController.html">                 CameraController.coffee               </a>                                           <a class="source" href="Keyboard.html">                 Keyboard.coffee               </a>                                           <a class="source" href="Mouse.html">                 Mouse.coffee               </a>                                           <a class="source" href="MouseButton.html">                 MouseButton.coffee               </a>                                           <a class="source" href="MouseWheel.html">                 MouseWheel.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               MouseButton.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">CC</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">MouseButton</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">Represent</span> <span class="nx">the</span> <span class="nx">Mouse</span> <span class="nx">Button</span> <span class="nx">state</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="n-Method">constructor:</span><span class="o">-&gt;</span>
+        <span class="vi">@down = </span><span class="kc">false</span>
+        <span class="vi">@start= </span><span class="p">{</span>
+            <span class="n-Method">x:</span><span class="mi">0</span>
+            <span class="n-Method">y:</span><span class="mi">0</span>
+        <span class="p">}</span>
+        <span class="vi">@absoluteDelta= </span><span class="p">{</span>
+            <span class="n-Method">w:</span><span class="mi">0</span>
+            <span class="n-Method">h:</span><span class="mi">0</span>
+        <span class="p">}</span>
+        <span class="vi">@delta= </span><span class="p">{</span>
+            <span class="n-Method">w:</span><span class="mi">0</span>
+            <span class="n-Method">h:</span><span class="mi">0</span>
+        <span class="p">}</span>
+        <span class="vi">@oldDelta= </span><span class="p">{</span>
+            <span class="n-Method">w:</span><span class="mi">0</span>
+            <span class="n-Method">h:</span><span class="mi">0</span>
+        <span class="p">}</span>
+        <span class="nx">@end</span><span class="o">=</span><span class="p">{</span>
+            <span class="n-Method">x:</span><span class="mi">0</span>
+            <span class="n-Method">y:</span><span class="mi">0</span>
+        <span class="p">}</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

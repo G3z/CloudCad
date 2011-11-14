@@ -330,4 +330,3 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
 
         @world.add( @mesh )
-

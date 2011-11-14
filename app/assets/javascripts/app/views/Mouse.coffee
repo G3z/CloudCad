@@ -1,16 +1,16 @@
-###
-# Mouse Class #
-
-Mouse Class is used to filter events such as mousemove o mousedown and present them in a meaningfull way to the system
-###
-
+### Mouse Class###
+# Mouse Class is used to filter events such as mousemove o mousedown and present them in a meaningfull way to the system
 class CC.views.Mouse extends Spine.Module
-    
-    ###
-        When this class is created it disables right-mouse context menu so that it's possible to use that mouse button
-    ###
+    #### *constructor(`@canvas`)* method takes one argument
+    #* the *canvas* that contains the render and in wich events are positioned
+    #
+    # `@currentPos` object is created to contain `x` and `y` in pixel position form canvas top-left corner
+    # and `stage3Dx` and `srage3Dy` in 0.0 to 1.0 position form canvas center  
+    # [`MouseButton`](MouseButton.html) instances are created  
+    # [`MouseWheel`](MouseButton.html) is created  
+    # `contextmenu`, `mousemove`,`mousedown`,`mouseup` and `mousewheel` events are linked to the related methods using jQuery  
 
-    constructor:(@domElement)->
+    constructor:(@canvas)->
         @currentPos = {
             x:0
             y:0
@@ -24,34 +24,33 @@ class CC.views.Mouse extends Spine.Module
         @wheel = new CC.views.MouseWheel()
         @anyDown = false
 
-        @domElement.bind('contextmenu', ( event )=>
+        @canvas.bind('contextmenu', ( event )=>
             event.preventDefault()
         )
 
-        @domElement.bind( 'mousemove', (event) =>
+        @canvas.bind( 'mousemove', (event) =>
             @mouseMove(event)
         )
 
-        @domElement.bind( 'mousedown', ( event )=>
+        @canvas.bind( 'mousedown', ( event )=>
             @mouseDown(event)
         )
 
-        @domElement.bind( 'mouseup', (event)=>
+        @canvas.bind( 'mouseup', (event)=>
             @mouseUp(event)
         )
 
-        @domElement.bind('mousewheel', (event,delta)=>
+        @canvas.bind('mousewheel', (event,delta)=>
             event.preventDefault()
             @mouseWheel(event,delta)
         )
 
-    mouseDown:( event )=>
-        ###
-            *mouseDown* method takes two arguments
-            #the *point* on the screen where the events was fired
-            #the *button* wich was pushed
-            it changes the down state of the proper button and updates the start point of the event
-        ###
+    #### *mouseDown(`event`)* method takes one argument
+    #* the *event* on the screen where the events was fired
+    #
+    # it changes the down state of the proper button and updates the `start` point of the `btn`  
+    # the related `Spine Event` is also fired
+    mouseDown:(event)=>
         buttonNr = event.button
 
         if buttonNr == 0                          #click sinistro
@@ -71,21 +70,19 @@ class CC.views.Mouse extends Spine.Module
             @btn3.start = @eventToPoint(event)
             @anyDown =true
             Spine.trigger 'mouse:btn3_down'
-
+    
+    #### *mouseMove(`event`)* method takes one argument
+    #* the *event* on the screen where the events was fired
+    #
+    # it updates the `@currentPos` of the mouse  
+    # if a mouse button is pressed `@mouseDragged` is called and the related `Spine Event` is fired
     mouseMove:( event )=>
-        ###
-            *mouseMove* method takes one argument
-            #the *point* on the screen where the mouse is
-            it updates currentPos of the mouse
-            if any button is pushed, mouseDragged is called
-        ###
         @currentPos = {
             x:@eventToPoint(event).x
             y:@eventToPoint(event).y
-            stage3Dx:(@eventToPoint(event).x / @domElement.width()) * 2 - 1
-            stage3Dy:-(@eventToPoint(event).y / @domElement.height()) * 2 + 1
+            stage3Dx:(@eventToPoint(event).x / @canvas.width()) * 2 - 1
+            stage3Dy:-(@eventToPoint(event).y / @canvas.height()) * 2 + 1
         }
-        #console.log(@currentPos.stage3Dx, @currentPos.stage3Dy)
 
         if @btn1.down
             @mouseDragged(@eventToPoint(event),@btn1)
@@ -98,17 +95,15 @@ class CC.views.Mouse extends Spine.Module
         if @btn3.down
             @mouseDragged(@eventToPoint(event),@btn3)
             Spine.trigger 'mouse:btn3_drag'
-
+    
+    #### *mouseDragged(`point`,`btn`)* method takes two arguments
+    #* the *point* on the screen where the events was fired
+    #* the *btn* instance wich was pushed
+    #
+    # it updates `delta` property of the proper `btn` while the mouse is beeing dragged  
+    # it updates the `absoluteDelta` propery usefull for 3d rotation  
+    # it updates `currentPos` of the mouse  
     mouseDragged:(point,btn)=>
-        ###
-            *mouseDragged* method takes two arguments
-            #the *point* on the screen where the events was fired
-            #the *btn* instance wich was pushed
-            it updates delta property of the proper btn while the mouse is beeing dragged
-            it updates the absoluteDelta propery usefull for 3d rotation
-            it updates currentPos of the mouse
-        ###
-
         btn.absoluteDelta = {
             w:btn.oldDelta.w + @eventToPoint(event).x - btn.start.x
             h:btn.oldDelta.h + @eventToPoint(event).y - btn.start.y
@@ -118,14 +113,14 @@ class CC.views.Mouse extends Spine.Module
             h:@eventToPoint(event).y - btn.start.y
         }
 
+    #### *mouseUp(`event`)* method takes one argument
+    #* the *event* on the screen where the events was fired
+    #
+    # it changes the down state of the proper button  
+    # it updates `oldDelta` property of `btn` when it's released  
+    # it updates `end` property of `btn` when it's released  
+    # the related `Spine Event` is also fired
     mouseUp:( event )=>
-        ###
-            *mouseUp* method takes two arguments
-            #the *point* on the screen where the events was fired
-            #the *button* wich was pushed
-            it updates oldDelta property of btn when it's released
-            it updates end property of btn when it's released
-        ###
         buttonNr = event.button
 
         if buttonNr == 0 && @btn1.down
@@ -149,12 +144,21 @@ class CC.views.Mouse extends Spine.Module
         if !@btn1.down && !@btn2.down && !@btn1.down
             @anyDown =false
     
+    #### *mouseWheel(`event`,`delta`)* method takes two arguments
+    #* the *event* on the screen where the events was fired
+    #* the *delta* of how much thw mouse wheel was spinned
+    #
+    # the related `Spine Event` is also fired
     mouseWheel:(event,delta)->
         Spine.trigger 'mouse:wheel_changed'
-
+    
+    #### *eventToPoint(`event`)* method takes one argument
+    #* the *event* on the screen where the events was fired
+    #
+    # it returns the point of the event form *page* space to *canvas* space
     eventToPoint:( event )=>
         point = {
-            x: event.pageX - @domElement.offset().left
-            y: event.pageY - @domElement.offset().top
+            x: event.pageX - @canvas.offset().left
+            y: event.pageY - @canvas.offset().top
         }
 

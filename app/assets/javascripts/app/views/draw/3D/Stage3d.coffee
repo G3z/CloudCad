@@ -147,8 +147,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             @camera.toggleType()
         
         Spine.bind 'keyboard:49_up', =>
-            if @keyboard.isKeyDown("cmd")
-                @camera.toFrontView
+            if @keyboard.isKeyDown("alt")
+                @camera.toFrontView()
 
         Spine.bind 'mouse:btn1_up', =>
             if @selectedMesh?
@@ -191,9 +191,24 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                     @vertices
                     @vertices[index].x = parseInt(@selectedMesh.position.x)
                     @vertices[index].y = parseInt(@selectedMesh.position.y)
+                    console.log index+"/"+@vertices.length
+                                            
+                    if index == 0
+                        @vertices[0].x = parseInt(@selectedMesh.position.x)
+                        @vertices[0].y = parseInt(@selectedMesh.position.y)
+                        @vertices[@vertices.length-1].x = parseInt(@selectedMesh.position.x)
+                        @vertices[@vertices.length-1].y = parseInt(@selectedMesh.position.y)
 
-                    @linea.geometry.vertices[index-1].position.x = parseInt(@selectedMesh.position.x)
-                    @linea.geometry.vertices[index-1].position.y = parseInt(@selectedMesh.position.y)
+                        @linea.geometry.vertices[@vertices.length-2].position.x = parseInt(@selectedMesh.position.x)
+                        @linea.geometry.vertices[@vertices.length-2].position.y = parseInt(@selectedMesh.position.y)
+                    else if index == 1
+                        @linea.geometry.vertices[index-1].position.x = parseInt(@selectedMesh.position.x)
+                        @linea.geometry.vertices[index-1].position.y = parseInt(@selectedMesh.position.y)
+                        @linea.geometry.vertices[@vertices.length-1].position.x = parseInt(@selectedMesh.position.x)
+                        @linea.geometry.vertices[@vertices.length-1].position.y = parseInt(@selectedMesh.position.y)
+                    else
+                        @linea.geometry.vertices[index-1].position.x = parseInt(@selectedMesh.position.x)
+                        @linea.geometry.vertices[index-1].position.y = parseInt(@selectedMesh.position.y)
                     #@linea.geometry.vertices[index-1].position.z = parseInt(@selectedMesh.position.z)
 
                     # Forzo il ridisegno della gemetry http://aerotwist.com/lab/getting-started-with-three-js
@@ -228,9 +243,9 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
     createGeom:=>
         @vertices =[
             new THREE.Vector2(0,0)
-            new THREE.Vector2(100,0)
-            new THREE.Vector2(100,100)
             new THREE.Vector2(0,100)
+            new THREE.Vector2(100,100)
+            new THREE.Vector2(100,0)
             new THREE.Vector2(0,0)
         ]
 
@@ -282,31 +297,31 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
             #THREE.Collisions.colliders.push(sphereCollider)
             ###
-            
-            radius = 10
-            segments = 4
-            rings = 4
-            sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(radius,segments,rings),
-                new THREE.MeshBasicMaterial({
-                    color: color
-                    opacity: 0.25
-                    transparent: true
-                    wireframe: true
-                })
-            )
-            sphere.placeholder = true
-            sphere.visible = false
-            sphere.vertexIndex = i
-            sphere.position.x = vertice.x
-            sphere.position.y = vertice.y
-            #sphere.castShadow = true;
-            #sphere.receiveShadow = true;
-            @linea.add(sphere)
+            if i < @vertices.length
+                radius = 10
+                segments = 4
+                rings = 4
+                sphere = new THREE.Mesh(
+                    new THREE.SphereGeometry(radius,segments,rings),
+                    new THREE.MeshBasicMaterial({
+                        color: color
+                        opacity: 0.25
+                        transparent: true
+                        wireframe: true
+                    })
+                )
+                sphere.placeholder = true
+                sphere.visible = false
+                sphere.vertexIndex = i
+                sphere.position.x = vertice.x
+                sphere.position.y = vertice.y
+                #sphere.castShadow = true;
+                #sphere.receiveShadow = true;
+                @linea.add(sphere)
 
-            # registro le collisioni sulle sfere
-            #mc = THREE.CollisionUtils.MeshColliderWBox(sphere)
-            #THREE.Collisions.colliders.push(mc)
+                # registro le collisioni sulle sfere
+                #mc = THREE.CollisionUtils.MeshColliderWBox(sphere)
+                #THREE.Collisions.colliders.push(mc)
             
         particleSystem = new THREE.ParticleSystem(
             particles,

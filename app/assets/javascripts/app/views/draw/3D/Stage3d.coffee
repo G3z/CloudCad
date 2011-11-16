@@ -131,8 +131,6 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                 if c? and c.length>0
                     if c[0].object? and c[0].object != @cameraPlane
                         obj = c[0].object
-                        #unless obj.placeholder != true
-                        #    obj = obj.parent
                         if @selectedMesh?
                             @selectedMesh.material.color.setHex(0x53aabb)
                         #debugger
@@ -142,9 +140,6 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                         @offset.copy( intersects[ 0 ].point ).subSelf( @cameraPlane.position )
                     else
                         @selectedMesh = null
-                    #console.log(@mouse.currentPos.stage3Dx + " " + @mouse.currentPos.stage3Dy + " - " + @mouse.currentPos.x + " " + @mouse.currentPos.y)
-                    #console.log(c)
-                    #c[0].particle.line.materials[0].color.setHex(0xbb0000)
                 else
                     @selectedMesh = null
         
@@ -157,11 +152,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
         Spine.bind 'mouse:btn1_up', =>
             if @selectedMesh?
-                @selectedMesh.materials[0].color.setHex(0x53aabb)
-        
-        Spine.bind 'mouse:btn1_up', =>
-            if @selectedMesh?
-                @selectedMesh.materials[0].color.setHex(0x53aabb)
+                @selectedMesh.material.color.setHex(0x53aabb)
 
         Spine.bind 'mouse:btn1_drag', =>
             unless window.keyboard.isAnyDown()
@@ -185,10 +176,10 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
                 intersects = ray.intersectObject( @cameraPlane )
                 #debugger
-                if intersects[0]? and intersects[0].placeholder==true
+                if intersects[0]? and @selectedMesh.placeholder==true
                     idx = intersects[0].idx
-                    intersects[0].parent.geometry.vertices[idx].position.copy(intrsects[0].position)
-                if intersects[0]? 
+                    intersects[0].object.position.copy(@selectedMesh.position)
+                #if intersects[0]?
                     newPoint = intersects[0].point.clone()
                     @selectedMesh.position.x = newPoint.x
                     @selectedMesh.position.y = newPoint.y
@@ -280,11 +271,11 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         })
 
         for vertice, i in @vertices
-            particle = new THREE.Vertex(vertice)
-            particles.vertices.push(particle)
-            particle.father = line
-            particle.idx = i
-            position = new THREE.Vector3(vertice.x,vertice.y,line.position.z)
+            #particle = new THREE.Vertex(vertice)
+            #particles.vertices.push(particle)
+            #particle.father = line
+            #particle.idx = i
+            #position = new THREE.Vector3(vertice.x,vertice.y,line.position.z)
 
             ###
             sphereCollider = #new THREE.SphereCollider(position, 10) # size = radius

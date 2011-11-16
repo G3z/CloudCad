@@ -35,16 +35,25 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         # Setup camera
         @camera = new CC.views.draw.Camera((window.innerWidth),(window.innerHeight-40),35, 1, 15000,1, 15000)
         @camera.position.z = 1000 * @zoom
+        @scene.add(@camera)
         #@camera.lookAt(@world)
         #@mouse = new CC.views.draw.Mouse(@camera)
         
         # Add a light
-        @light = new THREE.SpotLight(0xFFFF00,1.0)
-        @light.position.set( 400, 300, 400 )
-        @scene.add( @light )
+        @light1 = new THREE.SpotLight(0xFFFFFF,1.0,2.0)
+        @light1.position.set( 400, 300, 400 )
+        @scene.add( @light1 )
+
+        @light2 = new THREE.SpotLight(0xFFFFFF,0.6,2.0)
+        @light2.position.set( 400, 300, -600 )
+        @scene.add( @light2 )
+
+        @light3 = new THREE.SpotLight(0xFFFFFF,0.4,2.0)
+        @light3.position.set( -400, -300, -600 )
+        @scene.add( @light3 )
 
         # Add ambient light
-        @ambientLight = new THREE.AmbientLight( 0x888888 )
+        @ambientLight = new THREE.AmbientLight( 0xffffff )
         @scene.add(@ambientLight)
         
         @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: true, wireframe: true } ) );
@@ -115,26 +124,22 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
                 #console.log(vector.x + " " + vector.y)
                 @projector.unprojectVector(vector, @camera)
                 ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
-
-                c = THREE.Collisions.rayCastAll(ray)
-
-                if c[0]?
-                    if c[0].mesh?
-
+                #debugger
+                c = ray.intersectObject(@world)
+                #console.log c
+                #debugger
+                if c? and c.length>0
+                    if c[0].object? and c[0].object != @cameraPlane
+                        obj = c[0].object
+                        #unless obj.placeholder != true
+                        #    obj = obj.parent
                         if @selectedMesh?
-                            @selectedMesh.materials[0].color.setHex(0x53aabb)
+                            @selectedMesh.material.color.setHex(0x53aabb)
                         #debugger
-                        c[0].mesh.materials[0].color.setHex(0x0000bb)
-                        @selectedMesh = c[0].mesh
+                        obj.material.color.setHex(0x0000bb)
+                        @selectedMesh = obj
                         intersects = ray.intersectObject( @cameraPlane )
                         @offset.copy( intersects[ 0 ].point ).subSelf( @cameraPlane.position )
-
-                    else if c[0].particle?
-                        if @selectedParticle?
-                            @selectedParticle.materials[0].color.setHex(0x53aabb)
-                        c[0].particle.father.materials[0].color.setHex(0xbb0000)
-                        @selectedParticle = c[0].particle
-                        #debugger
                     else
                         @selectedMesh = null
                     #console.log(@mouse.currentPos.stage3Dx + " " + @mouse.currentPos.stage3Dy + " - " + @mouse.currentPos.x + " " + @mouse.currentPos.y)
@@ -145,6 +150,10 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         
         Spine.bind 'keyboard:67_up', =>
             @camera.toggleType()
+        
+        Spine.bind 'keyboard:49_up', =>
+            if @keyboard.isKeyDown("cmd")
+                @camera.toFrontView
 
         Spine.bind 'mouse:btn1_up', =>
             if @selectedMesh?
@@ -176,9 +185,9 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
                 intersects = ray.intersectObject( @cameraPlane )
                 #debugger
-                if intersects[0]? and intersects[0].father?
+                if intersects[0]? and intersects[0].placeholder==true
                     idx = intersects[0].idx
-                    intersects[0].father.geometry.vertices[idx].position.copy(intrsects[0].position)
+                    intersects[0].parent.geometry.vertices[idx].position.copy(intrsects[0].position)
                 if intersects[0]? 
                     newPoint = intersects[0].point.clone()
                     @selectedMesh.position.x = newPoint.x
@@ -234,7 +243,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             new THREE.Vector2(0,0)
         ]
 
-        color = 0x8866ff
+        #color = 0x8866ff
+        color = Math.random() * 0x666666
         x = 0
         y = 0
         z = 0
@@ -265,7 +275,7 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
         # // create the particle variables
         particles = new THREE.Geometry()
         pMaterial = new THREE.ParticleBasicMaterial({
-            color: 0x8866ff,
+            color: color,
             size: 10
         })
 
@@ -276,9 +286,11 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             particle.idx = i
             position = new THREE.Vector3(vertice.x,vertice.y,line.position.z)
 
-            sphereCollider = new THREE.SphereCollider(position, 10) # size = radius
+            ###
+            sphereCollider = #new THREE.SphereCollider(position, 10) # size = radius
             sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
-            THREE.Collisions.colliders.push(sphereCollider)
+            #THREE.Collisions.colliders.push(sphereCollider)
+            ###
             
             radius = 10
             segments = 4
@@ -286,12 +298,13 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             sphere = new THREE.Mesh(
                 new THREE.SphereGeometry(radius,segments,rings),
                 new THREE.MeshBasicMaterial({
-                    color: 0x53aabb
+                    color: color
                     opacity: 0.25
                     transparent: true
                     wireframe: true
                 })
             )
+            sphere.placeholder = true
             sphere.visible = false
             sphere.vertexIndex = i
             sphere.position.x = vertice.x
@@ -301,8 +314,8 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
             @linea.add(sphere)
 
             # registro le collisioni sulle sfere
-            mc = THREE.CollisionUtils.MeshColliderWBox(sphere)
-            THREE.Collisions.colliders.push(mc)
+            #mc = THREE.CollisionUtils.MeshColliderWBox(sphere)
+            #THREE.Collisions.colliders.push(mc)
             
         particleSystem = new THREE.ParticleSystem(
             particles,
@@ -313,8 +326,9 @@ class CC.views.draw.Stage3d extends CC.views.Abstract
 
 
         @material = new THREE.MeshLambertMaterial({
-            color: 0x8866ff
-            blending: 3
+            color: color
+            ambient: 0x444444
+            blending: 1
             shading: 1
         })
 

@@ -13,6 +13,15 @@ window.CC.views.gui.tools = {} # Classes that defined GUI widgets
 window.CC.controllers = {}
 window.CC.models = {}
 
+require.config({
+    baseUrl: "/assets/app"
+})
+
 # Startup dell'applicazione
 $(window).load ->
-    CC.mainController = new CC.controllers.Main()
+    
+    require(
+        ["controllers/Main"], 
+        (Main)->
+            CC.mainController = new Main()
+    )

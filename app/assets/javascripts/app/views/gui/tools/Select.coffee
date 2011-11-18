@@ -1,18 +1,22 @@
+define(
+    "views/gui/tools/Select",
+    ["views/gui/tools/AbstractTool"],
+    (AbstractTool)->
+        class Select extends AbstractTool
 
-class Select extends CC.views.gui.tools.AbstractTool
+            constructor:->
+                super()
 
-    constructor:->
-        super()
+            render:=>
+                html = "<div class='toolbarButton'>"
+                html += "<img src='/fugue-icons/icons/cursor.png' onclick='CC.views.gui.tools.Select.do()' />"
+                html += "</div>"
 
-    render:=>
-        html = "<div class='toolbarButton'>"
-        html += "<img src='/fugue-icons/icons/cursor.png' onclick='CC.views.gui.tools.Select.do()' />"
-        html += "</div>"
+                return html
 
-        return html
+            do:=>
+                CC.mainController.stage2d.activeTool = CC.mainController.stage2d.selectTool
 
-    do:=>
-        CC.mainController.stage2d.activeTool = CC.mainController.stage2d.selectTool
-
-# Singleton
-CC.views.gui.tools.Select = new Select()
+        # Singleton
+        CC.views.gui.tools.Select = new Select()
+)

@@ -1,352 +1,358 @@
-class CC.views.draw.Stage3d extends CC.views.Abstract
-    ###
-    This class represent the Stage area where all the elements are represented
-    ###
-    @rotationScale
-    @camera
-    @scene
-    @renderer
-    @geometry
-    @material
-    @mesh
-    @light
-    @ambientLight
-    @origin
-    @selectedMesh
 
-    constructor:(@glOrNot)->
-        super()
-        @rotationScale = 0.003
-        @zoomScale = 4
-        @zoom = 1
-        @lastvert =0
-        @offset = new THREE.Vector3()
-        
-        #@camera.toOrthographic()
-
-        # Create the real Scene
-        @scene = new THREE.Scene()
-        @projector = new THREE.Projector()
-        
-
-        @world = new THREE.Object3D()
-        @scene.add(@world)
-
-        # Setup camera
-        @camera = new CC.views.draw.Camera((window.innerWidth),(window.innerHeight-40),35, 1, 15000,1, 15000)
-        @camera.position.z = 1000 * @zoom
-        @scene.add(@camera)
-        #@camera.lookAt(@world)
-        #@mouse = new CC.views.draw.Mouse(@camera)
-        
-        # Add a light
-        @light1 = new THREE.SpotLight(0xFFFFFF,1.0,2.0)
-        @light1.position.set( 400, 300, 400 )
-        @scene.add( @light1 )
-
-        @light2 = new THREE.SpotLight(0xFFFFFF,0.6,2.0)
-        @light2.position.set( 400, 300, -600 )
-        @scene.add( @light2 )
-
-        @light3 = new THREE.SpotLight(0xFFFFFF,0.4,2.0)
-        @light3.position.set( -400, -300, -600 )
-        @scene.add( @light3 )
-
-        # Add ambient light
-        @ambientLight = new THREE.AmbientLight( 0xffffff )
-        @scene.add(@ambientLight)
-        
-        @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: true, wireframe: true } ) );
-        @cameraPlane.lookAt( @camera.position );
-        @cameraPlane.visible = false;
-        @scene.add(@cameraPlane)
-
-        # Setup a renderer
-        @canvas = document.createElement( 'canvas' )
-        $(@canvas).attr("id","canvas3d")
-        if glOrNot == "canvas"
-            @renderer =new THREE.CanvasRenderer({canvas:@canvas})
-        else if glOrNot == "svg"
-            @renderer =new THREE.SVGRenderer({canvas:@canvas})
-        else
-            @renderer = new THREE.WebGLRenderer({
-                antialias: true
-                canvas: @canvas
-                clearColor: 0x111188
-                clearAlpha: 0.2
-                maxLights: 4
-                #stencil: true
-                preserveDrawingBuffer: false
-                sortObjects:true
-            })
-            #@renderer.setFaceCulling("back","cw")
-        
-        @mouse = new CC.views.Mouse($(@canvas))
-        @keyboard = new CC.views.Keyboard()
-
-        @cameraController = new CC.views.CameraController(this)
-        @cameraController.movementSpeed = 75;
-        @cameraController.lookSpeed = 0.125;
-        @cameraController.lookVertical = false;
-        
-
-        # Define rendere size
-        @renderer.setSize( window.innerWidth, window.innerHeight-50 )
-        @renderer.shadowMapEnabled = true;
-        @renderer.shadowMapSoft = true;
-
-        @renderer.shadowCameraNear = 3;
-        @renderer.shadowCameraFar = @camera.far;
-        @renderer.shadowCameraFov = 50;
-
-        @renderer.shadowMapBias = 0.0039;
-        @renderer.shadowMapDarkness = 0.5;
-        @renderer.shadowMapWidth = 1024;
-        @renderer.shadowMapHeight = 1024;
-        # Add the element to the DOM
-        document.body.appendChild( @renderer.domElement )
-
-        # Handle mouse events
-        
-        @createGeom()
-        window.stage3d = this
-        
-        # Event listeners   
-        Spine.bind 'mouse:btn1_down', =>
-            unless window.keyboard.isAnyDown()
-                vector = new THREE.Vector3(
-                    @mouse.currentPos.stage3Dx
-                    @mouse.currentPos.stage3Dy
-                    0.5
-                )
-
-                #vector = new THREE.Vector3( @mouse.currentPos.x, @mouse.currentPos.y, 0.5 )
-                #console.log(vector.x + " " + vector.y)
-                @projector.unprojectVector(vector, @camera)
-                ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
-                #debugger
-                c = ray.intersectObject(@world)
-                #console.log c
-                #debugger
-                if c? and c.length>0
-                    if c[0].object? and c[0].object != @cameraPlane
-                        obj = c[0].object
-                        if @selectedMesh?
-                            @selectedMesh.material.color.setHex(0x53aabb)
-                        #debugger
-                        obj.material.color.setHex(0x0000bb)
-                        @selectedMesh = obj
-                        intersects = ray.intersectObject( @cameraPlane )
-                        @offset.copy( intersects[ 0 ].point ).subSelf( @cameraPlane.position )
-                    else
-                        @selectedMesh = null
-                else
-                    @selectedMesh = null
-        
-        Spine.bind 'keyboard:67_up', =>
-            @camera.toggleType()
-        
-        Spine.bind 'keyboard:49_up', =>
-            if @keyboard.isKeyDown("alt")
-                @camera.toFrontView()
-
-        Spine.bind 'mouse:btn1_up', =>
-            if @selectedMesh?
-                @selectedMesh.material.color.setHex(0x53aabb)
-
-        Spine.bind 'mouse:btn1_drag', =>
-            unless window.keyboard.isAnyDown()
-                if (!@selectedMesh and !@selectedParticle) || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
-                    return
-
-                if @selectedMesh?
-                    @cameraPlane.position.copy( @selectedMesh.position )
-
-                else if @selectedParticle?
-                    @cameraPlane.position.copy( @selectedParticle.position )
-                
-                vector = new THREE.Vector3(
-                    @mouse.currentPos.stage3Dx
-                    @mouse.currentPos.stage3Dy
-                    0.5
-                )
-
-                @projector.unprojectVector(vector, @camera)
-                ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
-
-                intersects = ray.intersectObject( @cameraPlane )
-                #debugger
-                if intersects[0]? and @selectedMesh.placeholder==true
-                    idx = intersects[0].idx
-                    intersects[0].object.position.copy(@selectedMesh.position)
-                #if intersects[0]?
-                    newPoint = intersects[0].point.clone()
-                    @selectedMesh.position.x = newPoint.x
-                    @selectedMesh.position.y = newPoint.y
-                    
-                    #Aggiorno la gemetria della linea
-                    index = @selectedMesh.vertexIndex
-                    
-                    # Dato che entrambe le linee usano lo stesso insieme di vertici modificandolo modifico entrambe
-                    @vertices
-                    @vertices[index].x = parseInt(@selectedMesh.position.x)
-                    @vertices[index].y = parseInt(@selectedMesh.position.y)
-                    console.log index+"/"+@vertices.length
-                                            
-                    if index == 0
-                        @vertices[0].x = parseInt(@selectedMesh.position.x)
-                        @vertices[0].y = parseInt(@selectedMesh.position.y)
-                        @vertices[@vertices.length-1].x = parseInt(@selectedMesh.position.x)
-                        @vertices[@vertices.length-1].y = parseInt(@selectedMesh.position.y)
-
-                        @linea.geometry.vertices[@vertices.length-2].position.x = parseInt(@selectedMesh.position.x)
-                        @linea.geometry.vertices[@vertices.length-2].position.y = parseInt(@selectedMesh.position.y)
-                    else if index == 1
-                        @linea.geometry.vertices[index-1].position.x = parseInt(@selectedMesh.position.x)
-                        @linea.geometry.vertices[index-1].position.y = parseInt(@selectedMesh.position.y)
-                        @linea.geometry.vertices[@vertices.length-1].position.x = parseInt(@selectedMesh.position.x)
-                        @linea.geometry.vertices[@vertices.length-1].position.y = parseInt(@selectedMesh.position.y)
-                    else
-                        @linea.geometry.vertices[index-1].position.x = parseInt(@selectedMesh.position.x)
-                        @linea.geometry.vertices[index-1].position.y = parseInt(@selectedMesh.position.y)
-                    #@linea.geometry.vertices[index-1].position.z = parseInt(@selectedMesh.position.z)
-
-                    # Forzo il ridisegno della gemetry http://aerotwist.com/lab/getting-started-with-three-js
-                    @linea.geometry.__dirtyVertices = true
-                    @linea.geometry.__dirtyNormals = true
-
-                    # Ridisegno la mesh con i nuovi punti
-                    #@linea.geometry.mergeVertices()
-                    #debugger
-                    shape = new THREE.Shape(@vertices)
-                    @world.remove(@mesh)
-                    @mesh = new THREE.Mesh(
-                        shape.extrude({
-                            amount:10,
-                            bevelEnabled:false,
-                            material: @material,
-                            extrudeMaterial: @material
-                        }),
-                        @material
-                    )
-                    @world.add(@mesh)
-    animate:=>
-        requestAnimFrame(@animate)
-        @render()
-
-    render:=>
-        @cameraController.update()
-        @cameraPlane.lookAt( @camera.position );
-        
-        @renderer.render(@scene,@camera)
-
-    createGeom:=>
-        @vertices =[
-            new THREE.Vector2(0,0)
-            new THREE.Vector2(0,100)
-            new THREE.Vector2(100,100)
-            new THREE.Vector2(100,0)
-            new THREE.Vector2(0,0)
-        ]
-
-        #color = 0x8866ff
-        color = Math.random() * 0x666666
-        x = 0
-        y = 0
-        z = 0
-        rx = 0
-        ry = 0
-        rz = 0
-        s = 1
-
-        shape = new THREE.Shape(@vertices)
-        points = shape.createPointsGeometry()
-
-        # Linea spessa
-        line = new THREE.Line(points, new THREE.LineBasicMaterial( { color: color, linewidth: 2 }))
-        line.position.set(x, y, z + 25)
-        line.rotation.set(rx, ry, rz)
-        line.scale.set(s, s, s)
-        @world.add(line)
-
-        # Linea con handlers
-        @linea = new THREE.Line(points, new THREE.LineBasicMaterial( { color: color, opacity: 0.5 }))
-        @linea.position.set(x, y, z + 75)
-        @linea.rotation.set(rx, ry, rz)
-        @linea.scale.set(s, s, s)
-        @linea.geometry.dynamic = true
-        @world.add(@linea)
-
-        # Handlers
-        # // create the particle variables
-        particles = new THREE.Geometry()
-        pMaterial = new THREE.ParticleBasicMaterial({
-            color: color,
-            size: 10
-        })
-
-        for vertice, i in @vertices
-            #particle = new THREE.Vertex(vertice)
-            #particles.vertices.push(particle)
-            #particle.father = line
-            #particle.idx = i
-            #position = new THREE.Vector3(vertice.x,vertice.y,line.position.z)
-
+define(
+    "views/draw/3D/Stage3d"
+    ["views/Abstract", "views/draw/Camera", "views/Mouse", "views/Keyboard", "views/CameraController"],
+    (Abstract, Camera, Mouse, Keyboard, CameraController)->
+        class CC.views.draw.Stage3d extends Abstract
             ###
-            sphereCollider = #new THREE.SphereCollider(position, 10) # size = radius
-            sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
-            #THREE.Collisions.colliders.push(sphereCollider)
+            This class represent the Stage area where all the elements are represented
             ###
-            if i < @vertices.length
-                radius = 10
-                segments = 4
-                rings = 4
-                sphere = new THREE.Mesh(
-                    new THREE.SphereGeometry(radius,segments,rings),
-                    new THREE.MeshBasicMaterial({
-                        color: color
-                        opacity: 0.25
-                        transparent: true
-                        wireframe: true
-                    })
-                )
-                sphere.placeholder = true
-                sphere.visible = false
-                sphere.vertexIndex = i
-                sphere.position.x = vertice.x
-                sphere.position.y = vertice.y
-                #sphere.castShadow = true;
-                #sphere.receiveShadow = true;
-                @linea.add(sphere)
-
-                # registro le collisioni sulle sfere
-                #mc = THREE.CollisionUtils.MeshColliderWBox(sphere)
-                #THREE.Collisions.colliders.push(mc)
-            
-        particleSystem = new THREE.ParticleSystem(
-            particles,
-            pMaterial
-        )
-
-        @linea.add(particleSystem)
-
-
-        @material = new THREE.MeshLambertMaterial({
-            color: color
-            ambient: 0x444444
-            blending: 1
-            shading: 1
-        })
-
-        @mesh = new THREE.Mesh(
-            shape.extrude({
-                amount:10,
-                bevelEnabled:false,
-                material: @material,
-                extrudeMaterial: @material
-            }),
+            @rotationScale
+            @camera
+            @scene
+            @renderer
+            @geometry
             @material
-        )
+            @mesh
+            @light
+            @ambientLight
+            @origin
+            @selectedMesh
+
+            constructor:(@glOrNot)->
+                super()
+                @rotationScale = 0.003
+                @zoomScale = 4
+                @zoom = 1
+                @lastvert =0
+                @offset = new THREE.Vector3()
+
+                #@camera.toOrthographic()
+
+                # Create the real Scene
+                @scene = new THREE.Scene()
+                @projector = new THREE.Projector()
 
 
-        @world.add( @mesh )
+                @world = new THREE.Object3D()
+                @scene.add(@world)
+
+                # Setup camera
+                @camera = new Camera((window.innerWidth),(window.innerHeight-40),35, 1, 15000,1, 15000)
+                @camera.position.z = 1000 * @zoom
+                @scene.add(@camera)
+                #@camera.lookAt(@world)
+                #@mouse = new CC.views.draw.Mouse(@camera)
+
+                # Add a light
+                @light1 = new THREE.SpotLight(0xFFFFFF,1.0,2.0)
+                @light1.position.set( 400, 300, 400 )
+                @scene.add( @light1 )
+
+                @light2 = new THREE.SpotLight(0xFFFFFF,0.6,2.0)
+                @light2.position.set( 400, 300, -600 )
+                @scene.add( @light2 )
+
+                @light3 = new THREE.SpotLight(0xFFFFFF,0.4,2.0)
+                @light3.position.set( -400, -300, -600 )
+                @scene.add( @light3 )
+
+                # Add ambient light
+                @ambientLight = new THREE.AmbientLight( 0xffffff )
+                @scene.add(@ambientLight)
+
+                @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: true, wireframe: true } ) );
+                @cameraPlane.lookAt( @camera.position );
+                @cameraPlane.visible = false;
+                @scene.add(@cameraPlane)
+
+                # Setup a renderer
+                @canvas = document.createElement( 'canvas' )
+                $(@canvas).attr("id","canvas3d")
+                if glOrNot == "canvas"
+                    @renderer =new THREE.CanvasRenderer({canvas:@canvas})
+                else if glOrNot == "svg"
+                    @renderer =new THREE.SVGRenderer({canvas:@canvas})
+                else
+                    @renderer = new THREE.WebGLRenderer({
+                        antialias: true
+                        canvas: @canvas
+                        clearColor: 0x111188
+                        clearAlpha: 0.2
+                        maxLights: 4
+                        #stencil: true
+                        preserveDrawingBuffer: false
+                        sortObjects:true
+                    })
+                    #@renderer.setFaceCulling("back","cw")
+
+                @mouse = new Mouse($(@canvas))
+                @keyboard = new Keyboard()
+
+                @cameraController = new CameraController(this)
+                @cameraController.movementSpeed = 75;
+                @cameraController.lookSpeed = 0.125;
+                @cameraController.lookVertical = false;
+
+
+                # Define rendere size
+                @renderer.setSize( window.innerWidth, window.innerHeight-50 )
+                @renderer.shadowMapEnabled = true;
+                @renderer.shadowMapSoft = true;
+
+                @renderer.shadowCameraNear = 3;
+                @renderer.shadowCameraFar = @camera.far;
+                @renderer.shadowCameraFov = 50;
+
+                @renderer.shadowMapBias = 0.0039;
+                @renderer.shadowMapDarkness = 0.5;
+                @renderer.shadowMapWidth = 1024;
+                @renderer.shadowMapHeight = 1024;
+                # Add the element to the DOM
+                document.body.appendChild( @renderer.domElement )
+
+                # Handle mouse events
+
+                @createGeom()
+                window.stage3d = this
+
+                # Event listeners   
+                Spine.bind 'mouse:btn1_down', =>
+                    unless window.keyboard.isAnyDown()
+                        vector = new THREE.Vector3(
+                            @mouse.currentPos.stage3Dx
+                            @mouse.currentPos.stage3Dy
+                            0.5
+                        )
+
+                        #vector = new THREE.Vector3( @mouse.currentPos.x, @mouse.currentPos.y, 0.5 )
+                        #console.log(vector.x + " " + vector.y)
+                        @projector.unprojectVector(vector, @camera)
+                        ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
+                        #debugger
+                        c = ray.intersectObject(@world)
+                        #console.log c
+                        #debugger
+                        if c? and c.length>0
+                            if c[0].object? and c[0].object != @cameraPlane
+                                obj = c[0].object
+                                if @selectedMesh?
+                                    @selectedMesh.material.color.setHex(0x53aabb)
+                                #debugger
+                                obj.material.color.setHex(0x0000bb)
+                                @selectedMesh = obj
+                                intersects = ray.intersectObject( @cameraPlane )
+                                @offset.copy( intersects[ 0 ].point ).subSelf( @cameraPlane.position )
+                            else
+                                @selectedMesh = null
+                        else
+                            @selectedMesh = null
+
+                Spine.bind 'keyboard:67_up', =>
+                    @camera.toggleType()
+
+                Spine.bind 'keyboard:49_up', =>
+                    if @keyboard.isKeyDown("alt")
+                        @camera.toFrontView()
+
+                Spine.bind 'mouse:btn1_up', =>
+                    if @selectedMesh?
+                        @selectedMesh.material.color.setHex(0x53aabb)
+
+                Spine.bind 'mouse:btn1_drag', =>
+                    unless window.keyboard.isAnyDown()
+                        if (!@selectedMesh and !@selectedParticle) || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
+                            return
+
+                        if @selectedMesh?
+                            @cameraPlane.position.copy( @selectedMesh.position )
+
+                        else if @selectedParticle?
+                            @cameraPlane.position.copy( @selectedParticle.position )
+
+                        vector = new THREE.Vector3(
+                            @mouse.currentPos.stage3Dx
+                            @mouse.currentPos.stage3Dy
+                            0.5
+                        )
+
+                        @projector.unprojectVector(vector, @camera)
+                        ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
+
+                        intersects = ray.intersectObject( @cameraPlane )
+                        #debugger
+                        if intersects[0]? and @selectedMesh.placeholder==true
+                            idx = intersects[0].idx
+                            intersects[0].object.position.copy(@selectedMesh.position)
+                        #if intersects[0]?
+                            newPoint = intersects[0].point.clone()
+                            @selectedMesh.position.x = newPoint.x
+                            @selectedMesh.position.y = newPoint.y
+
+                            #Aggiorno la gemetria della linea
+                            index = @selectedMesh.vertexIndex
+
+                            # Dato che entrambe le linee usano lo stesso insieme di vertici modificandolo modifico entrambe
+                            @vertices
+                            @vertices[index].x = parseInt(@selectedMesh.position.x)
+                            @vertices[index].y = parseInt(@selectedMesh.position.y)
+                            console.log index+"/"+@vertices.length
+
+                            if index == 0
+                                @vertices[0].x = parseInt(@selectedMesh.position.x)
+                                @vertices[0].y = parseInt(@selectedMesh.position.y)
+                                @vertices[@vertices.length-1].x = parseInt(@selectedMesh.position.x)
+                                @vertices[@vertices.length-1].y = parseInt(@selectedMesh.position.y)
+
+                                @linea.geometry.vertices[@vertices.length-2].position.x = parseInt(@selectedMesh.position.x)
+                                @linea.geometry.vertices[@vertices.length-2].position.y = parseInt(@selectedMesh.position.y)
+                            else if index == 1
+                                @linea.geometry.vertices[index-1].position.x = parseInt(@selectedMesh.position.x)
+                                @linea.geometry.vertices[index-1].position.y = parseInt(@selectedMesh.position.y)
+                                @linea.geometry.vertices[@vertices.length-1].position.x = parseInt(@selectedMesh.position.x)
+                                @linea.geometry.vertices[@vertices.length-1].position.y = parseInt(@selectedMesh.position.y)
+                            else
+                                @linea.geometry.vertices[index-1].position.x = parseInt(@selectedMesh.position.x)
+                                @linea.geometry.vertices[index-1].position.y = parseInt(@selectedMesh.position.y)
+                            #@linea.geometry.vertices[index-1].position.z = parseInt(@selectedMesh.position.z)
+
+                            # Forzo il ridisegno della gemetry http://aerotwist.com/lab/getting-started-with-three-js
+                            @linea.geometry.__dirtyVertices = true
+                            @linea.geometry.__dirtyNormals = true
+
+                            # Ridisegno la mesh con i nuovi punti
+                            #@linea.geometry.mergeVertices()
+                            #debugger
+                            shape = new THREE.Shape(@vertices)
+                            @world.remove(@mesh)
+                            @mesh = new THREE.Mesh(
+                                shape.extrude({
+                                    amount:10,
+                                    bevelEnabled:false,
+                                    material: @material,
+                                    extrudeMaterial: @material
+                                }),
+                                @material
+                            )
+                            @world.add(@mesh)
+            animate:=>
+                requestAnimFrame(@animate)
+                @render()
+
+            render:=>
+                @cameraController.update()
+                @cameraPlane.lookAt( @camera.position );
+
+                @renderer.render(@scene,@camera)
+
+            createGeom:=>
+                @vertices =[
+                    new THREE.Vector2(0,0)
+                    new THREE.Vector2(0,100)
+                    new THREE.Vector2(100,100)
+                    new THREE.Vector2(100,0)
+                    new THREE.Vector2(0,0)
+                ]
+
+                #color = 0x8866ff
+                color = Math.random() * 0x666666
+                x = 0
+                y = 0
+                z = 0
+                rx = 0
+                ry = 0
+                rz = 0
+                s = 1
+
+                shape = new THREE.Shape(@vertices)
+                points = shape.createPointsGeometry()
+
+                # Linea spessa
+                line = new THREE.Line(points, new THREE.LineBasicMaterial( { color: color, linewidth: 2 }))
+                line.position.set(x, y, z + 25)
+                line.rotation.set(rx, ry, rz)
+                line.scale.set(s, s, s)
+                @world.add(line)
+
+                # Linea con handlers
+                @linea = new THREE.Line(points, new THREE.LineBasicMaterial( { color: color, opacity: 0.5 }))
+                @linea.position.set(x, y, z + 75)
+                @linea.rotation.set(rx, ry, rz)
+                @linea.scale.set(s, s, s)
+                @linea.geometry.dynamic = true
+                @world.add(@linea)
+
+                # Handlers
+                # // create the particle variables
+                particles = new THREE.Geometry()
+                pMaterial = new THREE.ParticleBasicMaterial({
+                    color: color,
+                    size: 10
+                })
+
+                for vertice, i in @vertices
+                    #particle = new THREE.Vertex(vertice)
+                    #particles.vertices.push(particle)
+                    #particle.father = line
+                    #particle.idx = i
+                    #position = new THREE.Vector3(vertice.x,vertice.y,line.position.z)
+
+                    ###
+                    sphereCollider = #new THREE.SphereCollider(position, 10) # size = radius
+                    sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
+                    #THREE.Collisions.colliders.push(sphereCollider)
+                    ###
+                    if i < @vertices.length
+                        radius = 10
+                        segments = 4
+                        rings = 4
+                        sphere = new THREE.Mesh(
+                            new THREE.SphereGeometry(radius,segments,rings),
+                            new THREE.MeshBasicMaterial({
+                                color: color
+                                opacity: 0.25
+                                transparent: true
+                                wireframe: true
+                            })
+                        )
+                        sphere.placeholder = true
+                        sphere.visible = false
+                        sphere.vertexIndex = i
+                        sphere.position.x = vertice.x
+                        sphere.position.y = vertice.y
+                        #sphere.castShadow = true;
+                        #sphere.receiveShadow = true;
+                        @linea.add(sphere)
+
+                        # registro le collisioni sulle sfere
+                        #mc = THREE.CollisionUtils.MeshColliderWBox(sphere)
+                        #THREE.Collisions.colliders.push(mc)
+
+                particleSystem = new THREE.ParticleSystem(
+                    particles,
+                    pMaterial
+                )
+
+                @linea.add(particleSystem)
+
+
+                @material = new THREE.MeshLambertMaterial({
+                    color: color
+                    ambient: 0x444444
+                    blending: 1
+                    shading: 1
+                })
+
+                @mesh = new THREE.Mesh(
+                    shape.extrude({
+                        amount:10,
+                        bevelEnabled:false,
+                        material: @material,
+                        extrudeMaterial: @material
+                    }),
+                    @material
+                )
+
+
+                @world.add( @mesh )
+)

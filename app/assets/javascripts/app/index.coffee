@@ -1,6 +1,8 @@
 
+# File principale
 #= require ./main
 
+# Librerie
 #= require json2
 #= require jquery-tmpl
 #= require spine
@@ -8,10 +10,10 @@
 #= require spine/ajax
 #= require spine/tmpl
 #= require spine/route
-#
+#= require spine/route
 
-#= require_tree ./utils
-#= require_tree ./libs
-#= require_tree ./models
-#= require_tree ./controllers
-#= require_tree ./views
+# require_tree ./utils
+# require_tree ./libs
+# require_tree ./models
+# require_tree ./controllers
+# require_tree ./views

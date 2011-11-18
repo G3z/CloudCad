@@ -1,18 +1,22 @@
 
-class CC.views.gui.AbstractToolbar extends CC.views.gui.AbstractPanel
+define(
+    "views/gui/AbstractToolbar",
+    ['views/gui/AbstractPanel'],
+    (AbstractPanel)->
+        class CC.views.gui.AbstractToolbar extends AbstractPanel
 
-    ###
-    Toolbar
-    ###
+            ###
+            Toolbar
+            ###
 
-    constructor:(html)->
+            constructor:(html)->
 
-        id = "toolbar_" + new Date().getTime()
+                id = "toolbar_" + new Date().getTime()
 
-        topbar = "<div class='header' id='" + id + "'>"
-        topbar += "</div>"
+                topbar = "<div class='header' id='" + id + "'>"
+                topbar += "</div>"
 
-        html = topbar + html
+                html = topbar + html
 
-        super(html, id, "cc_toolbar")
-
+                super(html, id, "cc_toolbar")
+)

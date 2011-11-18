@@ -1,9 +1,14 @@
 
-class CC.views.gui.tools.AbstractTool
+define(
+    "views/gui/tools/AbstractTool"
+    ()->
+        class CC.views.gui.tools.AbstractTool
 
-    constructor:->
+            constructor:->
 
-    render:=>
+            render:=>
 
-    do:=>
+            do:=>
+)
+
 

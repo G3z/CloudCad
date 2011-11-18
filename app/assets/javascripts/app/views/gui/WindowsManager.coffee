@@ -1,31 +1,37 @@
 
-class WindowsManager extends CC.views.Abstract
+define(
+    "views/gui/WindowsManager"
+    ["views/Abstract"]
+    (Abstract)->
+        class WindowsManager extends Abstract
 
-    @windows
+            @windows
 
-    constructor:->
-        super()
-        @windows = {}
+            constructor:->
+                super()
+                @windows = {}
 
-    add:(id, windowElement)=>
-        @windows[id] = windowElement
-        $(document.body).append(windowElement)
-
-
-    hide:(id)=>
-        element = @windows[id]
-        if element
-            $(element).hide("slow")
-
-    close:(id)=>
-        element = @windows[id]
-        if element
-            $(element)
-                .fadeOut(300, (evt)->
-                    $(element).remove()
-                )
-            delete @windows[id]
+            add:(id, windowElement)=>
+                @windows[id] = windowElement
+                $(document.body).append(windowElement)
 
 
-# This class is a singleton
-CC.views.gui.WindowsManager = new WindowsManager()
+            hide:(id)=>
+                element = @windows[id]
+                if element
+                    $(element).hide("slow")
+
+            close:(id)=>
+                element = @windows[id]
+                if element
+                    $(element)
+                        .fadeOut(300, (evt)->
+                            $(element).remove()
+                        )
+                    delete @windows[id]
+
+
+        # This class is a singleton
+        CC.views.gui.WindowsManager = new WindowsManager()
+)
+

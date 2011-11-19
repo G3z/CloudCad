@@ -19,9 +19,8 @@ require.config({
 
 # Startup dell'applicazione
 $(window).load ->
-    
     require(
-        ["controllers/Main"], 
-        (Main)->
+        ["controllers/Main","utils/functions"], 
+        (Main,functions)->
             CC.mainController = new Main()
     )

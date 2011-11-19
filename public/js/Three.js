@@ -3461,63 +3461,30 @@ THREE.Geometry.prototype = {
 
 	},
 
-	computeFaceNormals: function ( useVertexNormals ) {
+	computeFaceNormals: function () {
 
 		var n, nl, v, vl, vertex, f, fl, face, vA, vB, vC,
 		cb = new THREE.Vector3(), ab = new THREE.Vector3();
-
-		/*
-		for ( v = 0, vl = this.vertices.length; v < vl; v ++ ) {
-
-			vertex = this.vertices[ v ];
-			vertex.normal.set( 0, 0, 0 );
-
-		}
-		*/
 
 		for ( f = 0, fl = this.faces.length; f < fl; f ++ ) {
 
 			face = this.faces[ f ];
 
-			if ( useVertexNormals && face.vertexNormals.length  ) {
+			vA = this.vertices[ face.a ];
+			vB = this.vertices[ face.b ];
+			vC = this.vertices[ face.c ];
 
-				cb.set( 0, 0, 0 );
+			cb.sub( vC.position, vB.position );
+			ab.sub( vA.position, vB.position );
+			cb.crossSelf( ab );
 
-				for ( n = 0, nl = face.vertexNormals.length; n < nl; n++ ) {
+			if ( !cb.isZero() ) {
 
-					cb.addSelf( face.vertexNormals[n] );
-
-				}
-
-				cb.divideScalar( 3 );
-
-				if ( ! cb.isZero() ) {
-
-					cb.normalize();
-
-				}
-
-				face.normal.copy( cb );
-
-			} else {
-
-				vA = this.vertices[ face.a ];
-				vB = this.vertices[ face.b ];
-				vC = this.vertices[ face.c ];
-
-				cb.sub( vC.position, vB.position );
-				ab.sub( vA.position, vB.position );
-				cb.crossSelf( ab );
-
-				if ( !cb.isZero() ) {
-
-					cb.normalize();
-
-				}
-
-				face.normal.copy( cb );
+				cb.normalize();
 
 			}
+
+			face.normal.copy( cb );
 
 		}
 
@@ -5472,7 +5439,7 @@ THREE.LOD.prototype.addLevel = function ( object3D, visibleAtDistance ) {
 
 	visibleAtDistance = Math.abs( visibleAtDistance );
 
-	for ( var l = 0; l < this.LODs.length; l++ ) {
+	for ( var l = 0; l < this.LODs.length; l ++ ) {
 
 		if ( visibleAtDistance < this.LODs[ l ].visibleAtDistance ) {
 
@@ -5494,7 +5461,6 @@ THREE.LOD.prototype.update = function ( camera ) {
 		camera.matrixWorldInverse.getInverse( camera.matrixWorld );
 
 		var inverse  = camera.matrixWorldInverse;
-		var radius   = this.boundRadius * this.boundRadiusScale;
 		var distance = -( inverse.n31 * this.position.x + inverse.n32 * this.position.y + inverse.n33 * this.position.z + inverse.n34 );
 
 		this.LODs[ 0 ].object3D.visible = true;
@@ -11978,12 +11944,6 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 		if ( this.autoUpdateObjects ) this.initWebGLObjects( scene );
 
-		if ( this.shadowMapEnabled && this.shadowMapAutoUpdate ) renderShadowMap( scene, camera );
-
-		_this.info.render.calls = 0;
-		_this.info.render.vertices = 0;
-		_this.info.render.faces = 0;
-
 		if ( camera.parent === undefined ) {
 
 			console.warn( 'DEPRECATED: Camera hasn\'t been added to a Scene. Adding it...' );
@@ -11992,6 +11952,12 @@ THREE.WebGLRenderer = function ( parameters ) {
 		}
 
 		if ( this.autoUpdateScene ) scene.updateMatrixWorld();
+
+		if ( this.shadowMapEnabled && this.shadowMapAutoUpdate ) renderShadowMap( scene, camera );
+
+		_this.info.render.calls = 0;
+		_this.info.render.vertices = 0;
+		_this.info.render.faces = 0;
 
 		camera.matrixWorldInverse.getInverse( camera.matrixWorld );
 		camera.matrixWorldInverse.flattenToArray( _viewMatrixArray );
@@ -12178,9 +12144,9 @@ THREE.WebGLRenderer = function ( parameters ) {
 					console.warn( "Camera is not on the Scene. Adding it..." );
 					scene.add( _cameraLight );
 
-				}
+					if ( this.autoUpdateScene ) scene.updateMatrixWorld();
 
-				if ( this.autoUpdateScene ) scene.updateMatrixWorld();
+				}
 
 				_cameraLight.matrixWorldInverse.getInverse( _cameraLight.matrixWorld );
 
@@ -15874,6 +15840,163 @@ THREE.SceneUtils = {
 		}
 
 		return group;
+
+	},
+
+	cloneObject: function ( source ) {
+
+		var object;
+
+		// subclass specific properties
+		// (must process in order from more specific subclasses to more abstract classes)
+
+		if ( source instanceof THREE.MorphAnimMesh ) {
+
+			object = new THREE.MorphAnimMesh( source.geometry, source.material );
+
+			object.duration = source.duration;
+			object.mirroredLoop = source.mirroredLoop;
+			object.time = source.time;
+
+			object.lastKeyframe = source.lastKeyframe;
+			object.currentKeyframe = source.currentKeyframe;
+
+			object.direction = source.direction;
+			object.directionBackwards = source.directionBackwards;
+
+		} else if ( source instanceof THREE.SkinnedMesh ) {
+
+			object = new THREE.SkinnedMesh( source.geometry, source.material );
+
+		} else if ( source instanceof THREE.Mesh ) {
+
+			object = new THREE.Mesh( source.geometry, source.material );
+
+		} else if ( source instanceof THREE.Line ) {
+
+			object = new THREE.Line( source.geometry, source.material, source.type );
+
+		} else if ( source instanceof THREE.Ribbon ) {
+
+			object = new THREE.Ribbon( source.geometry, source.material );
+
+		} else if ( source instanceof THREE.ParticleSystem ) {
+
+			object = new THREE.ParticleSystem( source.geometry, source.material );
+			object.sortParticles = source.sortParticles;
+
+		} else if ( source instanceof THREE.Particle ) {
+
+			object = new THREE.Particle( source.material );
+
+		} else if ( source instanceof THREE.Sprite ) {
+
+			object = new THREE.Sprite( {} );
+
+			object.color.copy( source.color );
+			object.map = source.map;
+			object.blending = source.blending;
+
+			object.useScreenCoordinates = source.useScreenCoordinates;
+			object.mergeWith3D = source.mergeWith3D;
+			object.affectedByDistance = source.affectedByDistance;
+			object.scaleByViewport = source.scaleByViewport;
+			object.alignment = source.alignment;
+
+			object.rotation3d.copy( source.rotation3d );
+			object.rotation = source.rotation;
+			object.opacity = source.opacity;
+
+			object.uvOffset.copy( source.uvOffset );
+			object.uvScale.copy( source.uvScale);
+
+		} else if ( source instanceof THREE.LOD ) {
+
+			object = new THREE.LOD();
+
+		} else if ( source instanceof THREE.MarchingCubes ) {
+
+			object = new THREE.MarchingCubes( source.resolution, source.material );
+			object.field.set( source.field );
+			object.isolation = source.isolation;
+
+		} else if ( source instanceof THREE.Object3D ) {
+
+			object = new THREE.Object3D();
+
+		}
+
+		// base class properties
+
+		object.parent = source.parent;
+
+		object.up.copy( source.up );
+
+		object.position.copy( source.position );
+
+		// because of Sprite madness
+
+		if ( object.rotation instanceof THREE.Vector3 )
+			object.rotation.copy( source.rotation );
+
+		object.eulerOrder = source.eulerOrder;
+
+		object.scale.copy( source.scale );
+
+		object.dynamic = source.dynamic;
+
+		object.doubleSided = source.doubleSided;
+		object.flipSided = source.flipSided;
+
+		object.renderDepth = source.renderDepth;
+
+		object.rotationAutoUpdate = source.rotationAutoUpdate;
+
+		object.matrix.copy( source.matrix );
+		object.matrixWorld.copy( source.matrixWorld );
+		object.matrixRotationWorld.copy( source.matrixRotationWorld );
+
+		object.matrixAutoUpdate = source.matrixAutoUpdate;
+		object.matrixWorldNeedsUpdate = source.matrixWorldNeedsUpdate;
+
+		object.quaternion.copy( source.quaternion );
+		object.useQuaternion = source.useQuaternion;
+
+		object.boundRadius = source.boundRadius;
+		object.boundRadiusScale = source.boundRadiusScale;
+
+		object.visible = source.visible;
+
+		object.castShadow = source.castShadow;
+		object.receiveShadow = source.receiveShadow;
+
+		object.frustumCulled = source.frustumCulled;
+
+		// children
+
+		for ( var i = 0; i < source.children.length; i ++ ) {
+
+			var child = THREE.SceneUtils.cloneObject( source.children[ i ] );
+			object.children[ i ] = child;
+
+			child.parent = object;
+
+		}
+
+		// LODs need to be patched separately to use cloned children
+
+		if ( source instanceof THREE.LOD ) {
+
+			for ( var i = 0; i < source.LODs.length; i ++ ) {
+
+				var lod = source.LODs[ i ];
+				object.LODs[ i ] = { visibleAtDistance: lod.visibleAtDistance, object3D: object.children[ i ] };
+
+			}
+
+		}
+
+		return object;
 
 	}
 
@@ -22110,7 +22233,7 @@ THREE.ExtrudeGeometry.__v6 = new THREE.Vector2();
  * @author oosmoxiecode
 
  * uvs are messed up in this one, and commented away for now. There is an ugly "seam" by the shared vertices
- * when it "wraps" around, that needs to be fixed. It?s because they share the first and the last vertices
+ * when it "wraps" around, that needs to be fixed. It´s because they share the first and the last vertices
  * so it draws the entire texture on the seam-faces, I think...
  */
 
@@ -22193,7 +22316,7 @@ THREE.IcosahedronGeometry = function ( subdivisions ) {
 	scope.faceVertexUvs[ 0 ] = tempScope.faceVertexUvs[ 0 ];
 
 	this.computeCentroids();
-	this.computeFaceNormals( true );
+	this.computeFaceNormals();
 
 	function v( x, y, z ) {
 
@@ -29923,19 +30046,19 @@ THREE.Axes.prototype.constructor = THREE.Axes;
  * http://webglsamples.googlecode.com/hg/blob/blob.html
  */
 
-// do not crash if somebody includes the file in oldie browser
-
-THREE.MarchingCubes = function ( resolution, materials ) {
+THREE.MarchingCubes = function ( resolution, material ) {
 
 	THREE.Object3D.call( this );
 
-	this.materials = materials instanceof Array ? materials : [ materials ];
+	this.material = material;
 
 	// functions have to be object properties
 	// prototype functions kill performance
 	// (tested and it was 4x slower !!!)
 
 	this.init = function( resolution ) {
+
+		this.resolution = resolution;
 
 		// parameters
 

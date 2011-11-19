@@ -1,4 +1,3 @@
-
 define(
     "views/Mouse",
     ["views/MouseButton", "views/MouseWheel"],

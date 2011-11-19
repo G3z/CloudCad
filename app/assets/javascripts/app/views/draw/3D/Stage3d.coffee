@@ -1,8 +1,7 @@
-
 define(
     "views/draw/3D/Stage3d"
-    ["views/Abstract", "views/draw/Camera", "views/Mouse", "views/Keyboard", "views/CameraController"],
-    (Abstract, Camera, Mouse, Keyboard, CameraController)->
+    ["views/Abstract", "views/draw/Camera", "views/Mouse", "views/Keyboard", "views/CameraController","views/draw/3D/primitives/Path3D"],
+    (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D)->
         class CC.views.draw.Stage3d extends Abstract
             ###
             This class represent the Stage area where all the elements are represented
@@ -26,13 +25,13 @@ define(
                 @zoom = 1
                 @lastvert =0
                 @offset = new THREE.Vector3()
-
+                
                 #@camera.toOrthographic()
 
                 # Create the real Scene
                 @scene = new THREE.Scene()
                 @projector = new THREE.Projector()
-
+                
 
                 @world = new THREE.Object3D()
                 @scene.add(@world)
@@ -43,7 +42,7 @@ define(
                 @scene.add(@camera)
                 #@camera.lookAt(@world)
                 #@mouse = new CC.views.draw.Mouse(@camera)
-
+                
                 # Add a light
                 @light1 = new THREE.SpotLight(0xFFFFFF,1.0,2.0)
                 @light1.position.set( 400, 300, 400 )
@@ -60,7 +59,7 @@ define(
                 # Add ambient light
                 @ambientLight = new THREE.AmbientLight( 0xffffff )
                 @scene.add(@ambientLight)
-
+                
                 @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: true, wireframe: true } ) );
                 @cameraPlane.lookAt( @camera.position );
                 @cameraPlane.visible = false;
@@ -85,7 +84,7 @@ define(
                         sortObjects:true
                     })
                     #@renderer.setFaceCulling("back","cw")
-
+                
                 @mouse = new Mouse($(@canvas))
                 @keyboard = new Keyboard()
 
@@ -93,7 +92,7 @@ define(
                 @cameraController.movementSpeed = 75;
                 @cameraController.lookSpeed = 0.125;
                 @cameraController.lookVertical = false;
-
+                
 
                 # Define rendere size
                 @renderer.setSize( window.innerWidth, window.innerHeight-50 )
@@ -112,10 +111,10 @@ define(
                 document.body.appendChild( @renderer.domElement )
 
                 # Handle mouse events
-
+                
                 @createGeom()
                 window.stage3d = this
-
+                
                 # Event listeners   
                 Spine.bind 'mouse:btn1_down', =>
                     unless window.keyboard.isAnyDown()
@@ -147,10 +146,10 @@ define(
                                 @selectedMesh = null
                         else
                             @selectedMesh = null
-
+                
                 Spine.bind 'keyboard:67_up', =>
                     @camera.toggleType()
-
+                
                 Spine.bind 'keyboard:49_up', =>
                     if @keyboard.isKeyDown("alt")
                         @camera.toFrontView()
@@ -169,7 +168,7 @@ define(
 
                         else if @selectedParticle?
                             @cameraPlane.position.copy( @selectedParticle.position )
-
+                        
                         vector = new THREE.Vector3(
                             @mouse.currentPos.stage3Dx
                             @mouse.currentPos.stage3Dy
@@ -188,16 +187,16 @@ define(
                             newPoint = intersects[0].point.clone()
                             @selectedMesh.position.x = newPoint.x
                             @selectedMesh.position.y = newPoint.y
-
+                            
                             #Aggiorno la gemetria della linea
                             index = @selectedMesh.vertexIndex
-
+                            
                             # Dato che entrambe le linee usano lo stesso insieme di vertici modificandolo modifico entrambe
                             @vertices
                             @vertices[index].x = parseInt(@selectedMesh.position.x)
                             @vertices[index].y = parseInt(@selectedMesh.position.y)
                             console.log index+"/"+@vertices.length
-
+                                                    
                             if index == 0
                                 @vertices[0].x = parseInt(@selectedMesh.position.x)
                                 @vertices[0].y = parseInt(@selectedMesh.position.y)
@@ -242,7 +241,7 @@ define(
             render:=>
                 @cameraController.update()
                 @cameraPlane.lookAt( @camera.position );
-
+                
                 @renderer.render(@scene,@camera)
 
             createGeom:=>
@@ -254,8 +253,8 @@ define(
                     new THREE.Vector2(0,0)
                 ]
 
-                #color = 0x8866ff
-                color = Math.random() * 0x666666
+                color = 0x8866ff
+                #color = Math.random() * 0x666666
                 x = 0
                 y = 0
                 z = 0
@@ -268,6 +267,12 @@ define(
                 points = shape.createPointsGeometry()
 
                 # Linea spessa
+                @linea = new Path3D({
+                    points: @vertices
+                }).ThreePath
+                @world.add(@linea)
+                
+                ###
                 line = new THREE.Line(points, new THREE.LineBasicMaterial( { color: color, linewidth: 2 }))
                 line.position.set(x, y, z + 25)
                 line.rotation.set(rx, ry, rz)
@@ -291,18 +296,17 @@ define(
                 })
 
                 for vertice, i in @vertices
-                    #particle = new THREE.Vertex(vertice)
-                    #particles.vertices.push(particle)
-                    #particle.father = line
-                    #particle.idx = i
-                    #position = new THREE.Vector3(vertice.x,vertice.y,line.position.z)
-
-                    ###
-                    sphereCollider = #new THREE.SphereCollider(position, 10) # size = radius
-                    sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
-                    #THREE.Collisions.colliders.push(sphereCollider)
-                    ###
                     if i < @vertices.length
+                        particle = new THREE.Vertex(vertice)
+                        particles.vertices.push(particle)
+                        particle.father = line
+                        particle.idx = i
+                        position = new THREE.Vector3(vertice.x,vertice.y,line.position.z)
+
+                        #sphereCollider = #new THREE.SphereCollider(position, 10) # size = radius
+                        #sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
+                        #THREE.Collisions.colliders.push(sphereCollider)
+                                    
                         radius = 10
                         segments = 4
                         rings = 4
@@ -327,7 +331,7 @@ define(
                         # registro le collisioni sulle sfere
                         #mc = THREE.CollisionUtils.MeshColliderWBox(sphere)
                         #THREE.Collisions.colliders.push(mc)
-
+                    
                 particleSystem = new THREE.ParticleSystem(
                     particles,
                     pMaterial
@@ -338,7 +342,7 @@ define(
 
                 @material = new THREE.MeshLambertMaterial({
                     color: color
-                    ambient: 0x444444
+                    ambient: 0x111111
                     blending: 1
                     shading: 1
                 })
@@ -355,4 +359,5 @@ define(
 
 
                 @world.add( @mesh )
+                ###
 )

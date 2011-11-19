@@ -1,8 +1,8 @@
 define(
-    "views/draw/3D/primitives/Point3D"
+    "views/draw/3D/primitives/Segment"
     ["views/draw/3D/primitives/Primitive","views/draw/3D/primitives/Path3D"],
     (Primitive,Path3D)->
-        class CC.views.draw.primitives.Point3D extends Primitive
+        class CC.views.draw.primitives.Segment extends Primitive
             @x
             @y
             @z

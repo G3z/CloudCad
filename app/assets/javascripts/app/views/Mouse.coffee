@@ -1,9 +1,9 @@
+### Mouse Class###
+# Mouse Class is used to filter events such as mousemove o mousedown and present them in a meaningfull way to the system
 define(
     "views/Mouse",
     ["views/MouseButton", "views/MouseWheel"],
     (MouseButton, MouseWheel)->
-        ### Mouse Class###
-        # Mouse Class is used to filter events such as mousemove o mousedown and present them in a meaningfull way to the system
         class CC.views.Mouse extends Spine.Module
             #### *constructor(`@canvas`)* method takes one argument
             #* the *canvas* that contains the render and in wich events are positioned

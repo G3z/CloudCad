@@ -1,12 +1,10 @@
-
+### MouseButton ###
+# MouseButton class is a simple class that represents the mouse button and his state  
+# this class has no methods it just contains the coordinates to register various events
 define(
     "views/MouseButton",
     ()->
         class CC.views.MouseButton
-
-            ###
-            Represent the Mouse Button state
-            ###
 
             constructor:->
                 @down = false

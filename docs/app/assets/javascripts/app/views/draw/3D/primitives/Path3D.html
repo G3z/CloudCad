@@ -1,0 +1,261 @@
+<!DOCTYPE html><html><head><title>Path3D.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../../../../../../../../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../../../../../../../../readme.html" class="source"><span class="file_name">README</span></a><a href="../../../../../../../../app/assets/javascripts/app/controllers/Abstract.html" class="source "><span class="base_path">app / assets / javascripts / app / controllers / </span><span class="file_name">Abstract.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/controllers/CommandExecutor.html" class="source "><span class="base_path">app / assets / javascripts / app / controllers / </span><span class="file_name">CommandExecutor.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/controllers/Main.html" class="source "><span class="base_path">app / assets / javascripts / app / controllers / </span><span class="file_name">Main.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/index.html" class="source "><span class="base_path">app / assets / javascripts / app / </span><span class="file_name">index.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/main.html" class="source "><span class="base_path">app / assets / javascripts / app / </span><span class="file_name">main.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/models/Abstract.html" class="source "><span class="base_path">app / assets / javascripts / app / models / </span><span class="file_name">Abstract.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/models/Project.html" class="source "><span class="base_path">app / assets / javascripts / app / models / </span><span class="file_name">Project.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/utils/functions.html" class="source "><span class="base_path">app / assets / javascripts / app / utils / </span><span class="file_name">functions.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/Abstract.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">Abstract.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/Camera.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">Camera.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/CameraController.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">CameraController.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/2D/primitives/AbstractPrimitives.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / primitives / </span><span class="file_name">AbstractPrimitives.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/2D/primitives/Line.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / primitives / </span><span class="file_name">Line.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/2D/primitives/Path.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / primitives / </span><span class="file_name">Path.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/2D/primitives/Point2D.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / primitives / </span><span class="file_name">Point2D.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/2D/Stage2d.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / </span><span class="file_name">Stage2d.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/2D/Tool2D.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / </span><span class="file_name">Tool2D.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/2D/tools/PathTool.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / tools / </span><span class="file_name">PathTool.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/2D/tools/SelectTool.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / tools / </span><span class="file_name">SelectTool.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/3D/primitives/Path3D.html" class="source selected"><span class="base_path">app / assets / javascripts / app / views / draw / 3D / primitives / </span><span class="file_name">Path3D.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/3D/primitives/Plane3D.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 3D / primitives / </span><span class="file_name">Plane3D.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/3D/primitives/Point3D.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 3D / primitives / </span><span class="file_name">Point3D.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/3D/primitives/Primitive.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 3D / primitives / </span><span class="file_name">Primitive.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/3D/primitives/Segment.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 3D / primitives / </span><span class="file_name">Segment.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/3D/Stage3d.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 3D / </span><span class="file_name">Stage3d.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/Camera.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / </span><span class="file_name">Camera.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/DisplayObject.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / </span><span class="file_name">DisplayObject.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/Edge.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / </span><span class="file_name">Edge.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/draw/Point.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / </span><span class="file_name">Point.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/gui/AbstractPanel.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / </span><span class="file_name">AbstractPanel.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/gui/AbstractToolbar.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / </span><span class="file_name">AbstractToolbar.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/gui/MainToolbar.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / </span><span class="file_name">MainToolbar.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/gui/tools/AbstractTool.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / tools / </span><span class="file_name">AbstractTool.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/gui/tools/Path.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / tools / </span><span class="file_name">Path.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/gui/tools/Select.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / tools / </span><span class="file_name">Select.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/gui/TopBar.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / </span><span class="file_name">TopBar.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/gui/Window.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / </span><span class="file_name">Window.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/gui/WindowsManager.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / </span><span class="file_name">WindowsManager.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/Keyboard.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">Keyboard.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/Mouse.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">Mouse.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/MouseButton.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">MouseButton.coffee</span></a><a href="../../../../../../../../app/assets/javascripts/app/views/MouseWheel.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">MouseWheel.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>Path3D.coffee</h1><div class="filepath">app/assets/javascripts/app/views/draw/3D/primitives/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><h2>Path3D Class</h2>
+
+<p>Path3d Class combines Three.js path and shape classes providing an object that is editable under mouse interaction and that easily convertible into a solid shape</p>
+</td><td class="code"><div class="highlight"><pre><span class="nx">define</span><span class="p">(</span>
+    <span class="s">&quot;views/draw/3D/primitives/Path3D&quot;</span>
+    <span class="p">[</span><span class="s">&quot;views/draw/3D/primitives/Primitive&quot;</span><span class="p">,</span><span class="s">&quot;views/draw/3D/primitives/Point3D&quot;</span><span class="p">,</span><span class="s">&quot;views/draw/3D/primitives/Segment&quot;</span><span class="p">],</span>
+    <span class="nf">(Primitive,Point3D,Segment)-&gt;</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><h2>Path3d Class</h2>
+
+<p>Path3d is a class that is used to draw closed path in the system</p>
+</td><td class="code"><div class="highlight"><pre>        <span class="k">class</span> <span class="nx">CC</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">draw</span><span class="p">.</span><span class="nx">primitives</span><span class="p">.</span><span class="nx">Path3D</span> <span class="k">extends</span> <span class="nx">Primitive</span>
+            <span class="nx">@ThreePath</span>
+            <span class="nx">@points</span>
+            <span class="nx">@segments</span>
+            <span class="nx">@plane</span>
+            <span class="nx">@lastPoint</span>
+            <span class="nx">@selectedPoint</span>
+            <span class="nx">@selectedSegment</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><h3><em>constructor(<code>attr</code>)</em> method takes one argument</h3>
+
+<ul>
+<li>the <em>attr</em> object that cointains various options <br />
+currently these options are supported  </li>
+<li><code>color</code>: (the color of the path and of the extruded mesh)</li>
+<li><code>threePath</code>: (an existing THREE.Path to be converted to Path3D)</li>
+<li><code>points</code>: (an array of points representig the points of the path)</li>
+<li><code>name</code>: (a name for the object, useful for yet to be implemented object referencing)</li>
+<li><code>start</code>: a single point where the path is starting</li>
+</ul>
+
+<p><code>@currentPos</code> object is created to contain <code>x</code> and <code>y</code> in pixel position form canvas top-left corner
+and <code>stage3Dx</code> and <code>srage3Dy</code> in 0.0 to 1.0 position form canvas center <br />
+<a href="MouseButton.html"><code>MouseButton</code></a> instances are created <br />
+<a href="MouseButton.html"><code>MouseWheel</code></a> is created <br />
+<code>contextmenu</code>, <code>mousemove</code>,<code>mousedown</code>,<code>mouseup</code> and <code>mousewheel</code> events are linked to the related methods using jQuery </p>
+</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">constructor</span><span class="o">:</span><span class="nf">(attr)-&gt;</span>
+                <span class="k">super</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="nx">attr</span><span class="o">?</span><span class="p">.</span><span class="nx">color</span><span class="o">?</span>
+                    <span class="vi">@color = </span><span class="nx">attr</span><span class="p">.</span><span class="nx">color</span>
+                <span class="k">else</span>
+                    <span class="vi">@color = </span><span class="mh">0x8866ff</span>
+
+                <span class="k">if</span> <span class="nx">attr</span><span class="o">?</span><span class="p">.</span><span class="nx">threePath</span><span class="o">?</span>
+                    <span class="vi">@ThreePath = </span><span class="nx">attr</span><span class="p">.</span><span class="nx">threePath</span> 
+                <span class="k">else</span>
+                    <span class="k">if</span> <span class="nx">attr</span><span class="o">?</span><span class="p">.</span><span class="nx">points</span><span class="o">?</span>
+                        <span class="vi">@ThreePath = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span>
+                            <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">CurvePath</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">createGeometry</span><span class="p">(</span><span class="nx">attr</span><span class="p">.</span><span class="nx">points</span><span class="p">),</span>
+                            <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">LineBasicMaterial</span><span class="p">({</span> 
+                                <span class="nv">color: </span><span class="nx">@color</span>
+                                <span class="nv">linewidth: </span><span class="mi">2</span> 
+                            <span class="p">})</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span>
+                        <span class="vi">@ThreePath = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span>
+                            <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">CurvePath</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">createGeometry</span><span class="p">([]),</span>
+                            <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">LineBasicMaterial</span><span class="p">(</span> <span class="p">{</span>
+                                <span class="nv">color: </span><span class="nx">@color</span>
+                                <span class="nv">linewidth: </span><span class="mi">2</span>
+                            <span class="p">})</span>
+                        <span class="p">)</span>
+                <span class="k">if</span> <span class="nx">attr</span><span class="o">?</span><span class="p">.</span><span class="nx">points</span><span class="o">?</span>
+                    <span class="vi">@points = </span><span class="nx">attr</span><span class="p">.</span><span class="nx">points</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>for point in attr.points
+   @add(point)
+@rearrangePoints()</p>
+</td><td class="code"><div class="highlight"><pre>                <span class="k">else</span>
+                    <span class="vi">@points = </span><span class="p">[]</span>    
+                
+                <span class="k">if</span> <span class="nx">attr</span><span class="o">?</span><span class="p">.</span><span class="nx">name</span><span class="o">?</span>
+                    <span class="vi">@paperPath.name = @name = </span><span class="nx">attr</span><span class="p">.</span><span class="nx">name</span>
+
+                <span class="k">if</span> <span class="nx">attr</span><span class="o">?</span> <span class="o">&amp;&amp;</span> <span class="nx">@validatePoint</span><span class="p">(</span><span class="nx">attr</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">false</span>
+                    <span class="nx">@start</span><span class="p">(</span><span class="nx">@validatePoint</span><span class="p">(</span><span class="nx">attr</span><span class="p">))</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="nx">attr</span><span class="o">?</span><span class="p">.</span><span class="nx">start</span><span class="o">?</span> <span class="o">and</span> <span class="nx">@validatePoint</span><span class="p">(</span><span class="nx">attr</span><span class="p">.</span><span class="nx">start</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">false</span>
+                    <span class="nx">@start</span><span class="p">(</span><span class="nx">@validatePoint</span><span class="p">(</span><span class="nx">attr</span><span class="p">.</span><span class="nx">start</span><span class="p">))</span>
+                
+                <span class="vi">@particles = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Geometry</span><span class="p">()</span>
+                <span class="nv">pMaterial = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">ParticleBasicMaterial</span><span class="p">({</span>
+                    <span class="nv">color: </span><span class="nx">@color</span><span class="p">,</span>
+                    <span class="nv">size: </span><span class="mi">10</span>
+                <span class="p">})</span>
+                <span class="k">for</span> <span class="nx">vertice</span><span class="p">,</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">@points</span>
+                    <span class="k">if</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">@points</span><span class="p">.</span><span class="nx">length</span>
+                        <span class="nv">particle = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Vertex</span><span class="p">(</span><span class="nx">vertice</span><span class="p">)</span>
+                        <span class="nx">@particles</span><span class="p">.</span><span class="nx">vertices</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">particle</span><span class="p">)</span>
+                        <span class="nv">particle.father = </span><span class="nx">@ThreePath</span>
+                        <span class="nv">particle.idx = </span><span class="nx">i</span>
+                        <span class="nv">position = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">(</span><span class="nx">vertice</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span><span class="nx">vertice</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span><span class="nx">@ThreePath</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span><span class="p">)</span>
+
+                        <span class="nv">radius = </span><span class="mi">10</span>
+                        <span class="nv">segments = </span><span class="mi">4</span>
+                        <span class="nv">rings = </span><span class="mi">4</span>
+                        <span class="nv">sphere = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Mesh</span><span class="p">(</span>
+                            <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">SphereGeometry</span><span class="p">(</span><span class="nx">radius</span><span class="p">,</span><span class="nx">segments</span><span class="p">,</span><span class="nx">rings</span><span class="p">),</span>
+                            <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshBasicMaterial</span><span class="p">({</span>
+                                <span class="nv">color: </span><span class="nx">@color</span>
+                                <span class="nv">opacity: </span><span class="mf">0.25</span>
+                                <span class="nv">transparent: </span><span class="kc">true</span>
+                                <span class="nv">wireframe: </span><span class="kc">true</span>
+                            <span class="p">})</span>
+                        <span class="p">)</span>
+                        <span class="nv">sphere.placeholder = </span><span class="kc">true</span>
+                        <span class="nv">sphere.visible = </span><span class="kc">false</span>
+                        <span class="nv">sphere.vertexIndex = </span><span class="nx">i</span>
+                        <span class="nv">sphere.position.x = </span><span class="nx">vertice</span><span class="p">.</span><span class="nx">x</span>
+                        <span class="nv">sphere.position.y = </span><span class="nx">vertice</span><span class="p">.</span><span class="nx">y</span>
+                        
+                        <span class="nx">@ThreePath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">sphere</span><span class="p">)</span>
+
+                <span class="nv">particleSystem = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">ParticleSystem</span><span class="p">(</span>
+                    <span class="nx">@particles</span><span class="p">,</span>
+                    <span class="nx">pMaterial</span>
+                <span class="p">)</span>
+                <span class="nx">@ThreePath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">particleSystem</span><span class="p">)</span>
+            
+            <span class="nx">update</span><span class="o">:=&gt;</span>
+                <span class="vi">@lastPoint = </span><span class="nx">@point</span><span class="p">(</span><span class="s">&quot;last&quot;</span><span class="p">)</span>
+                <span class="vi">@threePath.geometry.__dirtyVertices = </span><span class="kc">true</span>
+                <span class="vi">@threePath.geometry.__dirtyNormals = </span><span class="kc">true</span>
+
+            <span class="n-Method">start</span><span class="o">:</span><span class="nf">(point)=&gt;</span>
+                <span class="nv">point = </span><span class="nx">@validatePoint</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nx">point</span>
+                    <span class="nv">point.idx = </span><span class="nx">@points</span><span class="p">.</span><span class="nx">length</span>
+                    <span class="nv">point.father = </span><span class="k">this</span>
+                    <span class="nx">@points</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
+                    <span class="nx">@threePath</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
+
+            <span class="n-Method">add</span><span class="o">:</span><span class="nf">(point)=&gt;</span>
+                <span class="nv">point = </span><span class="nx">@validatePoint</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nx">point</span>
+                    <span class="nv">point.idx = </span><span class="nx">@points</span><span class="p">.</span><span class="nx">length</span>
+                    <span class="nv">point.father = </span><span class="k">this</span>
+                    <span class="nx">@points</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nx">@points</span><span class="p">.</span><span class="nx">length</span><span class="o">&gt;</span><span class="mi">0</span>
+                        <span class="nx">@threePath</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
+                    <span class="k">else</span>
+                        <span class="nx">@threePath</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
+
+            <span class="n-Method">insert</span><span class="o">:</span><span class="nf">(idx,point)=&gt;</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><h1>#</h1>
+
+<p>debugger</p>
+</td><td class="code"><div class="highlight"><pre>                <span class="nv">split = </span><span class="nx">idx</span>
+                <span class="nx">idx</span><span class="o">++</span>
+
+                <span class="k">if</span> <span class="nx">@validatePoint</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
+                    <span class="nv">point.father = </span><span class="k">this</span>
+                    <span class="nv">point.idx = </span><span class="nx">idx</span>
+                    <span class="nv">points_before = </span><span class="nx">@points</span><span class="p">[</span><span class="mi">0</span><span class="p">..</span><span class="nx">split</span><span class="p">]</span>
+                    <span class="nx">points_before</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
+                    <span class="nv">points_after = </span><span class="nx">@points</span><span class="p">[</span><span class="nx">idx</span><span class="p">..</span><span class="nx">@points</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="vi">@points = </span><span class="nx">points_before</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">points_after</span><span class="p">)</span>
+                    <span class="nx">@paperPath</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="nx">idx</span><span class="p">,</span><span class="nx">point</span><span class="p">)</span>
+                    <span class="nx">@rearrangePoints</span><span class="p">()</span>
+                    <span class="nx">@update</span><span class="p">()</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">remove</span><span class="o">:</span><span class="nf">(el)=&gt;</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>                <span class="k">if</span> <span class="nx">el</span> <span class="k">instanceof</span> <span class="nx">Point3D</span>
+                    <span class="nx">@removePoint</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="nx">el</span> <span class="k">instanceof</span> <span class="nx">Segment</span>
+                    <span class="nx">@removeSegment</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">removePoint</span><span class="o">:</span><span class="nf">(point)=&gt;</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>                <span class="nx">@points</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span> <span class="k">if</span> <span class="nx">point</span> <span class="k">in</span> <span class="nx">@points</span>
+                <span class="nx">@paperPath</span><span class="p">.</span><span class="nx">removeSegment</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">idx</span><span class="p">)</span>
+                <span class="nx">@rearrangePoints</span><span class="p">()</span></pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a href="#section-10" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">move</span><span class="o">:</span><span class="nf">(el,newPos)=&gt;</span>
+                <span class="k">if</span> <span class="nx">el</span> <span class="k">instanceof</span> <span class="nx">Point3D</span>
+                    <span class="nx">@movePoint</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span><span class="nx">newPos</span><span class="p">)</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="nx">el</span> <span class="k">instanceof</span> <span class="nx">Segment</span>
+                    <span class="nx">@moveSegment</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span><span class="nx">newPos</span><span class="p">)</span>
+
+            <span class="n-Method">movePoint</span><span class="o">:</span><span class="nf">(point,newPoint)=&gt;</span>
+                <span class="nx">point</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">newPoint</span><span class="p">)</span>
+                <span class="nx">@update</span><span class="p">()</span>
+
+            <span class="n-Method">moveSegment</span><span class="o">:</span><span class="nf">(el,newPos)=&gt;</span>
+
+            <span class="n-Method">point</span><span class="o">:</span><span class="nf">(selector)=&gt;</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>                <span class="nx">unless</span> <span class="nx">selector</span><span class="o">?</span>
+                    <span class="k">return</span> <span class="kc">null</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="nx">selector</span> <span class="o">==</span> <span class="s">&quot;last&quot;</span>
+                    <span class="k">return</span> <span class="nx">@points</span><span class="p">[</span><span class="nx">@points</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="nx">selector</span> <span class="o">==</span> <span class="s">&quot;first&quot;</span>
+                    <span class="k">return</span> <span class="nx">@points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="nx">selector</span> <span class="o">==</span> <span class="s">&quot;selected&quot;</span>
+                    <span class="k">return</span> <span class="nx">@points</span><span class="p">[</span><span class="nx">@selectedPoint</span><span class="p">]</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="k">typeof</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;number&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">selector</span> <span class="o">&lt;</span> <span class="nx">@points</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span> <span class="nx">selector</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
+                    <span class="k">return</span> <span class="nx">@points</span><span class="p">[</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">selector</span><span class="p">)]</span></pre></div></td></tr><tr id="section-12"><td class="docs"><div class="pilwrap"><a href="#section-12" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>            
+            <span class="n-Method">pointNear</span><span class="o">:</span><span class="nf">(point,tollerance)=&gt;</span></pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>                <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@segments</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="nx">@paperPath</span><span class="p">.</span><span class="nx">segments</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">point</span><span class="p">.</span><span class="nx">isClose</span><span class="p">(</span><span class="nx">point</span><span class="p">,</span><span class="nx">tollerance</span><span class="p">)</span>
+                        <span class="vi">@selectedPoint = </span><span class="nx">i</span>
+                        <span class="k">return</span> <span class="nx">@selectedPoint</span>
+                <span class="k">return</span> <span class="kc">null</span></pre></div></td></tr><tr id="section-14"><td class="docs"><div class="pilwrap"><a href="#section-14" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>            
+            <span class="n-Method">segmentNear</span><span class="o">:</span><span class="nf">(point,tollerance)=&gt;</span></pre></div></td></tr><tr id="section-15"><td class="docs"><div class="pilwrap"><a href="#section-15" class="pilcrow">&#182;</a></div><h1>#</h1>
+
+<p>debugger</p>
+</td><td class="code"><div class="highlight"><pre>                <span class="nv">nearPoint = </span><span class="nx">@paperPath</span><span class="p">.</span><span class="nx">getNearestPoint</span><span class="p">(</span><span class="k">new</span> <span class="nx">paper</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">))</span>
+                <span class="nv">circle = </span><span class="k">new</span> <span class="nx">paper</span><span class="p">.</span><span class="nx">Path</span><span class="p">.</span><span class="nx">Circle</span><span class="p">(</span><span class="nx">nearPoint</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                <span class="nx">@update</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nx">nearPoint</span><span class="p">.</span><span class="nx">isClose</span><span class="p">(</span><span class="nx">point</span><span class="p">,</span><span class="nx">tollerance</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="nx">segment</span> <span class="k">in</span> <span class="nx">@paperPath</span><span class="p">.</span><span class="nx">segments</span>
+                        <span class="nv">start = </span><span class="nx">segment</span><span class="p">.</span><span class="nx">point</span>
+                        <span class="k">if</span> <span class="nx">segment</span><span class="p">.</span><span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">@paperPath</span><span class="p">.</span><span class="nx">segments</span><span class="p">.</span><span class="nx">length</span>
+                            <span class="nv">end = </span><span class="nx">segment</span><span class="p">.</span><span class="nx">next</span><span class="p">.</span><span class="nx">point</span>
+                        <span class="k">else</span>
+                            <span class="nv">end = </span><span class="nx">@paperPath</span><span class="p">.</span><span class="nx">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">point</span>
+                        <span class="nv">crossproduct = </span><span class="p">(</span><span class="nx">nearPoint</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="nx">nearPoint</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span>
+                        <span class="nv">dotproduct = </span><span class="p">(</span><span class="nx">nearPoint</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">nearPoint</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span>
+                        <span class="nv">squaredlengthba = </span><span class="p">(</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">crossproduct</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.000001</span> <span class="o">&amp;&amp;</span> <span class="nx">dotproduct</span> <span class="o">&lt;=</span> <span class="nx">squaredlengthba</span> <span class="o">&amp;&amp;</span> <span class="nx">dotproduct</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+                            <span class="k">return</span> <span class="nx">segment</span><span class="p">.</span><span class="nx">index</span>
+
+                <span class="k">else</span>
+                    <span class="kc">false</span></pre></div></td></tr><tr id="section-16"><td class="docs"><div class="pilwrap"><a href="#section-16" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">selected</span><span class="o">:</span><span class="nf">(activate)=&gt;</span></pre></div></td></tr><tr id="section-17"><td class="docs"><div class="pilwrap"><a href="#section-17" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>                <span class="nx">unless</span> <span class="nx">activate</span>
+                    <span class="vi">@paperPath.selected = </span><span class="kc">false</span>
+                <span class="k">else</span>
+                    <span class="vi">@paperPath.selected = </span><span class="kc">true</span></pre></div></td></tr><tr id="section-18"><td class="docs"><div class="pilwrap"><a href="#section-18" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">extrude</span><span class="o">:</span><span class="nf">(value)=&gt;</span>
+                <span class="vi">@ThreePath.visible = </span><span class="kc">false</span>
+                <span class="nv">shape = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Shape</span><span class="p">(</span><span class="nx">@points</span><span class="p">)</span>
+                <span class="nv">material = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshLambertMaterial</span><span class="p">({</span>
+                    <span class="nv">color: </span><span class="nx">@color</span>
+                    <span class="nv">ambient: </span><span class="mh">0x111111</span>
+                    <span class="nv">blending: </span><span class="mi">1</span>
+                    <span class="nv">shading: </span><span class="mi">1</span>
+                <span class="p">})</span>
+                <span class="k">return</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Mesh</span><span class="p">(</span>
+                    <span class="nx">shape</span><span class="p">.</span><span class="nx">extrude</span><span class="p">({</span>
+                        <span class="nx">amount</span><span class="o">:</span><span class="nx">value</span><span class="p">,</span>
+                        <span class="nx">bevelEnabled</span><span class="o">:</span><span class="kc">false</span><span class="p">,</span>
+                        <span class="nv">material: </span><span class="nx">material</span><span class="p">,</span>
+                        <span class="nv">extrudeMaterial: </span><span class="nx">material</span>
+                    <span class="p">}),</span>
+                    <span class="nx">material</span>
+                <span class="p">)</span>
+
+            <span class="n-Method">validatePoint</span><span class="o">:</span><span class="nf">(point)=&gt;</span>
+                <span class="k">if</span> <span class="nx">point</span> <span class="k">instanceof</span> <span class="nb">Array</span>
+                    <span class="k">if</span> <span class="nx">point</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">2</span>
+                        <span class="k">if</span> <span class="nx">@name</span><span class="o">?</span>
+                            <span class="k">return</span> <span class="nv">point = </span><span class="k">new</span> <span class="nx">Point3D</span><span class="p">(</span><span class="nx">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="nx">point</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="nx">name</span> <span class="o">+</span> <span class="nx">points</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span><span class="k">this</span><span class="p">)</span> 
+                        <span class="k">else</span>
+                            <span class="k">return</span> <span class="nv">point = </span><span class="k">new</span> <span class="nx">Point3D</span><span class="p">(</span><span class="nx">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="nx">point</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="kc">null</span><span class="p">,</span><span class="k">this</span><span class="p">)</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="nx">point</span> <span class="k">instanceof</span> <span class="nx">Point3D</span>
+                    <span class="k">return</span> <span class="nx">point</span>
+                <span class="k">else</span>
+                    <span class="k">return</span> <span class="kc">false</span>
+
+            <span class="nx">rearrangePoints</span><span class="o">:=&gt;</span>
+                <span class="nx">i</span><span class="o">=</span><span class="mi">0</span>
+                <span class="k">for</span> <span class="nx">point</span> <span class="k">in</span> <span class="nx">@points</span>    
+                    <span class="nv">point.idx = </span><span class="nx">i</span> 
+                    <span class="nx">i</span><span class="o">++</span>
+<span class="p">)</span>
+            
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Sat Nov 19 2011 18:20:11 GMT+0100 (CET)  </div><div id="projectname"><a href="../../../../../../../../readme.html">CloudCad</a></div></div></body></html>

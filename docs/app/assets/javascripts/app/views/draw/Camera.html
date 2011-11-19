@@ -1,0 +1,133 @@
+<!DOCTYPE html><html><head><title>Camera.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../../../../../../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../../../../../../readme.html" class="source"><span class="file_name">README</span></a><a href="../../../../../../app/assets/javascripts/app/controllers/Abstract.html" class="source "><span class="base_path">app / assets / javascripts / app / controllers / </span><span class="file_name">Abstract.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/controllers/CommandExecutor.html" class="source "><span class="base_path">app / assets / javascripts / app / controllers / </span><span class="file_name">CommandExecutor.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/controllers/Main.html" class="source "><span class="base_path">app / assets / javascripts / app / controllers / </span><span class="file_name">Main.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/index.html" class="source "><span class="base_path">app / assets / javascripts / app / </span><span class="file_name">index.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/main.html" class="source "><span class="base_path">app / assets / javascripts / app / </span><span class="file_name">main.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/models/Abstract.html" class="source "><span class="base_path">app / assets / javascripts / app / models / </span><span class="file_name">Abstract.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/models/Project.html" class="source "><span class="base_path">app / assets / javascripts / app / models / </span><span class="file_name">Project.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/utils/functions.html" class="source "><span class="base_path">app / assets / javascripts / app / utils / </span><span class="file_name">functions.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/Abstract.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">Abstract.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/Camera.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">Camera.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/CameraController.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">CameraController.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/2D/primitives/AbstractPrimitives.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / primitives / </span><span class="file_name">AbstractPrimitives.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/2D/primitives/Line.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / primitives / </span><span class="file_name">Line.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/2D/primitives/Path.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / primitives / </span><span class="file_name">Path.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/2D/primitives/Point2D.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / primitives / </span><span class="file_name">Point2D.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/2D/Stage2d.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / </span><span class="file_name">Stage2d.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/2D/Tool2D.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / </span><span class="file_name">Tool2D.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/2D/tools/PathTool.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / tools / </span><span class="file_name">PathTool.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/2D/tools/SelectTool.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 2D / tools / </span><span class="file_name">SelectTool.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/3D/primitives/Path3D.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 3D / primitives / </span><span class="file_name">Path3D.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/3D/primitives/Plane3D.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 3D / primitives / </span><span class="file_name">Plane3D.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/3D/primitives/Point3D.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 3D / primitives / </span><span class="file_name">Point3D.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/3D/primitives/Primitive.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 3D / primitives / </span><span class="file_name">Primitive.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/3D/primitives/Segment.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 3D / primitives / </span><span class="file_name">Segment.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/3D/Stage3d.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / 3D / </span><span class="file_name">Stage3d.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/Camera.html" class="source selected"><span class="base_path">app / assets / javascripts / app / views / draw / </span><span class="file_name">Camera.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/DisplayObject.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / </span><span class="file_name">DisplayObject.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/Edge.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / </span><span class="file_name">Edge.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/draw/Point.html" class="source "><span class="base_path">app / assets / javascripts / app / views / draw / </span><span class="file_name">Point.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/gui/AbstractPanel.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / </span><span class="file_name">AbstractPanel.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/gui/AbstractToolbar.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / </span><span class="file_name">AbstractToolbar.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/gui/MainToolbar.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / </span><span class="file_name">MainToolbar.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/gui/tools/AbstractTool.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / tools / </span><span class="file_name">AbstractTool.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/gui/tools/Path.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / tools / </span><span class="file_name">Path.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/gui/tools/Select.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / tools / </span><span class="file_name">Select.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/gui/TopBar.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / </span><span class="file_name">TopBar.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/gui/Window.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / </span><span class="file_name">Window.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/gui/WindowsManager.html" class="source "><span class="base_path">app / assets / javascripts / app / views / gui / </span><span class="file_name">WindowsManager.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/Keyboard.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">Keyboard.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/Mouse.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">Mouse.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/MouseButton.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">MouseButton.coffee</span></a><a href="../../../../../../app/assets/javascripts/app/views/MouseWheel.html" class="source "><span class="base_path">app / assets / javascripts / app / views / </span><span class="file_name">MouseWheel.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>Camera.coffee</h1><div class="filepath">app/assets/javascripts/app/views/draw/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">define</span><span class="p">(</span>
+    <span class="s">&quot;views/draw/Camera&quot;</span>
+    <span class="nf">()-&gt;</span>
+        <span class="k">class</span> <span class="nx">CC</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">draw</span><span class="p">.</span><span class="nx">Camera</span> <span class="k">extends</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Camera</span>
+            <span class="n-Method">constructor</span><span class="o">:</span><span class="nf">(@width, @height,@fov,@pNear,@pFar, @oNear, @oFar)-&gt;</span>
+                <span class="k">super</span><span class="p">()</span>
+                <span class="vi">@perspective = </span><span class="kc">true</span>
+
+                <span class="vi">@left = </span><span class="o">-</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="vi">@right = </span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="vi">@top = </span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="vi">@bottom = </span><span class="o">-</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span>
+
+                <span class="vi">@cameraO = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">OrthographicCamera</span><span class="p">(</span> <span class="nx">@width</span> <span class="sr">/ - 2, @width /</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">@height</span> <span class="sr">/ 2, @height /</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span>  <span class="nx">@oNear</span><span class="p">,</span> <span class="nx">@oFar</span> <span class="p">);</span>
+                <span class="vi">@cameraP = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PerspectiveCamera</span><span class="p">(</span> <span class="nx">@fov</span><span class="p">,</span> <span class="nx">@width</span><span class="o">/</span><span class="nx">@height</span><span class="p">,</span> <span class="nx">@pNear</span><span class="p">,</span> <span class="nx">@pFar</span> <span class="p">);</span>
+
+                <span class="vi">@zoom = </span><span class="mi">1</span>
+
+                <span class="nx">@toPerspective</span><span class="p">()</span>
+
+                <span class="nv">aspect = </span><span class="nx">width</span><span class="o">/</span><span class="nx">height</span>
+
+            <span class="nx">toPerspective</span><span class="o">:=&gt;</span>
+                <span class="vi">@near = </span><span class="nx">@cameraP</span><span class="p">.</span><span class="nx">near</span><span class="p">;</span>
+                <span class="vi">@far = </span><span class="nx">@cameraP</span><span class="p">.</span><span class="nx">far</span><span class="p">;</span>
+                <span class="vi">@cameraP.fov = </span> <span class="nx">@fov</span> <span class="o">/</span> <span class="nx">@zoom</span> <span class="p">;</span>
+                <span class="nx">@cameraP</span><span class="p">.</span><span class="nx">updateProjectionMatrix</span><span class="p">();</span>
+                <span class="vi">@projectionMatrix = </span><span class="nx">@cameraP</span><span class="p">.</span><span class="nx">projectionMatrix</span><span class="p">;</span>
+
+                <span class="vi">@inPersepectiveMode = </span><span class="kc">true</span><span class="p">;</span>
+                <span class="vi">@inOrthographicMode = </span><span class="kc">false</span><span class="p">;</span>
+
+            <span class="nx">toOrthographic</span><span class="o">:=&gt;</span>
+                <span class="nv">fov = </span><span class="nx">@fov</span>
+                <span class="nv">aspect = </span><span class="nx">@cameraP</span><span class="p">.</span><span class="nx">aspect</span>
+                <span class="nv">near = </span><span class="nx">@cameraP</span><span class="p">.</span><span class="nx">near</span>
+                <span class="nv">far = </span><span class="nx">@cameraP</span><span class="p">.</span><span class="nx">far</span>
+
+
+                <span class="nv">hyperfocus = </span><span class="p">(</span> <span class="nx">near</span> <span class="o">+</span> <span class="nx">far</span> <span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> 
+
+                <span class="nv">halfHeight = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">tan</span><span class="p">(</span> <span class="nx">fov</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">)</span> <span class="o">*</span> <span class="nx">hyperfocus</span>
+                <span class="nv">planeHeight = </span><span class="mi">2</span> <span class="o">*</span> <span class="nx">halfHeight</span>
+                <span class="nv">planeWidth = </span><span class="nx">planeHeight</span> <span class="o">*</span> <span class="nx">aspect</span>
+                <span class="nv">halfWidth = </span><span class="nx">planeWidth</span> <span class="o">/</span> <span class="mi">2</span>
+
+                <span class="nx">halfHeight</span> <span class="o">/=</span> <span class="nx">@zoom</span>
+                <span class="nx">halfWidth</span> <span class="o">/=</span> <span class="nx">@zoom</span>
+
+                <span class="vi">@cameraO.left = </span><span class="o">-</span><span class="nx">halfWidth</span>
+                <span class="vi">@cameraO.right = </span><span class="nx">halfWidth</span>
+                <span class="vi">@cameraO.top = </span><span class="nx">halfHeight</span>
+                <span class="vi">@cameraO.bottom = </span><span class="o">-</span><span class="nx">halfHeight</span>
+
+                <span class="nx">@cameraO</span><span class="p">.</span><span class="nx">updateProjectionMatrix</span><span class="p">()</span>
+
+                <span class="vi">@near = </span><span class="nx">@cameraO</span><span class="p">.</span><span class="nx">near</span>
+                <span class="vi">@far = </span><span class="nx">@cameraO</span><span class="p">.</span><span class="nx">far</span>
+                <span class="vi">@projectionMatrix = </span><span class="nx">@cameraO</span><span class="p">.</span><span class="nx">projectionMatrix</span>
+
+                <span class="vi">@inPersepectiveMode = </span><span class="kc">false</span>
+                <span class="vi">@inOrthographicMode = </span><span class="kc">true</span>
+
+            <span class="n-Method">setFov</span><span class="o">:</span><span class="nf">(@fov)=&gt;</span>    
+                <span class="k">if</span> <span class="nx">@inPersepectiveMode</span>
+                    <span class="nx">@toPerspective</span><span class="p">()</span>
+                <span class="k">else</span>
+                    <span class="nx">@toOrthographic</span><span class="p">()</span>
+
+
+            <span class="n-Method">setLens</span><span class="o">:</span><span class="nf">(focalLength, framesize = 43.25)=&gt;</span>  <span class="c1"># 36x24mm</span>
+                <span class="nv">fov = </span><span class="mi">2</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">atan</span><span class="p">(</span> <span class="nx">framesize</span> <span class="o">/</span> <span class="p">(</span><span class="nx">focalLength</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+                <span class="nv">fov = </span><span class="mi">180</span> <span class="o">/</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">*</span> <span class="nx">fov</span>
+                <span class="nx">@setFov</span><span class="p">(</span><span class="nx">fov</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nx">fov</span>
+
+            <span class="n-Method">setZoom</span><span class="o">:</span><span class="nf">(@zoom)=&gt;</span>
+                <span class="k">if</span> <span class="nx">@inPersepectiveMode</span>
+                    <span class="nx">@toPerspective</span><span class="p">()</span>
+                <span class="k">else</span>
+                    <span class="nx">@toOrthographic</span><span class="p">()</span>
+
+            <span class="nx">toFrontView</span><span class="o">:=&gt;</span>
+                <span class="vi">@rotation.x = </span><span class="mi">0</span>
+                <span class="vi">@rotation.y = </span><span class="mi">0</span>
+                <span class="vi">@rotation.z = </span><span class="mi">0</span>
+
+                <span class="vi">@rotationAutoUpdate = </span><span class="kc">false</span>
+            <span class="nx">toBackView</span><span class="o">:=&gt;</span>
+                <span class="vi">@rotation.x = </span><span class="mi">0</span>
+                <span class="vi">@rotation.y = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span>
+                <span class="vi">@rotation.z = </span><span class="mi">0</span>
+                <span class="vi">@rotationAutoUpdate = </span><span class="kc">false</span>
+
+            <span class="nx">toLeftView</span><span class="o">:=&gt;</span>
+                <span class="vi">@rotation.x = </span><span class="mi">0</span>
+                <span class="vi">@rotation.y = </span><span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="vi">@rotation.z = </span><span class="mi">0</span>
+                <span class="vi">@rotationAutoUpdate = </span><span class="kc">false</span>
+
+            <span class="nx">toRightView</span><span class="o">:=&gt;</span>
+                <span class="vi">@rotation.x = </span><span class="mi">0</span>
+                <span class="vi">@rotation.y = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="vi">@rotation.z = </span><span class="mi">0</span>
+                <span class="vi">@rotationAutoUpdate = </span><span class="kc">false</span>
+
+
+            <span class="nx">toTopView</span><span class="o">:=&gt;</span>
+                <span class="vi">@rotation.x = </span><span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="vi">@rotation.y = </span><span class="mi">0</span>
+                <span class="vi">@rotation.z = </span><span class="mi">0</span>
+                <span class="vi">@rotationAutoUpdate = </span><span class="kc">false</span>
+
+
+            <span class="nx">toBottomView</span><span class="o">:=&gt;</span>
+                <span class="vi">@rotation.x = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="vi">@rotation.y = </span><span class="mi">0</span>
+                <span class="vi">@rotation.z = </span><span class="mi">0</span>
+                <span class="vi">@rotationAutoUpdate = </span><span class="kc">false</span>
+
+
+            <span class="nx">toggleType</span><span class="o">:-&gt;</span>
+                <span class="k">if</span> <span class="nx">@perspective</span>
+                    <span class="nx">@toOrthographic</span><span class="p">()</span>
+                    <span class="vi">@perspective = </span><span class="kc">false</span>
+                <span class="k">else</span>
+                    <span class="nx">@toPerspective</span><span class="p">()</span>
+                    <span class="vi">@perspective = </span><span class="kc">true</span>
+        
+<span class="p">)</span>
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Sat Nov 19 2011 18:20:12 GMT+0100 (CET)  </div><div id="projectname"><a href="../../../../../../readme.html">CloudCad</a></div></div></body></html>

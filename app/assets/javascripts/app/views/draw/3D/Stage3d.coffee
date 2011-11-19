@@ -188,52 +188,7 @@ define(
                             @selectedMesh.position.x = newPoint.x
                             @selectedMesh.position.y = newPoint.y
                             
-                            #Aggiorno la gemetria della linea
-                            index = @selectedMesh.vertexIndex
-                            
-                            # Dato che entrambe le linee usano lo stesso insieme di vertici modificandolo modifico entrambe
-                            @vertices
-                            @vertices[index].x = parseInt(@selectedMesh.position.x)
-                            @vertices[index].y = parseInt(@selectedMesh.position.y)
-                            console.log index+"/"+@vertices.length
-                                                    
-                            if index == 0
-                                @vertices[0].x = parseInt(@selectedMesh.position.x)
-                                @vertices[0].y = parseInt(@selectedMesh.position.y)
-                                @vertices[@vertices.length-1].x = parseInt(@selectedMesh.position.x)
-                                @vertices[@vertices.length-1].y = parseInt(@selectedMesh.position.y)
-
-                                @linea.geometry.vertices[@vertices.length-2].position.x = parseInt(@selectedMesh.position.x)
-                                @linea.geometry.vertices[@vertices.length-2].position.y = parseInt(@selectedMesh.position.y)
-                            else if index == 1
-                                @linea.geometry.vertices[index-1].position.x = parseInt(@selectedMesh.position.x)
-                                @linea.geometry.vertices[index-1].position.y = parseInt(@selectedMesh.position.y)
-                                @linea.geometry.vertices[@vertices.length-1].position.x = parseInt(@selectedMesh.position.x)
-                                @linea.geometry.vertices[@vertices.length-1].position.y = parseInt(@selectedMesh.position.y)
-                            else
-                                @linea.geometry.vertices[index-1].position.x = parseInt(@selectedMesh.position.x)
-                                @linea.geometry.vertices[index-1].position.y = parseInt(@selectedMesh.position.y)
-                            #@linea.geometry.vertices[index-1].position.z = parseInt(@selectedMesh.position.z)
-
-                            # Forzo il ridisegno della gemetry http://aerotwist.com/lab/getting-started-with-three-js
-                            @linea.geometry.__dirtyVertices = true
-                            @linea.geometry.__dirtyNormals = true
-
-                            # Ridisegno la mesh con i nuovi punti
-                            #@linea.geometry.mergeVertices()
-                            #debugger
-                            shape = new THREE.Shape(@vertices)
-                            @world.remove(@mesh)
-                            @mesh = new THREE.Mesh(
-                                shape.extrude({
-                                    amount:10,
-                                    bevelEnabled:false,
-                                    material: @material,
-                                    extrudeMaterial: @material
-                                }),
-                                @material
-                            )
-                            @world.add(@mesh)
+                            @linea.movePoint(@selectedMesh.vertexIndex , @selectedMesh.position) 
             animate:=>
                 requestAnimFrame(@animate)
                 @render()
@@ -252,112 +207,8 @@ define(
                     new THREE.Vector2(100,0)
                     new THREE.Vector2(0,0)
                 ]
-
-                color = 0x8866ff
-                #color = Math.random() * 0x666666
-                x = 0
-                y = 0
-                z = 0
-                rx = 0
-                ry = 0
-                rz = 0
-                s = 1
-
-                shape = new THREE.Shape(@vertices)
-                points = shape.createPointsGeometry()
-
-                # Linea spessa
                 @linea = new Path3D({
                     points: @vertices
-                }).ThreePath
-                @world.add(@linea)
-                
-                ###
-                line = new THREE.Line(points, new THREE.LineBasicMaterial( { color: color, linewidth: 2 }))
-                line.position.set(x, y, z + 25)
-                line.rotation.set(rx, ry, rz)
-                line.scale.set(s, s, s)
-                @world.add(line)
-
-                # Linea con handlers
-                @linea = new THREE.Line(points, new THREE.LineBasicMaterial( { color: color, opacity: 0.5 }))
-                @linea.position.set(x, y, z + 75)
-                @linea.rotation.set(rx, ry, rz)
-                @linea.scale.set(s, s, s)
-                @linea.geometry.dynamic = true
-                @world.add(@linea)
-
-                # Handlers
-                # // create the particle variables
-                particles = new THREE.Geometry()
-                pMaterial = new THREE.ParticleBasicMaterial({
-                    color: color,
-                    size: 10
                 })
-
-                for vertice, i in @vertices
-                    if i < @vertices.length
-                        particle = new THREE.Vertex(vertice)
-                        particles.vertices.push(particle)
-                        particle.father = line
-                        particle.idx = i
-                        position = new THREE.Vector3(vertice.x,vertice.y,line.position.z)
-
-                        #sphereCollider = #new THREE.SphereCollider(position, 10) # size = radius
-                        #sphereCollider.particle = particle # I do this so I can reference to the particle in the collision check
-                        #THREE.Collisions.colliders.push(sphereCollider)
-                                    
-                        radius = 10
-                        segments = 4
-                        rings = 4
-                        sphere = new THREE.Mesh(
-                            new THREE.SphereGeometry(radius,segments,rings),
-                            new THREE.MeshBasicMaterial({
-                                color: color
-                                opacity: 0.25
-                                transparent: true
-                                wireframe: true
-                            })
-                        )
-                        sphere.placeholder = true
-                        sphere.visible = false
-                        sphere.vertexIndex = i
-                        sphere.position.x = vertice.x
-                        sphere.position.y = vertice.y
-                        #sphere.castShadow = true;
-                        #sphere.receiveShadow = true;
-                        @linea.add(sphere)
-
-                        # registro le collisioni sulle sfere
-                        #mc = THREE.CollisionUtils.MeshColliderWBox(sphere)
-                        #THREE.Collisions.colliders.push(mc)
-                    
-                particleSystem = new THREE.ParticleSystem(
-                    particles,
-                    pMaterial
-                )
-
-                @linea.add(particleSystem)
-
-
-                @material = new THREE.MeshLambertMaterial({
-                    color: color
-                    ambient: 0x111111
-                    blending: 1
-                    shading: 1
-                })
-
-                @mesh = new THREE.Mesh(
-                    shape.extrude({
-                        amount:10,
-                        bevelEnabled:false,
-                        material: @material,
-                        extrudeMaterial: @material
-                    }),
-                    @material
-                )
-
-
-                @world.add( @mesh )
-                ###
+                @world.add(@linea.threePath)
 )

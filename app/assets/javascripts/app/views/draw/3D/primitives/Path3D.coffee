@@ -5,7 +5,7 @@ define(
     ["views/draw/3D/primitives/Primitive","views/draw/3D/primitives/Point3D","views/draw/3D/primitives/Segment"],
     (Primitive,Point3D,Segment)->
         class CC.views.draw.primitives.Path3D extends Primitive
-            @ThreePath
+            @threePath
             @points
             @segments
             @plane
@@ -32,10 +32,10 @@ define(
                     @color = 0x8866ff
 
                 if attr?.threePath?
-                    @ThreePath = attr.threePath 
+                    @threePath = attr.threePath 
                 else
                     if attr?.points?
-                        @ThreePath = new THREE.Line(
+                        @threePath = new THREE.Line(
                             new THREE.CurvePath.prototype.createGeometry(attr.points),
                             new THREE.LineBasicMaterial({ 
                                 color: @color
@@ -43,7 +43,7 @@ define(
                             })
                         )
                     else
-                        @ThreePath = new THREE.Line(
+                        @threePath = new THREE.Line(
                             new THREE.CurvePath.prototype.createGeometry([]),
                             new THREE.LineBasicMaterial( {
                                 color: @color
@@ -72,9 +72,9 @@ define(
                     if i < @points.length
                         particle = new THREE.Vertex(vertice)
                         @particles.vertices.push(particle)
-                        particle.father = @ThreePath
+                        particle.father = @threePath
                         particle.idx = i
-                        position = new THREE.Vector3(vertice.x,vertice.y,@ThreePath.position.z)
+                        position = new THREE.Vector3(vertice.x,vertice.y,@threePath.position.z)
 
                         radius = 10
                         segments = 4
@@ -94,13 +94,14 @@ define(
                         sphere.position.x = vertice.x
                         sphere.position.y = vertice.y
                         
-                        @ThreePath.add(sphere)
+                        @threePath.add(sphere)
 
-                particleSystem = new THREE.ParticleSystem(
+                @particleSystem = new THREE.ParticleSystem(
                     @particles,
                     pMaterial
                 )
-                @ThreePath.add(particleSystem)
+                @particleSystem.dynamic = true
+                @threePath.add(@particleSystem)
 
             #### *update()* method takes no argument
             #Update forces updates to the internal
@@ -108,6 +109,7 @@ define(
                 @lastPoint = @point("last")
                 @threePath.geometry.__dirtyVertices = true
                 @threePath.geometry.__dirtyNormals = true
+                @particles.__dirtyVertices = true
             
             #### *start(`point`)* method takes one argument
             #* the starting *point* from wich the Path should start
@@ -171,8 +173,20 @@ define(
                 else if el instanceof Segment
                     @moveSegment(el,newPos)
 
-            movePoint:(point,newPoint)=>
-                point.moveTo(newPoint)
+            movePoint:(index,newPoint)=>
+                if index == 0
+                    last = @points.length-1
+                    @points[0] = newPoint
+                    @points[last] = newPoint
+
+                    @threePath.geometry.vertices[0].position = newPoint
+                    @threePath.geometry.vertices[last].position = newPoint
+                    
+                    @particles.vertices[0].position = newPoint
+                    @particles.vertices[last].position = newPoint
+                else
+                    @threePath.geometry.vertices[index].position = newPoint
+                    @particles.vertices[index].position = newPoint
                 @update()
 
             moveSegment:(el,newPos)=>
@@ -236,7 +250,7 @@ define(
             # This method returns a new mesh containig the extruded shape  
             # Path is turned invisible when creating the 3D shape
             extrude:(value)=>
-                @ThreePath.visible = false
+                @threePath.visible = false
                 shape = new THREE.Shape(@points)
                 material = new THREE.MeshLambertMaterial({
                     color: @color

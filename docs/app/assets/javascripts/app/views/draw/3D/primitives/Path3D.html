@@ -4,33 +4,28 @@
 </td><td class="code"><div class="highlight"><pre><span class="nx">define</span><span class="p">(</span>
     <span class="s">&quot;views/draw/3D/primitives/Path3D&quot;</span>
     <span class="p">[</span><span class="s">&quot;views/draw/3D/primitives/Primitive&quot;</span><span class="p">,</span><span class="s">&quot;views/draw/3D/primitives/Point3D&quot;</span><span class="p">,</span><span class="s">&quot;views/draw/3D/primitives/Segment&quot;</span><span class="p">],</span>
-    <span class="nf">(Primitive,Point3D,Segment)-&gt;</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><h2>Path3d Class</h2>
-
-<p>Path3d is a class that is used to draw closed path in the system</p>
-</td><td class="code"><div class="highlight"><pre>        <span class="k">class</span> <span class="nx">CC</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">draw</span><span class="p">.</span><span class="nx">primitives</span><span class="p">.</span><span class="nx">Path3D</span> <span class="k">extends</span> <span class="nx">Primitive</span>
-            <span class="nx">@ThreePath</span>
+    <span class="nf">(Primitive,Point3D,Segment)-&gt;</span>
+        <span class="k">class</span> <span class="nx">CC</span><span class="p">.</span><span class="nx">views</span><span class="p">.</span><span class="nx">draw</span><span class="p">.</span><span class="nx">primitives</span><span class="p">.</span><span class="nx">Path3D</span> <span class="k">extends</span> <span class="nx">Primitive</span>
+            <span class="nx">@threePath</span>
             <span class="nx">@points</span>
             <span class="nx">@segments</span>
             <span class="nx">@plane</span>
             <span class="nx">@lastPoint</span>
             <span class="nx">@selectedPoint</span>
-            <span class="nx">@selectedSegment</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><h3><em>constructor(<code>attr</code>)</em> method takes one argument</h3>
+            <span class="nx">@selectedSegment</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><h3><em>constructor(<code>attr</code>)</em> method takes one argument</h3>
 
 <ul>
 <li>the <em>attr</em> object that cointains various options <br />
-currently these options are supported  </li>
-<li><code>color</code>: (the color of the path and of the extruded mesh)</li>
-<li><code>threePath</code>: (an existing THREE.Path to be converted to Path3D)</li>
-<li><code>points</code>: (an array of points representig the points of the path)</li>
-<li><code>name</code>: (a name for the object, useful for yet to be implemented object referencing)</li>
-<li><code>start</code>: a single point where the path is starting</li>
+Currently these options are supported: <br />
+<ul><li><em>color</em>: (the color of the path and of the extruded mesh)</li>
+<li><em>threePath</em>: (an existing THREE.Path to be converted to Path3D)</li>
+<li><em>points</em>: (an array of points representig the points of the path)</li>
+<li><em>name</em>: (a name for the object, useful for yet to be implemented object referencing)</li>
+<li><em>start</em>: a single point where the path is starting</li></ul></li>
 </ul>
 
-<p><code>@currentPos</code> object is created to contain <code>x</code> and <code>y</code> in pixel position form canvas top-left corner
-and <code>stage3Dx</code> and <code>srage3Dy</code> in 0.0 to 1.0 position form canvas center <br />
-<a href="MouseButton.html"><code>MouseButton</code></a> instances are created <br />
-<a href="MouseButton.html"><code>MouseWheel</code></a> is created <br />
-<code>contextmenu</code>, <code>mousemove</code>,<code>mousedown</code>,<code>mouseup</code> and <code>mousewheel</code> events are linked to the related methods using jQuery </p>
+<p>If one of the above options isn't specified or attr isn't given the appropriate default is set. <br />
+Also a <code>Particle System</code> is used to identify points along the shape and an hidden Shperical mesh is attached to each vertext to detect collision</p>
 </td><td class="code"><div class="highlight"><pre>            <span class="n-Method">constructor</span><span class="o">:</span><span class="nf">(attr)-&gt;</span>
                 <span class="k">super</span><span class="p">()</span>
 
@@ -40,10 +35,10 @@ and <code>stage3Dx</code> and <code>srage3Dy</code> in 0.0 to 1.0 position form 
                     <span class="vi">@color = </span><span class="mh">0x8866ff</span>
 
                 <span class="k">if</span> <span class="nx">attr</span><span class="o">?</span><span class="p">.</span><span class="nx">threePath</span><span class="o">?</span>
-                    <span class="vi">@ThreePath = </span><span class="nx">attr</span><span class="p">.</span><span class="nx">threePath</span> 
+                    <span class="vi">@threePath = </span><span class="nx">attr</span><span class="p">.</span><span class="nx">threePath</span> 
                 <span class="k">else</span>
                     <span class="k">if</span> <span class="nx">attr</span><span class="o">?</span><span class="p">.</span><span class="nx">points</span><span class="o">?</span>
-                        <span class="vi">@ThreePath = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span>
+                        <span class="vi">@threePath = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span>
                             <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">CurvePath</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">createGeometry</span><span class="p">(</span><span class="nx">attr</span><span class="p">.</span><span class="nx">points</span><span class="p">),</span>
                             <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">LineBasicMaterial</span><span class="p">({</span> 
                                 <span class="nv">color: </span><span class="nx">@color</span>
@@ -51,7 +46,7 @@ and <code>stage3Dx</code> and <code>srage3Dy</code> in 0.0 to 1.0 position form 
                             <span class="p">})</span>
                         <span class="p">)</span>
                     <span class="k">else</span>
-                        <span class="vi">@ThreePath = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span>
+                        <span class="vi">@threePath = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Line</span><span class="p">(</span>
                             <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">CurvePath</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">createGeometry</span><span class="p">([]),</span>
                             <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">LineBasicMaterial</span><span class="p">(</span> <span class="p">{</span>
                                 <span class="nv">color: </span><span class="nx">@color</span>
@@ -59,10 +54,8 @@ and <code>stage3Dx</code> and <code>srage3Dy</code> in 0.0 to 1.0 position form 
                             <span class="p">})</span>
                         <span class="p">)</span>
                 <span class="k">if</span> <span class="nx">attr</span><span class="o">?</span><span class="p">.</span><span class="nx">points</span><span class="o">?</span>
-                    <span class="vi">@points = </span><span class="nx">attr</span><span class="p">.</span><span class="nx">points</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>for point in attr.points
-   @add(point)
-@rearrangePoints()</p>
-</td><td class="code"><div class="highlight"><pre>                <span class="k">else</span>
+                    <span class="vi">@points = </span><span class="nx">attr</span><span class="p">.</span><span class="nx">points</span>
+                <span class="k">else</span>
                     <span class="vi">@points = </span><span class="p">[]</span>    
                 
                 <span class="k">if</span> <span class="nx">attr</span><span class="o">?</span><span class="p">.</span><span class="nx">name</span><span class="o">?</span>
@@ -82,9 +75,9 @@ and <code>stage3Dx</code> and <code>srage3Dy</code> in 0.0 to 1.0 position form 
                     <span class="k">if</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">@points</span><span class="p">.</span><span class="nx">length</span>
                         <span class="nv">particle = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Vertex</span><span class="p">(</span><span class="nx">vertice</span><span class="p">)</span>
                         <span class="nx">@particles</span><span class="p">.</span><span class="nx">vertices</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">particle</span><span class="p">)</span>
-                        <span class="nv">particle.father = </span><span class="nx">@ThreePath</span>
+                        <span class="nv">particle.father = </span><span class="nx">@threePath</span>
                         <span class="nv">particle.idx = </span><span class="nx">i</span>
-                        <span class="nv">position = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">(</span><span class="nx">vertice</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span><span class="nx">vertice</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span><span class="nx">@ThreePath</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span><span class="p">)</span>
+                        <span class="nv">position = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">(</span><span class="nx">vertice</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span><span class="nx">vertice</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span><span class="nx">@threePath</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span><span class="p">)</span>
 
                         <span class="nv">radius = </span><span class="mi">10</span>
                         <span class="nv">segments = </span><span class="mi">4</span>
@@ -104,28 +97,38 @@ and <code>stage3Dx</code> and <code>srage3Dy</code> in 0.0 to 1.0 position form 
                         <span class="nv">sphere.position.x = </span><span class="nx">vertice</span><span class="p">.</span><span class="nx">x</span>
                         <span class="nv">sphere.position.y = </span><span class="nx">vertice</span><span class="p">.</span><span class="nx">y</span>
                         
-                        <span class="nx">@ThreePath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">sphere</span><span class="p">)</span>
+                        <span class="nx">@threePath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">sphere</span><span class="p">)</span>
 
-                <span class="nv">particleSystem = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">ParticleSystem</span><span class="p">(</span>
+                <span class="vi">@particleSystem = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">ParticleSystem</span><span class="p">(</span>
                     <span class="nx">@particles</span><span class="p">,</span>
                     <span class="nx">pMaterial</span>
                 <span class="p">)</span>
-                <span class="nx">@ThreePath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">particleSystem</span><span class="p">)</span>
-            
-            <span class="nx">update</span><span class="o">:=&gt;</span>
+                <span class="vi">@particleSystem.dynamic = </span><span class="kc">true</span>
+                <span class="nx">@threePath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">@particleSystem</span><span class="p">)</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><h3><em>update()</em> method takes no argument</h3>
+
+<p>Update forces updates to the internals</p>
+</td><td class="code"><div class="highlight"><pre>            <span class="nx">update</span><span class="o">:=&gt;</span>
                 <span class="vi">@lastPoint = </span><span class="nx">@point</span><span class="p">(</span><span class="s">&quot;last&quot;</span><span class="p">)</span>
                 <span class="vi">@threePath.geometry.__dirtyVertices = </span><span class="kc">true</span>
                 <span class="vi">@threePath.geometry.__dirtyNormals = </span><span class="kc">true</span>
+                <span class="vi">@particles.__dirtyVertices = </span><span class="kc">true</span>
+            </pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><h3><em>start(<code>point</code>)</em> method takes one argument</h3>
 
-            <span class="n-Method">start</span><span class="o">:</span><span class="nf">(point)=&gt;</span>
+<ul>
+<li>the starting <em>point</em> from wich the Path should start</li>
+</ul>
+</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">start</span><span class="o">:</span><span class="nf">(point)=&gt;</span>
                 <span class="nv">point = </span><span class="nx">@validatePoint</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nx">point</span>
                     <span class="nv">point.idx = </span><span class="nx">@points</span><span class="p">.</span><span class="nx">length</span>
                     <span class="nv">point.father = </span><span class="k">this</span>
                     <span class="nx">@points</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
-                    <span class="nx">@threePath</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
+                    <span class="nx">@threePath</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><h3><em>add(<code>point</code>)</em> method takes one argument</h3>
 
-            <span class="n-Method">add</span><span class="o">:</span><span class="nf">(point)=&gt;</span>
+<ul>
+<li>the <em>point</em> to be added to the Path</li>
+</ul>
+</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">add</span><span class="o">:</span><span class="nf">(point)=&gt;</span>
                 <span class="nv">point = </span><span class="nx">@validatePoint</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nx">point</span>
                     <span class="nv">point.idx = </span><span class="nx">@points</span><span class="p">.</span><span class="nx">length</span>
@@ -136,7 +139,7 @@ and <code>stage3Dx</code> and <code>srage3Dy</code> in 0.0 to 1.0 position form 
                     <span class="k">else</span>
                         <span class="nx">@threePath</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span>
 
-            <span class="n-Method">insert</span><span class="o">:</span><span class="nf">(idx,point)=&gt;</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><h1>#</h1>
+            <span class="n-Method">insert</span><span class="o">:</span><span class="nf">(idx,point)=&gt;</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><h1>#</h1>
 
 <p>debugger</p>
 </td><td class="code"><div class="highlight"><pre>                <span class="nv">split = </span><span class="nx">idx</span>
@@ -151,29 +154,46 @@ and <code>stage3Dx</code> and <code>srage3Dy</code> in 0.0 to 1.0 position form 
                     <span class="vi">@points = </span><span class="nx">points_before</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">points_after</span><span class="p">)</span>
                     <span class="nx">@paperPath</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="nx">idx</span><span class="p">,</span><span class="nx">point</span><span class="p">)</span>
                     <span class="nx">@rearrangePoints</span><span class="p">()</span>
-                    <span class="nx">@update</span><span class="p">()</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><h1>#</h1>
-</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">remove</span><span class="o">:</span><span class="nf">(el)=&gt;</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><h1>#</h1>
+                    <span class="nx">@update</span><span class="p">()</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">remove</span><span class="o">:</span><span class="nf">(el)=&gt;</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><h1>#</h1>
 </td><td class="code"><div class="highlight"><pre>                <span class="k">if</span> <span class="nx">el</span> <span class="k">instanceof</span> <span class="nx">Point3D</span>
                     <span class="nx">@removePoint</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span>
                 <span class="k">else</span> <span class="k">if</span> <span class="nx">el</span> <span class="k">instanceof</span> <span class="nx">Segment</span>
-                    <span class="nx">@removeSegment</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><h1>#</h1>
-</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">removePoint</span><span class="o">:</span><span class="nf">(point)=&gt;</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><h1>#</h1>
+                    <span class="nx">@removeSegment</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">removePoint</span><span class="o">:</span><span class="nf">(point)=&gt;</span></pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a href="#section-10" class="pilcrow">&#182;</a></div><h1>#</h1>
 </td><td class="code"><div class="highlight"><pre>                <span class="nx">@points</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span> <span class="k">if</span> <span class="nx">point</span> <span class="k">in</span> <span class="nx">@points</span>
                 <span class="nx">@paperPath</span><span class="p">.</span><span class="nx">removeSegment</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">idx</span><span class="p">)</span>
-                <span class="nx">@rearrangePoints</span><span class="p">()</span></pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a href="#section-10" class="pilcrow">&#182;</a></div><h1>#</h1>
+                <span class="nx">@rearrangePoints</span><span class="p">()</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><h1>#</h1>
 </td><td class="code"><div class="highlight"><pre>            <span class="n-Method">move</span><span class="o">:</span><span class="nf">(el,newPos)=&gt;</span>
                 <span class="k">if</span> <span class="nx">el</span> <span class="k">instanceof</span> <span class="nx">Point3D</span>
                     <span class="nx">@movePoint</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span><span class="nx">newPos</span><span class="p">)</span>
                 <span class="k">else</span> <span class="k">if</span> <span class="nx">el</span> <span class="k">instanceof</span> <span class="nx">Segment</span>
-                    <span class="nx">@moveSegment</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span><span class="nx">newPos</span><span class="p">)</span>
+                    <span class="nx">@moveSegment</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span><span class="nx">newPos</span><span class="p">)</span></pre></div></td></tr><tr id="section-12"><td class="docs"><div class="pilwrap"><a href="#section-12" class="pilcrow">&#182;</a></div><h3><em>movePoint(<code>index</code>,<code>newPoint</code>)</em> method takes two argument</h3>
 
-            <span class="n-Method">movePoint</span><span class="o">:</span><span class="nf">(point,newPoint)=&gt;</span>
-                <span class="nx">point</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">newPoint</span><span class="p">)</span>
+<ul>
+<li>the <em>index</em> of the point that has to be moved</li>
+<li>the <em>newPoint</em> representing the new position of the element <br />
+this method simply update the position of the vertex at the given index and triggers the update method once done</li>
+</ul>
+</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">movePoint</span><span class="o">:</span><span class="nf">(index,newPoint)=&gt;</span>
+                <span class="k">if</span> <span class="nx">index</span> <span class="o">==</span> <span class="mi">0</span>
+                    <span class="nv">last = </span><span class="nx">@points</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span>
+                    <span class="nx">@points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nx">newPoint</span>
+                    <span class="nx">@points</span><span class="p">[</span><span class="nx">last</span><span class="p">]</span> <span class="o">=</span> <span class="nx">newPoint</span>
+
+                    <span class="nx">@threePath</span><span class="p">.</span><span class="nx">geometry</span><span class="p">.</span><span class="nx">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nv">position = </span><span class="nx">newPoint</span>
+                    <span class="nx">@threePath</span><span class="p">.</span><span class="nx">geometry</span><span class="p">.</span><span class="nx">vertices</span><span class="p">[</span><span class="nx">last</span><span class="p">].</span><span class="nv">position = </span><span class="nx">newPoint</span>
+                    
+                    <span class="nx">@particles</span><span class="p">.</span><span class="nx">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nv">position = </span><span class="nx">newPoint</span>
+                    <span class="nx">@particles</span><span class="p">.</span><span class="nx">vertices</span><span class="p">[</span><span class="nx">last</span><span class="p">].</span><span class="nv">position = </span><span class="nx">newPoint</span>
+                <span class="k">else</span>
+                    <span class="nx">@threePath</span><span class="p">.</span><span class="nx">geometry</span><span class="p">.</span><span class="nx">vertices</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nv">position = </span><span class="nx">newPoint</span>
+                    <span class="nx">@particles</span><span class="p">.</span><span class="nx">vertices</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nv">position = </span><span class="nx">newPoint</span>
                 <span class="nx">@update</span><span class="p">()</span>
 
             <span class="n-Method">moveSegment</span><span class="o">:</span><span class="nf">(el,newPos)=&gt;</span>
 
-            <span class="n-Method">point</span><span class="o">:</span><span class="nf">(selector)=&gt;</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><h1>#</h1>
+            <span class="n-Method">point</span><span class="o">:</span><span class="nf">(selector)=&gt;</span></pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><h1>#</h1>
 </td><td class="code"><div class="highlight"><pre>                <span class="nx">unless</span> <span class="nx">selector</span><span class="o">?</span>
                     <span class="k">return</span> <span class="kc">null</span>
                 <span class="k">else</span> <span class="k">if</span> <span class="nx">selector</span> <span class="o">==</span> <span class="s">&quot;last&quot;</span>
@@ -183,16 +203,16 @@ and <code>stage3Dx</code> and <code>srage3Dy</code> in 0.0 to 1.0 position form 
                 <span class="k">else</span> <span class="k">if</span> <span class="nx">selector</span> <span class="o">==</span> <span class="s">&quot;selected&quot;</span>
                     <span class="k">return</span> <span class="nx">@points</span><span class="p">[</span><span class="nx">@selectedPoint</span><span class="p">]</span>
                 <span class="k">else</span> <span class="k">if</span> <span class="k">typeof</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;number&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">selector</span> <span class="o">&lt;</span> <span class="nx">@points</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span> <span class="nx">selector</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
-                    <span class="k">return</span> <span class="nx">@points</span><span class="p">[</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">selector</span><span class="p">)]</span></pre></div></td></tr><tr id="section-12"><td class="docs"><div class="pilwrap"><a href="#section-12" class="pilcrow">&#182;</a></div><h1>#</h1>
+                    <span class="k">return</span> <span class="nx">@points</span><span class="p">[</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">selector</span><span class="p">)]</span></pre></div></td></tr><tr id="section-14"><td class="docs"><div class="pilwrap"><a href="#section-14" class="pilcrow">&#182;</a></div><h1>#</h1>
 </td><td class="code"><div class="highlight"><pre>            
-            <span class="n-Method">pointNear</span><span class="o">:</span><span class="nf">(point,tollerance)=&gt;</span></pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><h1>#</h1>
+            <span class="n-Method">pointNear</span><span class="o">:</span><span class="nf">(point,tollerance)=&gt;</span></pre></div></td></tr><tr id="section-15"><td class="docs"><div class="pilwrap"><a href="#section-15" class="pilcrow">&#182;</a></div><h1>#</h1>
 </td><td class="code"><div class="highlight"><pre>                <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@segments</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
                     <span class="k">if</span> <span class="nx">@paperPath</span><span class="p">.</span><span class="nx">segments</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">point</span><span class="p">.</span><span class="nx">isClose</span><span class="p">(</span><span class="nx">point</span><span class="p">,</span><span class="nx">tollerance</span><span class="p">)</span>
                         <span class="vi">@selectedPoint = </span><span class="nx">i</span>
                         <span class="k">return</span> <span class="nx">@selectedPoint</span>
-                <span class="k">return</span> <span class="kc">null</span></pre></div></td></tr><tr id="section-14"><td class="docs"><div class="pilwrap"><a href="#section-14" class="pilcrow">&#182;</a></div><h1>#</h1>
+                <span class="k">return</span> <span class="kc">null</span></pre></div></td></tr><tr id="section-16"><td class="docs"><div class="pilwrap"><a href="#section-16" class="pilcrow">&#182;</a></div><h1>#</h1>
 </td><td class="code"><div class="highlight"><pre>            
-            <span class="n-Method">segmentNear</span><span class="o">:</span><span class="nf">(point,tollerance)=&gt;</span></pre></div></td></tr><tr id="section-15"><td class="docs"><div class="pilwrap"><a href="#section-15" class="pilcrow">&#182;</a></div><h1>#</h1>
+            <span class="n-Method">segmentNear</span><span class="o">:</span><span class="nf">(point,tollerance)=&gt;</span></pre></div></td></tr><tr id="section-17"><td class="docs"><div class="pilwrap"><a href="#section-17" class="pilcrow">&#182;</a></div><h1>#</h1>
 
 <p>debugger</p>
 </td><td class="code"><div class="highlight"><pre>                <span class="nv">nearPoint = </span><span class="nx">@paperPath</span><span class="p">.</span><span class="nx">getNearestPoint</span><span class="p">(</span><span class="k">new</span> <span class="nx">paper</span><span class="p">.</span><span class="nx">Point</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">))</span>
@@ -213,14 +233,22 @@ and <code>stage3Dx</code> and <code>srage3Dy</code> in 0.0 to 1.0 position form 
                             <span class="k">return</span> <span class="nx">segment</span><span class="p">.</span><span class="nx">index</span>
 
                 <span class="k">else</span>
-                    <span class="kc">false</span></pre></div></td></tr><tr id="section-16"><td class="docs"><div class="pilwrap"><a href="#section-16" class="pilcrow">&#182;</a></div><h1>#</h1>
-</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">selected</span><span class="o">:</span><span class="nf">(activate)=&gt;</span></pre></div></td></tr><tr id="section-17"><td class="docs"><div class="pilwrap"><a href="#section-17" class="pilcrow">&#182;</a></div><h1>#</h1>
+                    <span class="kc">false</span></pre></div></td></tr><tr id="section-18"><td class="docs"><div class="pilwrap"><a href="#section-18" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">selected</span><span class="o">:</span><span class="nf">(activate)=&gt;</span></pre></div></td></tr><tr id="section-19"><td class="docs"><div class="pilwrap"><a href="#section-19" class="pilcrow">&#182;</a></div><h1>#</h1>
 </td><td class="code"><div class="highlight"><pre>                <span class="nx">unless</span> <span class="nx">activate</span>
                     <span class="vi">@paperPath.selected = </span><span class="kc">false</span>
                 <span class="k">else</span>
-                    <span class="vi">@paperPath.selected = </span><span class="kc">true</span></pre></div></td></tr><tr id="section-18"><td class="docs"><div class="pilwrap"><a href="#section-18" class="pilcrow">&#182;</a></div><h1>#</h1>
+                    <span class="vi">@paperPath.selected = </span><span class="kc">true</span></pre></div></td></tr><tr id="section-20"><td class="docs"><div class="pilwrap"><a href="#section-20" class="pilcrow">&#182;</a></div><h1>#</h1>
+
+<h3><em>extrude(<code>point</code>)</em> method takes one argument</h3>
+
+<ul>
+<li>the <em>lenght</em> of the extrusion <br />
+This method returns a new mesh containig the extruded shape <br />
+Path is turned invisible when creating the 3D shape</li>
+</ul>
 </td><td class="code"><div class="highlight"><pre>            <span class="n-Method">extrude</span><span class="o">:</span><span class="nf">(value)=&gt;</span>
-                <span class="vi">@ThreePath.visible = </span><span class="kc">false</span>
+                <span class="vi">@threePath.visible = </span><span class="kc">false</span>
                 <span class="nv">shape = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Shape</span><span class="p">(</span><span class="nx">@points</span><span class="p">)</span>
                 <span class="nv">material = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshLambertMaterial</span><span class="p">({</span>
                     <span class="nv">color: </span><span class="nx">@color</span>
@@ -236,9 +264,13 @@ and <code>stage3Dx</code> and <code>srage3Dy</code> in 0.0 to 1.0 position form 
                         <span class="nv">extrudeMaterial: </span><span class="nx">material</span>
                     <span class="p">}),</span>
                     <span class="nx">material</span>
-                <span class="p">)</span>
+                <span class="p">)</span></pre></div></td></tr><tr id="section-21"><td class="docs"><div class="pilwrap"><a href="#section-21" class="pilcrow">&#182;</a></div><h3><em>validatePoint(<code>point</code>)</em> method takes one argument</h3>
 
-            <span class="n-Method">validatePoint</span><span class="o">:</span><span class="nf">(point)=&gt;</span>
+<ul>
+<li>the <em>point</em> variable that needs to be checked <br />
+This method checks if the argument is a valid point and attemps to create one if it can othwise <code>false</code> is returned</li>
+</ul>
+</td><td class="code"><div class="highlight"><pre>            <span class="n-Method">validatePoint</span><span class="o">:</span><span class="nf">(point)=&gt;</span>
                 <span class="k">if</span> <span class="nx">point</span> <span class="k">instanceof</span> <span class="nb">Array</span>
                     <span class="k">if</span> <span class="nx">point</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">2</span>
                         <span class="k">if</span> <span class="nx">@name</span><span class="o">?</span>
@@ -258,4 +290,4 @@ and <code>stage3Dx</code> and <code>srage3Dy</code> in 0.0 to 1.0 position form 
 <span class="p">)</span>
             
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Sat Nov 19 2011 18:20:11 GMT+0100 (CET)  </div><div id="projectname"><a href="../../../../../../../../readme.html">CloudCad</a></div></div></body></html>
+</pre></div></td></tr></tbody></table><div id="generated">generated Sat Nov 19 2011 22:57:36 GMT+0100 (CET)  </div><div id="projectname"><a href="../../../../../../../../readme.html">CloudCad</a></div></div></body></html>

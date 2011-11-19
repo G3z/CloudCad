@@ -1,0 +1,27 @@
+{
+  "name": "CloudCad",
+  "description": "Collaborative tool for Cloud Computing Aided Design via WebGL",
+  "keywords": [
+    "cad",
+    "clod"
+  ],
+  "version": "0.0.1",
+  "licenses": [
+    {
+      "type": "undefined"
+    }
+  ],
+  "contributors": [
+    "Giacomo Trezzi <giacomo.trezzi@gmail.com>",
+    "Fabio Trezzi <fabio.trezzi@ct19.it>"
+  ],
+  "engines": {
+    "rails": ">=3.1.0"
+  },
+  "dependencies": {
+    "jQuery": "latest",
+    "coffee-script": "latest",
+    "Three.js": "r46",
+    "Spine": "latest"
+  }
+}

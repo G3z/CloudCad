@@ -1,9 +1,9 @@
+### Path3D Class ###
+# Path3d Class combines Three.js path and shape classes providing an object that is editable under mouse interaction and that easily convertible into a solid shape
 define(
     "views/draw/3D/primitives/Path3D"
     ["views/draw/3D/primitives/Primitive","views/draw/3D/primitives/Point3D","views/draw/3D/primitives/Segment"],
     (Primitive,Point3D,Segment)->
-        ### Path3d Class###
-        # Path3d is a class that is used to draw closed path in the system
         class CC.views.draw.primitives.Path3D extends Primitive
             @ThreePath
             @points
@@ -12,22 +12,46 @@ define(
             @lastPoint
             @selectedPoint
             @selectedSegment
-
+            #### *constructor(`attr`)* method takes one argument
+            #* the *attr* object that cointains various options  
+            #Currently these options are supported:  
+            #   * *color*: (the color of the path and of the extruded mesh)
+            #   * *threePath*: (an existing THREE.Path to be converted to Path3D)
+            #   * *points*: (an array of points representig the points of the path)
+            #   * *name*: (a name for the object, useful for yet to be implemented object referencing)
+            #   * *start*: a single point where the path is starting
+            #
+            # If one of the above options isn't specified or attr isn't given the appropriate default is set.  
+            # Also a `Particle System` is used to identify points along the shape and an hidden Shperical mesh is attached to each vertext to detect collision
             constructor:(attr)->
                 super()
-                color = 0x8866ff
+
+                if attr?.color?
+                    @color = attr.color
+                else
+                    @color = 0x8866ff
+
                 if attr?.threePath?
                     @ThreePath = attr.threePath 
                 else
                     if attr?.points?
-                        @ThreePath = new THREE.Line(new THREE.CurvePath.prototype.createGeometry(attr.points), new THREE.LineBasicMaterial( { color: color, linewidth: 2 } ))
+                        @ThreePath = new THREE.Line(
+                            new THREE.CurvePath.prototype.createGeometry(attr.points),
+                            new THREE.LineBasicMaterial({ 
+                                color: @color
+                                linewidth: 2 
+                            })
+                        )
                     else
-                        @ThreePath = new THREE.Line(new THREE.CurvePath.prototype.createGeometry([]), new THREE.LineBasicMaterial( { color: color, linewidth: 2 } ))
+                        @ThreePath = new THREE.Line(
+                            new THREE.CurvePath.prototype.createGeometry([]),
+                            new THREE.LineBasicMaterial( {
+                                color: @color
+                                linewidth: 2
+                            })
+                        )
                 if attr?.points?
                     @points = attr.points
-                    #for point in attr.points
-                    #    @add(point)
-                    #@rearrangePoints()
                 else
                     @points = []    
                 
@@ -38,12 +62,55 @@ define(
                     @start(@validatePoint(attr))
                 else if attr?.start? and @validatePoint(attr.start) != false
                     @start(@validatePoint(attr.start))
-            
+                
+                @particles = new THREE.Geometry()
+                pMaterial = new THREE.ParticleBasicMaterial({
+                    color: @color,
+                    size: 10
+                })
+                for vertice, i in @points
+                    if i < @points.length
+                        particle = new THREE.Vertex(vertice)
+                        @particles.vertices.push(particle)
+                        particle.father = @ThreePath
+                        particle.idx = i
+                        position = new THREE.Vector3(vertice.x,vertice.y,@ThreePath.position.z)
+
+                        radius = 10
+                        segments = 4
+                        rings = 4
+                        sphere = new THREE.Mesh(
+                            new THREE.SphereGeometry(radius,segments,rings),
+                            new THREE.MeshBasicMaterial({
+                                color: @color
+                                opacity: 0.25
+                                transparent: true
+                                wireframe: true
+                            })
+                        )
+                        sphere.placeholder = true
+                        sphere.visible = false
+                        sphere.vertexIndex = i
+                        sphere.position.x = vertice.x
+                        sphere.position.y = vertice.y
+                        
+                        @ThreePath.add(sphere)
+
+                particleSystem = new THREE.ParticleSystem(
+                    @particles,
+                    pMaterial
+                )
+                @ThreePath.add(particleSystem)
+
+            #### *update()* method takes no argument
+            #Update forces updates to the internal
             update:=>
                 @lastPoint = @point("last")
                 @threePath.geometry.__dirtyVertices = true
                 @threePath.geometry.__dirtyNormals = true
-
+            
+            #### *start(`point`)* method takes one argument
+            #* the starting *point* from wich the Path should start
             start:(point)=>
                 point = @validatePoint(point)
                 if point
@@ -52,6 +119,8 @@ define(
                     @points.push(point)
                     @threePath.moveTo(point)
 
+            #### *add(`point`)* method takes one argument
+            #* the *point* to be added to the Path
             add:(point)=>
                 point = @validatePoint(point)
                 if point
@@ -162,7 +231,31 @@ define(
                 else
                     @paperPath.selected = true
                 ###
-            
+            #### *extrude(`point`)* method takes one argument
+            #* the *lenght* of the extrusion  
+            # This method returns a new mesh containig the extruded shape  
+            # Path is turned invisible when creating the 3D shape
+            extrude:(value)=>
+                @ThreePath.visible = false
+                shape = new THREE.Shape(@points)
+                material = new THREE.MeshLambertMaterial({
+                    color: @color
+                    ambient: 0x111111
+                    blending: 1
+                    shading: 1
+                })
+                return new THREE.Mesh(
+                    shape.extrude({
+                        amount:value,
+                        bevelEnabled:false,
+                        material: material,
+                        extrudeMaterial: material
+                    }),
+                    material
+                )
+            #### *validatePoint(`point`)* method takes one argument
+            #* the *point* variable that needs to be checked  
+            # This method checks if the argument is a valid point and attemps to create one if it can othwise `false` is returned
             validatePoint:(point)=>
                 if point instanceof Array
                     if point.length == 2

@@ -1,11 +1,11 @@
 
 define(
-    "views/draw/Camera",
+    "views/Camera",
     ()->
         class CC.views.draw.Camera extends THREE.Camera
             constructor:(@width, @height,@fov,@pNear,@pFar, @oNear, @oFar)->
                 super()
-                @perspective = true
+                
                 
                 @left = -@width / 2
                 @right = @width / 2
@@ -18,7 +18,7 @@ define(
                 @zoom = 1
                 
                 @toPerspective()
-                
+
                 @aspect = @width/@height
             
             toPerspective:=>
@@ -40,18 +40,16 @@ define(
 
                 hyperfocus = ( near + far ) / 2 
                 
-                halfHeight = Math.tan( @zoom / 2 ) * hyperfocus
+                halfHeight = Math.tan( @fov / 2 ) * hyperfocus
                 planeHeight = 2 * halfHeight
                 planeWidth = planeHeight * aspect
                 halfWidth = planeWidth / 2
-                
-                halfHeight /= @fov
-                halfWidth /= @fov
+
                 #debugger
-                @cameraO.left = -halfWidth
-                @cameraO.right = halfWidth
-                @cameraO.top = halfHeight
-                @cameraO.bottom = -halfHeight
+                @cameraO.left = @left
+                @cameraO.right = @right
+                @cameraO.top = @top
+                @cameraO.bottom = @bottom
                         
                 @cameraO.updateProjectionMatrix()
 
@@ -83,14 +81,10 @@ define(
                     @toOrthographic()
 
             toFrontView:=>
+                console.log @rotation
                 @rotation.x = 0
-                @position.x = 0
-                
-                @rotation.y = 0
-                @position.y = 0
-                
+                @rotation.y = 0                
                 @rotation.z = 0
-                @position.z = 400
                 
                 @rotationAutoUpdate = false
             toBackView:=>
@@ -127,13 +121,10 @@ define(
 
 
             toggleType:->
-                if @perspective
-                    #@setFov(1)
-                    #@setZoom(35)
+                if @inPersepectiveMode
                     @toOrthographic()
                     @perspective = false
                 else
-                    #@setFov(35)
-                    #@setZoom(1)
                     @toPerspective()
                     @perspective = true
+)

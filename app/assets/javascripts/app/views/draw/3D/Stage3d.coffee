@@ -1,6 +1,6 @@
 define(
     "views/draw/3D/Stage3d"
-    ["views/Abstract", "views/draw/Camera", "views/Mouse", "views/Keyboard", "views/CameraController","views/draw/3D/primitives/Path3D"],
+    ["views/Abstract", "views/Camera", "views/Mouse", "views/Keyboard", "views/CameraController","views/draw/3D/primitives/Path3D"],
     (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D)->
         class CC.views.draw.Stage3d extends Abstract
             ###
@@ -25,13 +25,13 @@ define(
                 @zoom = 1
                 @lastvert =0
                 @offset = new THREE.Vector3()
-                
+
                 #@camera.toOrthographic()
 
                 # Create the real Scene
                 @scene = new THREE.Scene()
                 @projector = new THREE.Projector()
-                
+
 
                 @world = new THREE.Object3D()
                 @scene.add(@world)
@@ -42,7 +42,7 @@ define(
                 @scene.add(@camera)
                 #@camera.lookAt(@world)
                 #@mouse = new CC.views.draw.Mouse(@camera)
-                
+
                 # Add a light
                 @light1 = new THREE.SpotLight(0xFFFFFF,1.0,2.0)
                 @light1.position.set( 400, 300, 400 )
@@ -59,7 +59,7 @@ define(
                 # Add ambient light
                 @ambientLight = new THREE.AmbientLight( 0xffffff )
                 @scene.add(@ambientLight)
-                
+
                 @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: true, wireframe: true } ) );
                 @cameraPlane.lookAt( @camera.position );
                 @cameraPlane.visible = false;
@@ -84,7 +84,7 @@ define(
                         sortObjects:true
                     })
                     #@renderer.setFaceCulling("back","cw")
-                
+
                 @mouse = new Mouse($(@canvas))
                 @keyboard = new Keyboard()
 
@@ -92,7 +92,7 @@ define(
                 @cameraController.movementSpeed = 75;
                 @cameraController.lookSpeed = 0.125;
                 @cameraController.lookVertical = false;
-                
+
 
                 # Define rendere size
                 @renderer.setSize( window.innerWidth, window.innerHeight-50 )
@@ -111,11 +111,11 @@ define(
                 document.body.appendChild( @renderer.domElement )
 
                 # Handle mouse events
-                
+
                 @createGeom()
                 window.stage3d = this
-                
-                # Event listeners   
+
+                # Event listeners
                 Spine.bind 'mouse:btn1_down', =>
                     unless window.keyboard.isAnyDown()
                         vector = new THREE.Vector3(
@@ -146,10 +146,10 @@ define(
                                 @selectedMesh = null
                         else
                             @selectedMesh = null
-                
+
                 Spine.bind 'keyboard:67_up', =>
                     @camera.toggleType()
-                
+
                 Spine.bind 'keyboard:49_up', =>
                     if @keyboard.isKeyDown("alt")
                         @camera.toFrontView()
@@ -168,7 +168,7 @@ define(
 
                         else if @selectedParticle?
                             @cameraPlane.position.copy( @selectedParticle.position )
-                        
+
                         vector = new THREE.Vector3(
                             @mouse.currentPos.stage3Dx
                             @mouse.currentPos.stage3Dy
@@ -187,8 +187,8 @@ define(
                             newPoint = intersects[0].point.clone()
                             @selectedMesh.position.x = newPoint.x
                             @selectedMesh.position.y = newPoint.y
-                            
-                            @linea.movePoint(@selectedMesh.vertexIndex , @selectedMesh.position) 
+
+                            @linea.movePoint(@selectedMesh.vertexIndex , @selectedMesh.position)
             animate:=>
                 requestAnimFrame(@animate)
                 @render()
@@ -196,7 +196,7 @@ define(
             render:=>
                 @cameraController.update()
                 @cameraPlane.lookAt( @camera.position );
-                
+
                 @renderer.render(@scene,@camera)
 
             createGeom:=>

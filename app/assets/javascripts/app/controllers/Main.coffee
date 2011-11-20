@@ -4,7 +4,7 @@
 
 define(
     "controllers/Main",
-    ["controllers/Abstract", "views/draw/3D/Stage3d", "views/gui/MainToolbar"],
+    ["controllers/Abstract", "views/draw/3D/Stage3d", "views/gui/MainToolbar", "views/gui/TopBar"],
     (Abstract, Stage3d, MainToolbar)->
         class CC.controllers.Main extends Abstract
 
@@ -35,5 +35,5 @@ define(
 
             to2d:=>
                 return
-        
+
 )

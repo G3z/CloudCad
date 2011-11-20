@@ -1,7 +1,7 @@
 
 define(
     "views/gui/TopBar",
-    ["views/Abstract", "views/gui/Window"],
+    ["views/Abstract", "views/gui/Window", "controllers/CommandExecutor"],
     (Abstract, Window)->
         class TopBar extends Abstract
 
@@ -38,5 +38,5 @@ define(
 
         # Store the instance
         CC.views.gui.TopBar = new TopBar()
-        
+
 )

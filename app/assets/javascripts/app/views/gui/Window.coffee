@@ -2,7 +2,7 @@
 define(
     "views/gui/Window",
     ["views/gui/AbstractPanel"],
-    (Abstract)->
+    (AbstractPanel)->
         class CC.views.gui.Window extends AbstractPanel
 
             ###
@@ -31,6 +31,6 @@ define(
 
                 $(windowElement)
                     .css('left', (vW / 2 - eW / 2) + "px")
-        
+
 )
 

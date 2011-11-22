@@ -25,7 +25,7 @@ define(
                 @zoom = 1
                 @lastvert =0
                 @offset = new THREE.Vector3()
-
+                
                 #@camera.toOrthographic()
 
                 # Create the real Scene
@@ -59,8 +59,8 @@ define(
                 # Add ambient light
                 @ambientLight = new THREE.AmbientLight( 0xffffff )
                 @scene.add(@ambientLight)
-
-                @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: true, wireframe: true } ) );
+                
+                @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: false, wireframe: false } ) );
                 @cameraPlane.lookAt( @camera.position );
                 @cameraPlane.visible = false;
                 @scene.add(@cameraPlane)
@@ -117,7 +117,7 @@ define(
 
                 # Event listeners
                 Spine.bind 'mouse:btn1_down', =>
-                    unless window.keyboard.isAnyDown()
+                    unless @keyboard.isAnyDown()
                         vector = new THREE.Vector3(
                             @mouse.currentPos.stage3Dx
                             @mouse.currentPos.stage3Dy
@@ -153,13 +153,14 @@ define(
                 Spine.bind 'keyboard:49_up', =>
                     if @keyboard.isKeyDown("alt")
                         @camera.toFrontView()
+                        @cameraController.resetTarget()
 
                 Spine.bind 'mouse:btn1_up', =>
                     if @selectedMesh?
                         @selectedMesh.material.color.setHex(0x53aabb)
 
                 Spine.bind 'mouse:btn1_drag', =>
-                    unless window.keyboard.isAnyDown()
+                    unless @keyboard.isAnyDown()
                         if (!@selectedMesh and !@selectedParticle) || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
                             return
 
@@ -188,7 +189,7 @@ define(
                             @selectedMesh.position.x = newPoint.x
                             @selectedMesh.position.y = newPoint.y
 
-                            @linea.movePoint(@selectedMesh.vertexIndex , @selectedMesh.position)
+                            @linea.movePoint(@selectedMesh.vertexIndex , @selectedMesh.position) 
             animate:=>
                 requestAnimFrame(@animate)
                 @render()

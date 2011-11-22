@@ -12,7 +12,7 @@ define(
         class CC.views.Keyboard extends Spine.Module 
             @extend(Spine.Events)
 
-            constructor:->
+            constructor:(@canvas)->
                 @_keys = {}
 
                 $(window).bind( 'keydown', (event)=>
@@ -22,16 +22,18 @@ define(
                 $(window).bind( 'keyup', (event)=>
                     @keyUp(event.keyCode)
                 )
-                window.keyboard = this
+                #window.keyboard = this
 
             keyDown:(keyCode)=>
                 #console.log keyCode
                 @_keys[keyCode] = true
                 Spine.trigger 'keyboard:' + keyCode + '_down'
+                return true
 
             keyUp:(keyCode)=>
                 @_keys[keyCode] = false
                 Spine.trigger 'keyboard:' + keyCode + '_up'
+                return true
 
             isKeyDown:(keyCode)=>
                 if typeof keyCode == "string"

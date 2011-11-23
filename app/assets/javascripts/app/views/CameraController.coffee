@@ -211,7 +211,42 @@ define(
                 @stage3d.camera.position.copy(@target)
                 @stage3d.camera.up = new THREE.Vector3(0,1,0)
                 @stage3d.camera.rotationAutoUpdate = false
-                if @stage3d.camera.position.z >0 then @stage3d.camera.position.z += distance else @stage3d.camera.position.z -= distance
+                @stage3d.camera.position.z += distance
+            
+            toBackView:=>
+                distance = @stage3d.camera.position.distanceTo(@target)
+                @stage3d.camera.position.copy(@target)
+                @stage3d.camera.up = new THREE.Vector3(0,1,0)
+                @stage3d.camera.rotationAutoUpdate = false
+                @stage3d.camera.position.z -= distance
+
+            toTopView:=>
+                distance = @stage3d.camera.position.distanceTo(@target)
+                @stage3d.camera.position.copy(@target)
+                @stage3d.camera.up = new THREE.Vector3(0,0,1)
+                @stage3d.camera.rotationAutoUpdate = false
+                @stage3d.camera.position.y += distance
+
+            toBottomView:=>
+                distance = @stage3d.camera.position.distanceTo(@target)
+                @stage3d.camera.position.copy(@target)
+                @stage3d.camera.up = new THREE.Vector3(0,0,-1)
+                @stage3d.camera.rotationAutoUpdate = false
+                @stage3d.camera.position.y -= distance
+
+            toLeftView:=>
+                distance = @stage3d.camera.position.distanceTo(@target)
+                @stage3d.camera.position.copy(@target)
+                @stage3d.camera.up = new THREE.Vector3(0,1,0)
+                @stage3d.camera.rotationAutoUpdate = false
+                @stage3d.camera.position.x += distance
+
+            toRightView:=>
+                distance = @stage3d.camera.position.distanceTo(@target)
+                @stage3d.camera.position.copy(@target)
+                @stage3d.camera.up = new THREE.Vector3(0,1,0)
+                @stage3d.camera.rotationAutoUpdate = false
+                @stage3d.camera.position.x -= distance
 
             mouseUp:=>
                 @_state = @STATE.NONE

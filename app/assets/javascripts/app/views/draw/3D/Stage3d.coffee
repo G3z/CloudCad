@@ -38,7 +38,7 @@ define(
 
                 # Setup camera
                 @camera = new Camera((window.innerWidth),(window.innerHeight-40),35, 1, 15000,1, 15000)
-                @camera.position.z = -1000 * @zoom
+                @camera.position.z = 1000 * @zoom
                 @scene.add(@camera)
                 #@camera.lookAt(@world)
                 #@mouse = new CC.views.draw.Mouse(@camera)
@@ -177,10 +177,30 @@ define(
                 Spine.bind 'keyboard:67_up', =>
                     @camera.toggleType()
 
-                Spine.bind 'keyboard:49_up', =>
+                Spine.bind 'keyboard:49_up', =>         # 1
                     if @keyboard.isKeyDown("alt")
                         @cameraController.toFrontView()
 
+                Spine.bind 'keyboard:50_up', =>         # 2
+                    if @keyboard.isKeyDown("alt")
+                        @cameraController.toBackView()
+
+                Spine.bind 'keyboard:51_up', =>         # 3
+                    if @keyboard.isKeyDown("alt")
+                        @cameraController.toTopView()
+
+                Spine.bind 'keyboard:52_up', =>         # 4
+                    if @keyboard.isKeyDown("alt")
+                        @cameraController.toBottomView()
+
+                Spine.bind 'keyboard:192_up', =>         # 5
+                    #if @keyboard.isKeyDown("alt")
+                    @cameraController.toLeftView()
+
+                Spine.bind 'keyboard:54_up', =>         # 6
+                    if @keyboard.isKeyDown("alt")
+                        @cameraController.toRightView()
+                                                                        
                 Spine.bind 'mouse:btn1_up', =>
                     if @selectedMesh?
                         @selectedMesh.material.color.setHex(0x53aabb)

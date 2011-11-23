@@ -263,7 +263,7 @@ define(
                     blending: 1
                     shading: 1
                 })
-                return new THREE.Mesh(
+                @extrusion = new THREE.Mesh(
                     shape.extrude({
                         amount:value,
                         bevelEnabled:false,
@@ -272,6 +272,8 @@ define(
                     }),
                     material
                 )
+                window.stage3d.world.remove(@threePath)
+                window.stage3d.world.add(@extrusion)
             #### *validatePoint(`point`)* method takes one argument
             #* the *point* variable that needs to be checked  
             # This method checks if the argument is a valid point and attemps to create one if it can othwise `false` is returned

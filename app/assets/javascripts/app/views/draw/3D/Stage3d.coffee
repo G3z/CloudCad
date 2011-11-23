@@ -110,10 +110,8 @@ define(
                 # Add the element to the DOM
                 document.body.appendChild( @renderer.domElement )
 
-                # Handle mouse events
-
-                @createGeom()
                 window.stage3d = this
+                @createGeom()
 
                 # Event listeners
                 Spine.bind 'mouse:btn1_down', =>
@@ -211,5 +209,5 @@ define(
                 @linea = new Path3D({
                     points: @vertices
                 })
-                @world.add(@linea.threePath)
+                #@world.add(@linea.threePath)
 )

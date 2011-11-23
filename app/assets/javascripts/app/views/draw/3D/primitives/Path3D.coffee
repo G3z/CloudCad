@@ -103,8 +103,10 @@ define(
                 @particleSystem.dynamic = true
                 @threePath.add(@particleSystem)
 
+                window.stage3d.world.add(@threePath)
+
             #### *update()* method takes no argument
-            #Update forces updates to the internal
+            #Update forces updates to the internals
             update:=>
                 @lastPoint = @point("last")
                 @threePath.geometry.__dirtyVertices = true
@@ -172,7 +174,10 @@ define(
                     @movePoint(el,newPos)
                 else if el instanceof Segment
                     @moveSegment(el,newPos)
-
+            #### *movePoint(`index`,`newPoint`)* method takes two argument
+            #* the *index* of the point that has to be moved
+            #* the *newPoint* representing the new position of the element  
+            #this method simply update the position of the vertex at the given index and triggers the update method once done
             movePoint:(index,newPoint)=>
                 if index == 0
                     last = @points.length-1

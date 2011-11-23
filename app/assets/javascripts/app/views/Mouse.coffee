@@ -154,6 +154,14 @@ define(
             #
             # the related `Spine Event` is also fired
             mouseWheel:(event,delta)->
+                @wheel.direction = if delta > 0 then "UP" else "DOWN"
+                @wheel.speed = Math.abs(delta)
+                unless @noZoom
+                    @_wheelDelta += delta/1000
+                    if @_wheelDelta >1.0
+                        @_wheelDelta = 1.0
+                    else if @_wheelDelta <0.0
+                        @_wheelDelta = 0.0
                 Spine.trigger 'mouse:wheel_changed'
 
             #### *eventToPoint(`event`)* method takes one argument

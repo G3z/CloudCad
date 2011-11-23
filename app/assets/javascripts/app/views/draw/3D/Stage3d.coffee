@@ -66,14 +66,14 @@ define(
                 @scene.add(@cameraPlane)
                 
                 
-                planeX = new THREE.Mesh( new THREE.PlaneGeometry( 600, 400, 1, 1 ), new THREE.MeshBasicMaterial( { 
+                planeX = new THREE.Mesh( new THREE.PlaneGeometry( 600, 400, 2, 2 ), new THREE.MeshBasicMaterial( { 
                             color: 0xaa0000
                             opacity: .3
                             transparent: false
                             wireframe: true
                         }))
 
-                planeY = new THREE.Mesh( new THREE.PlaneGeometry( 600, 400, 1, 1 ), new THREE.MeshBasicMaterial( { 
+                planeY = new THREE.Mesh( new THREE.PlaneGeometry( 600, 400, 2, 2 ), new THREE.MeshBasicMaterial( { 
                             color: 0x00aa00
                             opacity: .3
                             transparent: false
@@ -81,7 +81,7 @@ define(
                         }))
                 planeY.rotation.x = Math.toRadian(90) #1.570796327
 
-                planeZ = new THREE.Mesh( new THREE.PlaneGeometry( 600, 400, 1, 1 ), new THREE.MeshBasicMaterial( { 
+                planeZ = new THREE.Mesh( new THREE.PlaneGeometry( 600, 400, 2, 2 ), new THREE.MeshBasicMaterial( { 
                             color: 0x0000aa
                             opacity: .3
                             transparent: false

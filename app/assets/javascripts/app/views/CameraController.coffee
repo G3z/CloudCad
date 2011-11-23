@@ -68,6 +68,9 @@ define(
 
                 Spine.bind 'mouse:btn1_up', =>
                     @mouseUp()
+
+                Spine.bind 'mouse:wheel_changed', =>
+                    @mouseWheel()
                 #debugger
 
             getMouseOnScreen:( x, y ) =>
@@ -172,6 +175,7 @@ define(
                 @stage3d.camera.position.add( @target, @_eye )
                 @checkDistances()
                 @stage3d.camera.lookAt( @target )
+                @stage3d.camera.rotationAutoUpdate = true
 
             mouseDown:=>
                 if @_state == @STATE.NONE
@@ -203,22 +207,18 @@ define(
                     @_rotateEnd = @getMouseProjectionOnBall( @mouse.currentPos.x,@mouse.currentPos.y )
             
             toFrontView:=>
-                #@stage3d.camera.position.copy(@target)
-                @stage3d.camera.rotation = new THREE.Vector3()
-                #@stage3d.camera.position.z += 200
+                distance = @stage3d.camera.position.distanceTo(@target)
+                @stage3d.camera.position.copy(@target)
+                @stage3d.camera.up = new THREE.Vector3(0,1,0)
+                @stage3d.camera.rotationAutoUpdate = false
+                if @stage3d.camera.position.z >0 then @stage3d.camera.position.z += distance else @stage3d.camera.position.z -= distance
 
             mouseUp:=>
                 @_state = @STATE.NONE
 
-            mouseWheel:(event,delta)->
-                @wheel.direction = if delta > 0 then "UP" else "DOWN"
-                @wheel.speed = Math.abs(delta)
-                unless @noZoom
-                    @_wheelDelta += delta/1000
-                    if @_wheelDelta >1.0
-                        @_wheelDelta = 1.0
-                    else if @_wheelDelta <0.0
-                        @_wheelDelta = 0.0
+            mouseWheel:=>
+                console.log "qui"
+                @factor = @mouse.wheel.speed
                 #console.log @_wheelDelta
 )
 

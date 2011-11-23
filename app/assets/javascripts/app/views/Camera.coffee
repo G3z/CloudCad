@@ -6,7 +6,6 @@ define(
             constructor:(@width, @height,@fov,@pNear,@pFar, @oNear, @oFar)->
                 super()
                 
-                
                 @left = -@width / 2
                 @right = @width / 2
                 @top = @height / 2
@@ -29,8 +28,7 @@ define(
                 @projectionMatrix = @cameraP.projectionMatrix;
                 
                 @inPersepectiveMode = true;
-                @inOrthographicMode = false;
-                
+                @inOrthographicMode = false;    
             
             toOrthographic:=>
                 fov = @fov
@@ -59,14 +57,12 @@ define(
                 
                 @inPersepectiveMode = false
                 @inOrthographicMode = true
-                
             
             setFov:(@fov)=>    
                 if @inPersepectiveMode
                     @toPerspective()
                 else
-                    @toOrthographic()
-                
+                    @toOrthographic()                
             
             setLens:(focalLength, framesize = 43.25)=>  # 36x24mm
                 fov = 2 * Math.atan( framesize / (focalLength * 2))

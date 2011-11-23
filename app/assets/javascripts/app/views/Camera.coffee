@@ -15,7 +15,7 @@ define(
                 @cameraP = new THREE.PerspectiveCamera( @fov, @width/@height, @pNear, @pFar );
                 
                 @zoom = 1
-                
+                @distance = 1
                 @toPerspective()
 
                 @aspect = @width/@height
@@ -35,19 +35,21 @@ define(
                 aspect = @aspect
                 near = @pNear
                 far = @pFar
-
-                hyperfocus = ( near + far ) / 2 
-                
-                halfHeight = Math.tan( @fov / 2 ) * hyperfocus
+                #debugger
+                hyperfocus = ( near + far ) / 100 * (@distance/2000)
+                halfHeight = Math.abs(Math.tan( @fov / 2 ) * hyperfocus)
                 planeHeight = 2 * halfHeight
                 planeWidth = planeHeight * aspect
                 halfWidth = planeWidth / 2
 
                 #debugger
-                @cameraO.left = @left
-                @cameraO.right = @right
-                @cameraO.top = @top
-                @cameraO.bottom = @bottom
+                halfHeight /= @zoom
+                halfWidth /= @zoom
+                
+                @cameraO.left = -halfWidth
+                @cameraO.right = halfWidth
+                @cameraO.top = halfHeight
+                @cameraO.bottom = -halfHeight
                         
                 @cameraO.updateProjectionMatrix()
 

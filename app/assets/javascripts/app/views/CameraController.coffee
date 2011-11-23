@@ -122,21 +122,13 @@ define(
                 
 
             zoomCamera:=>
-                unless factor?
-                    factor = 1.0 + ( @_zoomEnd.y - @_zoomStart.y ) * @zoomSpeed
-                    if factor != 1.0 and factor > 0.0
-                        @_eye.multiplyScalar( factor )
-                        if ( @staticMoving )
-                            @_zoomStart = @_zoomEnd
-                        else
-                            @_zoomStart.y += ( @_zoomEnd.y - @_zoomStart.y ) * @dynamicDampingFactor
-                else
-                    @_eye.multiplyScalar( factor/100 )
+                factor = 1.0 + ( @_zoomEnd.y - @_zoomStart.y ) * @zoomSpeed
+                if factor != 1.0 and factor > 0.0
+                    @_eye.multiplyScalar( factor )
                     if ( @staticMoving )
                         @_zoomStart = @_zoomEnd
                     else
                         @_zoomStart.y += ( @_zoomEnd.y - @_zoomStart.y ) * @dynamicDampingFactor
-
             panCamera :=>
                 mouseChange = @_panEnd.clone().subSelf( @_panStart )
 
@@ -171,7 +163,11 @@ define(
 
                 unless @noPan
                     @panCamera()
-
+                
+                unless @stage3d.camera.inPersepectiveMode 
+                    @stage3d.camera.distance = @stage3d.camera.position.distanceTo(@target)
+                    @stage3d.camera.toOrthographic()
+                    
                 @stage3d.camera.position.add( @target, @_eye )
                 @checkDistances()
                 @stage3d.camera.lookAt( @target )
@@ -252,7 +248,7 @@ define(
                 @_state = @STATE.NONE
 
             mouseWheel:=>
-                console.log "qui"
+                #console.log "qui"
                 @factor = @mouse.wheel.speed
                 #console.log @_wheelDelta
 )

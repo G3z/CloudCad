@@ -12,7 +12,10 @@ define(
                     v = (r&0x3|0x8)
                 return v.toString(16)
             return s.replace(/[xy]/g,f).toUpperCase()
-
+        Math.toRadian=(a)->
+            return a / 180 * Math.PI
+        Math.toDegree=(a)->
+            return a * 180 / Math.PI
         # Funzione per il debug
         window.debug = (obj, message)->
             console.log(obj, message)

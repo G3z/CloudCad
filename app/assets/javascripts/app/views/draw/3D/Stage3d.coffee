@@ -38,7 +38,7 @@ define(
 
                 # Setup camera
                 @camera = new Camera((window.innerWidth),(window.innerHeight-40),35, 1, 15000,1, 15000)
-                @camera.position.z = 1000 * @zoom
+                @camera.position.z = -1000 * @zoom
                 @scene.add(@camera)
                 #@camera.lookAt(@world)
                 #@mouse = new CC.views.draw.Mouse(@camera)
@@ -60,10 +60,39 @@ define(
                 @ambientLight = new THREE.AmbientLight( 0xffffff )
                 @scene.add(@ambientLight)
                 
-                @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: false, wireframe: false } ) );
-                @cameraPlane.lookAt( @camera.position );
-                @cameraPlane.visible = false;
+                @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: false, wireframe: false } ) )
+                @cameraPlane.lookAt( @camera.position )
+                @cameraPlane.visible = false
                 @scene.add(@cameraPlane)
+                
+                
+                planeX = new THREE.Mesh( new THREE.PlaneGeometry( 600, 400, 1, 1 ), new THREE.MeshBasicMaterial( { 
+                            color: 0xaa0000
+                            opacity: .3
+                            transparent: false
+                            wireframe: true
+                        }))
+
+                planeY = new THREE.Mesh( new THREE.PlaneGeometry( 600, 400, 1, 1 ), new THREE.MeshBasicMaterial( { 
+                            color: 0x00aa00
+                            opacity: .3
+                            transparent: false
+                            wireframe: true
+                        }))
+                planeY.rotation.x = Math.toRadian(90) #1.570796327
+
+                planeZ = new THREE.Mesh( new THREE.PlaneGeometry( 600, 400, 1, 1 ), new THREE.MeshBasicMaterial( { 
+                            color: 0x0000aa
+                            opacity: .3
+                            transparent: false
+                            wireframe: true
+                        }))
+                planeZ.rotation.y = Math.toRadian(90) #1.570796327
+                
+                @scene.add(planeX)
+                @scene.add(planeY)
+                @scene.add(planeZ)
+
 
                 # Setup a renderer
                 @canvas = document.createElement( 'canvas' )
@@ -150,8 +179,7 @@ define(
 
                 Spine.bind 'keyboard:49_up', =>
                     if @keyboard.isKeyDown("alt")
-                        @camera.toFrontView()
-                        @cameraController.resetTarget()
+                        @cameraController.toFrontView()
 
                 Spine.bind 'mouse:btn1_up', =>
                     if @selectedMesh?

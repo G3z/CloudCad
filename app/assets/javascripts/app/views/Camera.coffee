@@ -80,46 +80,6 @@ define(
                 else
                     @toOrthographic()
 
-            toFrontView:=>
-                console.log @rotation
-                @rotation.x = 0
-                @rotation.y = 0                
-                @rotation.z = 0
-                
-                @rotationAutoUpdate = false
-            toBackView:=>
-                @rotation.x = 0
-                @rotation.y = Math.PI
-                @rotation.z = 0
-                @rotationAutoUpdate = false
-            
-            toLeftView:=>
-                @rotation.x = 0
-                @rotation.y = - Math.PI / 2
-                @rotation.z = 0
-                @rotationAutoUpdate = false
-
-            toRightView:=>
-                @rotation.x = 0
-                @rotation.y = Math.PI / 2
-                @rotation.z = 0
-                @rotationAutoUpdate = false
-
-
-            toTopView:=>
-                @rotation.x = - Math.PI / 2
-                @rotation.y = 0
-                @rotation.z = 0
-                @rotationAutoUpdate = false
-
-
-            toBottomView:=>
-                @rotation.x = Math.PI / 2
-                @rotation.y = 0
-                @rotation.z = 0
-                @rotationAutoUpdate = false
-
-
             toggleType:->
                 if @inPersepectiveMode
                     @toOrthographic()

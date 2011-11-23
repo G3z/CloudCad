@@ -95,7 +95,6 @@ define(
                 projection = @stage3d.camera.up.clone().setLength( mouseOnBall.y )
                 projection.addSelf( @stage3d.camera.up.clone().crossSelf( @_eye ).setLength( mouseOnBall.x ) )
                 projection.addSelf( @_eye.setLength( mouseOnBall.z ) )
-
                 return projection
 
             rotateCamera:=>
@@ -117,6 +116,7 @@ define(
                     else
                         quaternion.setFromAxisAngle( axis, angle * ( @dynamicDampingFactor - 1.0 ) )
                         quaternion.multiplyVector3( @_rotateStart )
+                
 
             zoomCamera:=>
                 unless factor?
@@ -201,6 +201,11 @@ define(
 
                 else if (@mouse.btn1.down and @keyboard.isKeyDown("alt")) or ( @mouse.btn2.down and @keyboard.isKeyDown("alt"))
                     @_rotateEnd = @getMouseProjectionOnBall( @mouse.currentPos.x,@mouse.currentPos.y )
+            
+            toFrontView:=>
+                #@stage3d.camera.position.copy(@target)
+                @stage3d.camera.rotation = new THREE.Vector3()
+                #@stage3d.camera.position.z += 200
 
             mouseUp:=>
                 @_state = @STATE.NONE

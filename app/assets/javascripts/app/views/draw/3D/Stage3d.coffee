@@ -24,7 +24,6 @@ define(
                 @zoomScale = 4
                 @zoom = 1
                 @lastvert =0
-                @offset = new THREE.Vector3()
                 
                 #@camera.toOrthographic()
 
@@ -145,20 +144,8 @@ define(
                 # Event listeners
                 Spine.bind 'mouse:btn1_down', =>
                     unless @keyboard.isAnyDown()
-                        vector = new THREE.Vector3(
-                            @mouse.currentPos.stage3Dx
-                            @mouse.currentPos.stage3Dy
-                            0.5
-                        )
-
-                        #vector = new THREE.Vector3( @mouse.currentPos.x, @mouse.currentPos.y, 0.5 )
-                        #console.log(vector.x + " " + vector.y)
-                        @projector.unprojectVector(vector, @camera)
-                        ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
-                        #debugger
-                        c = ray.intersectObject(@world)
-                        #console.log c
-                        #debugger
+                        c = @getMouseTarget()
+                        console.log c
                         if c? and c.length>0
                             if c[0].object? and c[0].object != @cameraPlane
                                 obj = c[0].object
@@ -167,12 +154,36 @@ define(
                                 #debugger
                                 obj.material.color.setHex(0x0000bb)
                                 @selectedMesh = obj
-                                intersects = ray.intersectObject( @cameraPlane )
-                                @offset.copy( intersects[ 0 ].point ).subSelf( @cameraPlane.position )
                             else
                                 @selectedMesh = null
                         else
                             @selectedMesh = null
+
+                Spine.bind 'mouse:btn1_drag', =>
+                    unless @keyboard.isAnyDown()
+                        if (!@selectedMesh and !@selectedParticle) || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
+                            return
+
+                        if @selectedMesh?
+                            @cameraPlane.position.copy( @selectedMesh.position )
+
+                        else if @selectedParticle?
+                            @cameraPlane.position.copy( @selectedParticle.position )
+
+                        intersects = @getMouseTarget(@cameraPlane)
+                        #debugger
+                        if intersects[0]? and @selectedMesh.placeholder==true
+                            intersects[0].object.position.copy(@selectedMesh.position)
+                        #if intersects[0]?
+                            newPoint = intersects[0].point.clone()
+                            @selectedMesh.position.x = newPoint.x
+                            @selectedMesh.position.y = newPoint.y
+
+                            @linea.movePoint(@selectedMesh.vertexIndex , @selectedMesh.position) 
+                
+                Spine.bind 'mouse:btn1_up', =>
+                    if @selectedMesh?
+                        @selectedMesh.material.color.setHex(0x53aabb)
 
                 Spine.bind 'keyboard:67_up', =>
                     @camera.toggleType()
@@ -201,41 +212,7 @@ define(
                     if @keyboard.isKeyDown("alt")
                         @cameraController.toRightView()
                                                                         
-                Spine.bind 'mouse:btn1_up', =>
-                    if @selectedMesh?
-                        @selectedMesh.material.color.setHex(0x53aabb)
-
-                Spine.bind 'mouse:btn1_drag', =>
-                    unless @keyboard.isAnyDown()
-                        if (!@selectedMesh and !@selectedParticle) || @mouse.btn1.delta.w * 1 != @mouse.btn1.delta.w || @mouse.btn1.delta.h * 1 != @mouse.btn1.delta.h
-                            return
-
-                        if @selectedMesh?
-                            @cameraPlane.position.copy( @selectedMesh.position )
-
-                        else if @selectedParticle?
-                            @cameraPlane.position.copy( @selectedParticle.position )
-
-                        vector = new THREE.Vector3(
-                            @mouse.currentPos.stage3Dx
-                            @mouse.currentPos.stage3Dy
-                            0.5
-                        )
-
-                        @projector.unprojectVector(vector, @camera)
-                        ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
-
-                        intersects = ray.intersectObject( @cameraPlane )
-                        #debugger
-                        if intersects[0]? and @selectedMesh.placeholder==true
-                            idx = intersects[0].idx
-                            intersects[0].object.position.copy(@selectedMesh.position)
-                        #if intersects[0]?
-                            newPoint = intersects[0].point.clone()
-                            @selectedMesh.position.x = newPoint.x
-                            @selectedMesh.position.y = newPoint.y
-
-                            @linea.movePoint(@selectedMesh.vertexIndex , @selectedMesh.position) 
+                
             animate:=>
                 requestAnimFrame(@animate)
                 @render()
@@ -243,8 +220,43 @@ define(
             render:=>
                 @cameraController.update()
                 @cameraPlane.lookAt( @camera.position );
-
                 @renderer.render(@scene,@camera)
+
+            getMouseTarget:(object)=>  
+                if @camera.inPersepectiveMode
+                    vector = new THREE.Vector3(
+                        @mouse.currentPos.stage3Dx
+                        @mouse.currentPos.stage3Dy
+                        0.5
+                    )
+                    @projector.unprojectVector(vector, @camera)
+                    ray = new THREE.Ray(@camera.position, vector.subSelf( @camera.position ).normalize())
+                    if object? 
+                        return ray.intersectObject(object) 
+                    else 
+                        return ray.intersectObject(@world)
+                else
+                    vecOrigin = new THREE.Vector3( 
+                        @mouse.currentPos.stage3Dx
+                        @mouse.currentPos.stage3Dy
+                        -1
+                    )
+                    vecTarget = new THREE.Vector3( 
+                        @mouse.currentPos.stage3Dx
+                        @mouse.currentPos.stage3Dy
+                        1
+                    )
+
+                    @projector.unprojectVector( vecOrigin, @camera )
+                    @projector.unprojectVector( vecTarget, @camera )
+                    vecTarget.subSelf( vecOrigin ).normalize()
+                    ray = new THREE.Ray( @camera.position, vecTarget.subSelf( @camera.position ).normalize())
+                    ray.origin = vecOrigin
+                    ray.direction = vecTarget
+                    if object?
+                        return ray.intersectObject(object) 
+                    else
+                        return ray.intersectObject(@world)
 
             createGeom:=>
                 @vertices =[

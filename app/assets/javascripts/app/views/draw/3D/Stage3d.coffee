@@ -145,7 +145,6 @@ define(
                 Spine.bind 'mouse:btn1_down', =>
                     unless @keyboard.isAnyDown()
                         c = @getMouseTarget()
-                        console.log c
                         if c? and c.length>0
                             if c[0].object? and c[0].object != @cameraPlane
                                 obj = c[0].object

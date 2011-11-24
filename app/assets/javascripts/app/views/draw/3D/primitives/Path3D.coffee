@@ -190,6 +190,7 @@ define(
                     @particles.vertices[0].position = newPoint
                     @particles.vertices[last].position = newPoint
                 else
+                    @points[index] = newPoint
                     @threePath.geometry.vertices[index].position = newPoint
                     @particles.vertices[index].position = newPoint
                 @update()

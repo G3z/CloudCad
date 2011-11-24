@@ -28,27 +28,40 @@ define(
                 @wheel = new MouseWheel()
                 @anyDown = false
 
-                @canvas.bind('contextmenu', ( event )=>
+                touchCanvas = @canvas.Touchable()
+                
+                #Mouse Events
+                touchCanvas.bind('contextmenu', ( event )=>
                     event.preventDefault()
                 )
 
-                @canvas.bind( 'mousemove', (event) =>
+                touchCanvas.bind( 'mousemove', (event) =>
                     @mouseMove(event)
                 )
 
-                @canvas.bind( 'mousedown', ( event )=>
+                touchCanvas.bind( 'mousedown', ( event )=>
                     @mouseDown(event)
                 )
 
-                @canvas.bind( 'mouseup', (event)=>
+                touchCanvas.bind( 'mouseup', (event)=>
                     @mouseUp(event)
                 )
 
-                @canvas.bind('mousewheel', (event,delta)=>
+                touchCanvas.bind('mousewheel', (event,delta)=>
                     event.preventDefault()
                     @mouseWheel(event,delta)
                 )
 
+                #Touch Events
+                #touchCanvas.bind( 'touchablemove', (event) =>
+                #    @mouseMove(event)
+                #)
+                #touchCanvas.bind( 'tap', ( event )=>
+                #    @mouseDown(event)
+                #)
+                #touchCanvas.bind( 'touchableend', (event)=>
+                #    @mouseUp(event)
+                #)
             #### *mouseDown(`event`)* method takes one argument
             #* the *event* on the screen where the events was fired
             #

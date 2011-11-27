@@ -102,7 +102,7 @@ define(
                 )
                 @particleSystem.dynamic = true
                 @threePath.add(@particleSystem)
-
+                @threePath.father = this
                 window.stage3d.world.add(@threePath)
 
             #### *update()* method takes no argument
@@ -273,6 +273,7 @@ define(
                     }),
                     material
                 )
+                @extrusion.father = this
                 window.stage3d.world.remove(@threePath)
                 window.stage3d.world.add(@extrusion)
             #### *validatePoint(`point`)* method takes one argument

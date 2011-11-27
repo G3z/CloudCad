@@ -145,12 +145,12 @@ define(
                 Spine.bind 'mouse:btn1_down', =>
                     unless @keyboard.isAnyDown()
                         c = @getMouseTarget()
+                        console.log @getMouseTarget(@scene)
                         if c? and c.length>0
                             if c[0].object? and c[0].object != @cameraPlane
                                 obj = c[0].object
                                 if @selectedMesh?
                                     @selectedMesh.material.color.setHex(0x53aabb)
-                                #debugger
                                 obj.material.color.setHex(0x0000bb)
                                 @selectedMesh = obj
                             else
@@ -170,10 +170,8 @@ define(
                             @cameraPlane.position.copy( @selectedParticle.position )
 
                         intersects = @getMouseTarget(@cameraPlane)
-                        #debugger
                         if intersects[0]? and @selectedMesh.placeholder==true
                             intersects[0].object.position.copy(@selectedMesh.position)
-                        #if intersects[0]?
                             newPoint = intersects[0].point.clone()
                             @selectedMesh.position.x = newPoint.x
                             @selectedMesh.position.y = newPoint.y

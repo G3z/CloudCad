@@ -28,31 +28,32 @@ define(
                 @wheel = new MouseWheel()
                 @anyDown = false
 
-                touchCanvas = @canvas.Touchable()
+                
                 
                 #Mouse Events
-                touchCanvas.bind('contextmenu', ( event )=>
+                @canvas.bind('contextmenu', ( event )=>
                     event.preventDefault()
                 )
 
-                touchCanvas.bind( 'mousemove', (event) =>
+                @canvas.bind( 'mousemove', (event) =>
                     @mouseMove(event)
                 )
 
-                touchCanvas.bind( 'mousedown', ( event )=>
+                @canvas.bind( 'mousedown', ( event )=>
                     @mouseDown(event)
                 )
 
-                touchCanvas.bind( 'mouseup', (event)=>
+                @canvas.bind( 'mouseup', (event)=>
                     @mouseUp(event)
                 )
 
-                touchCanvas.bind('mousewheel', (event,delta)=>
+                @canvas.bind('mousewheel', (event,delta)=>
                     event.preventDefault()
                     @mouseWheel(event,delta)
                 )
 
                 #Touch Events
+                #touchCanvas = @canvas.Touchable()
                 #touchCanvas.bind( 'touchablemove', (event) =>
                 #    @mouseMove(event)
                 #)

@@ -194,7 +194,7 @@ define(
                 @renderer.render(@scene,@camera)
 
             createGeom:=>
-                @vertices =[
+                vertices =[
                     new THREE.Vector2(0,0)
                     new THREE.Vector2(0,100)
                     new THREE.Vector2(100,100)
@@ -202,7 +202,12 @@ define(
                     new THREE.Vector2(0,0)
                 ]
                 @linea = new Path3D({
-                    points: @vertices
+                    points: vertices
                 })
+
+                @linea2 = new Path3D({
+                    points: vertices
+                })
+                @linea2.threePath.position.x = -150
                 #@world.add(@linea.threePath)
 )

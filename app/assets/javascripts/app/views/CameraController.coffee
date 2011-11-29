@@ -219,14 +219,14 @@ define(
             toTopView:=>
                 distance = @stage3d.camera.position.distanceTo(@target)
                 @stage3d.camera.position.copy(@target)
-                @stage3d.camera.up = new THREE.Vector3(0,0,1)
+                @stage3d.camera.up = new THREE.Vector3(0,0,-1)
                 @stage3d.camera.rotationAutoUpdate = false
                 @stage3d.camera.position.y += distance
 
             toBottomView:=>
                 distance = @stage3d.camera.position.distanceTo(@target)
                 @stage3d.camera.position.copy(@target)
-                @stage3d.camera.up = new THREE.Vector3(0,0,-1)
+                @stage3d.camera.up = new THREE.Vector3(0,0,1)
                 @stage3d.camera.rotationAutoUpdate = false
                 @stage3d.camera.position.y -= distance
 

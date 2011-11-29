@@ -8,7 +8,19 @@ define(
                 super(stage3d)
                 @selectedIdx=null
 
-            mouseDown:(eventpoint)=>
+            mouseDown:()=>
+                c = @getMouseTarget(@stage3d.world)
+                if c? and c.length>0
+                    if c[0].object? and c[0].object != @stage3d.cameraPlane
+                        obj = c[0].object
+                        if @stage3d.selectedMesh?
+                            @stage3d.selectedMesh.material.color.setHex(0x53aabb)
+                        obj.material.color.setHex(0x0000bb)
+                        @stage3d.selectedMesh = obj
+                    else
+                        @stage3d.selectedMesh = null
+                else
+                    @stage3d.selectedMesh = null
                 ###
                 mousePoint = new CC.views.draw.primitives.Point2D(@stage3d.mouse.currentPos.x, @stage3d.mouse.currentPos.y,"")
                 if @stage3d.activePath? 
@@ -33,7 +45,7 @@ define(
                     @selectedIdx = null
                 ###
 
-            mouseDragged:(eventPoint)=>
+            mouseDragged:()=>
                 if (!@stage3d.selectedMesh and !@stage3d.selectedParticle) || @stage3d.mouse.btn1.delta.w * 1 != @stage3d.mouse.btn1.delta.w || @stage3d.mouse.btn1.delta.h * 1 != @stage3d.mouse.btn1.delta.h
                     return
 
@@ -52,7 +64,7 @@ define(
 
                     @stage3d.linea.movePoint(@stage3d.selectedMesh.vertexIndex , @stage3d.selectedMesh.position) 
                     
-            mouseUp:(eventPoint)=>
+            mouseUp:()=>
                 ###
                 if @selectedIdx != null
                     @path.segments[@selectedIdx].selected=false

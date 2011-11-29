@@ -4,67 +4,31 @@ define(
     (Tool3D)->
         class CC.views.draw.SelectTool extends Tool3D
             @selectedIdx
-            constructor:(stage2d)->
-                super(stage2d)
+            constructor:(stage3d)->
+                super(stage3d)
                 @selectedIdx=null
 
             mouseDown:(eventpoint)=>
-                mousePoint = new CC.views.draw.primitives.Point2D(@stage2d.mouse.currentPos.x, @stage2d.mouse.currentPos.y,"")
-                #debugger
-                @path = @stage2d.activePath
-                hitTest = paper.project.hitTest(mousePoint)
-                if hitTest?
-                    if @path? && @path.id != hitTest.item.ccObject.id
-                        @path.selected(false)
-                        for segment in @path.paperPath.segments
-                            segment.selected = false
-                        @path.update()
-                        @stage2d.activePath = null
-                        @path = null
-
-                        @path = hitTest.item.ccObject
-                        @path.selected(true)
-                        for segment in @path.paperPath.segments
-                            segment.selected = true
-                        @path.update()
-                        @stage2d.activePath = @path
-                    else if @path? && @path.id == hitTest.item.ccObject.id
-                        @path.selected(true)
-                        for segment in @path.paperPath.segments
-                            segment.selected = true
-                        @path.update()
-                        @stage2d.activePath = @path
+                c = @getMouseTarget(@stage3d.world)
+                if c? and c.length>0
+                    if c[0].object? and c[0].object != @stage3d.cameraPlane
+                        obj = c[0].object
+                        if @stage3d.selectedMesh?
+                            @stage3d.selectedMesh.material.color.setHex(0x53aabb)
+                        obj.material.color.setHex(0x0000bb)
+                        @stage3d.selectedMesh = obj
                     else
-                        if hitTest.item.ccObject instanceof CC.views.draw.primitives.Path
-                            @path = hitTest.item.ccObject
-                            @path.selected(true)
-                            for segment in @path.paperPath.segments
-                                segment.selected = true
-                            @path.update()
-                            @stage2d.activePath = @path
-                else if @path?
-                    @path.selected(false)
-                    for segment in @path.paperPath.segments
-                        segment.selected = false
-                    @path.update()
-                    @stage2d.activePath = null
-                    @path = null
-
+                        @stage3d.selectedMesh = null
+                else
+                    @stage3d.selectedMesh = null
                             
 
             mouseDragged:(eventPoint)=>
 
 
             mouseUp:(eventPoint)=>
-                if @path?
-                    if @selectedIdx != null
-                        @path.segments[@selectedIdx].selected=false
-                        @checkAlignment(@path.point("selected"))
-                        @removeIfDouble(@path.point("selected"))
-                        @selectedIdx = null
-                    @path.selected(false)
-                    for segment in @path.paperPath.segments
-                        segment.selected = false
+                #if @stage3d.selectedMesh?
+                #    @stage3d.selectedMesh.material.color.setHex(0x53aabb)
 
             checkAlignment:(point)->
                 if @path.points.length > 1

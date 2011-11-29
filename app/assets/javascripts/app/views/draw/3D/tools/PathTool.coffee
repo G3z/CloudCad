@@ -4,25 +4,26 @@ define(
     (Tool3D)->
         class CC.views.draw.PathTool extends Tool3D
             @selectedIdx
-            constructor:(stage2d)->
-                super(stage2d)
+            constructor:(stage3d)->
+                super(stage3d)
                 @selectedIdx=null
 
             mouseDown:(eventpoint)=>
-                mousePoint = new CC.views.draw.primitives.Point2D(@stage2d.mouse.currentPos.x, @stage2d.mouse.currentPos.y,"")
-                if @stage2d.activePath? 
-                    @path =  @stage2d.activePath
+                ###
+                mousePoint = new CC.views.draw.primitives.Point2D(@stage3d.mouse.currentPos.x, @stage3d.mouse.currentPos.y,"")
+                if @stage3d.activePath? 
+                    @path =  @stage3d.activePath
                 else
                    @path = new CC.views.draw.primitives.Path(mousePoint)
-                   @stage2d.activePath = @path
+                   @stage3d.activePath = @path
 
                 if @path.segments.length != 0
-                    @selectedIdx = @path.pointNear(mousePoint,@stage2d.clickTolerance)
+                    @selectedIdx = @path.pointNear(mousePoint,@stage3d.clickTolerance)
                     if @selectedIdx == null
-                        if @path.segments.length >= 1 && @path.segmentNear({x:mousePoint.x,y:mousePoint.y},@stage2d.clickTolerance) != false
-                            idx = @path.segmentNear({x:mousePoint.x,y:mousePoint.y},@stage2d.clickTolerance)
+                        if @path.segments.length >= 1 && @path.segmentNear({x:mousePoint.x,y:mousePoint.y},@stage3d.clickTolerance) != false
+                            idx = @path.segmentNear({x:mousePoint.x,y:mousePoint.y},@stage3d.clickTolerance)
                             @path.insert(idx,mousePoint)
-                            @selectedIdx = @path.pointNear(mousePoint,@stage2d.clickTolerance)
+                            @selectedIdx = @path.pointNear(mousePoint,@stage3d.clickTolerance)
                         else
                             @path.add(mousePoint)
                             @checkAlignment(@path.lastPoint)
@@ -30,17 +31,29 @@ define(
                     @path.add(mousePoint)
                     @checkAlignment(@path.lastPoint)
                     @selectedIdx = null
+                ###
 
             mouseDragged:(eventPoint)=>
-                if @selectedIdx != null
-                    @path.point("selected").moveTo(eventPoint.x,eventPoint.y)
-                    @checkAlignment(@path.point("selected"))
-                    @path.selected(true)
-                else
-                    @path.lastPoint.moveTo(eventPoint.x,eventPoint.y)
-                    @checkAlignment(@path.point("last"))
+                if (!@stage3d.selectedMesh and !@stage3d.selectedParticle) || @stage3d.mouse.btn1.delta.w * 1 != @stage3d.mouse.btn1.delta.w || @stage3d.mouse.btn1.delta.h * 1 != @stage3d.mouse.btn1.delta.h
+                    return
 
+                if @stage3d.selectedMesh?
+                    @stage3d.cameraPlane.position.copy( @stage3d.selectedMesh.position )
+
+                else if @stage3d.selectedParticle?
+                    @stage3d.cameraPlane.position.copy( @stage3d.selectedParticle.position )
+
+                intersects = @getMouseTarget(@stage3d.cameraPlane)
+                if intersects[0]? and @stage3d.selectedMesh.placeholder==true
+                    intersects[0].object.position.copy(@stage3d.selectedMesh.position)
+                    newPoint = intersects[0].point.clone()
+                    @stage3d.selectedMesh.position.x = newPoint.x
+                    @stage3d.selectedMesh.position.y = newPoint.y
+
+                    @stage3d.linea.movePoint(@stage3d.selectedMesh.vertexIndex , @stage3d.selectedMesh.position) 
+                    
             mouseUp:(eventPoint)=>
+                ###
                 if @selectedIdx != null
                     @path.segments[@selectedIdx].selected=false
                     @checkAlignment(@path.point("selected"))
@@ -52,10 +65,11 @@ define(
                 @path.selected(false)
                 for segment in @path.paperPath.segments
                     segment.selected = false
+                ###
 
             checkAlignment:(point)->
                 if @path.points.length > 1
-                    tollerance = @stage2d.snapTolerance
+                    tollerance = @stage3d.snapTolerance
                     for pathPoint in @path.points
                         if point.isNear("x",pathPoint,tollerance)
                            point.moveTo(pathPoint.x,point.y)

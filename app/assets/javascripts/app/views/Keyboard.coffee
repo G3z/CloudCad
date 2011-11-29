@@ -36,17 +36,17 @@ define(
                 return true
 
             isKeyDown:(keyCode)=>
-                if typeof keyCode == "string"
+                if $.type(keyCode) == "string"
                     keyCode = @keycodeForKey(keyCode)
-                unless typeof @_keys[keyCode] == "undefined"
+                unless $.type(@_keys[keyCode]) == "undefined"
                     return @_keys[keyCode]
                 else
                     false
 
             isKeyUp:(keyCode)=>
-                if typeof keyCode == "string"
+                if $.type(keyCode) == "string"
                     keyCode = @keycodeForKey(keyCode)
-                unless typeof @_keys[keyCode] == "undefined"
+                unless $.type(@_keys[keyCode]) == "undefined"
                     return !@_keys[keyCode]
                 else
                     true

@@ -15,7 +15,7 @@ define(
                 return html
 
             do:=>
-                CC.mainController.stage2d.activeTool = CC.mainController.stage2d.selectTool
+                CC.mainController.stage3d.activeTool = CC.mainController.stage3d.selectTool
 
         # Singleton
         CC.views.gui.tools.Select = new Select()

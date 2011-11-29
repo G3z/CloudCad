@@ -8,8 +8,8 @@ define(
             constructor:->
 
                 html = ""
-                html += CC.views.gui.tools.Select.render()
-                html += CC.views.gui.tools.Path.render()
+                html += Select.render()
+                html += Path.render()
 
                 super(html)
 )

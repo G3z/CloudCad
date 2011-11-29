@@ -1,7 +1,7 @@
 define(
     "views/draw/3D/Stage3d"
-    ["views/Abstract", "views/Camera", "views/Mouse", "views/Keyboard", "views/CameraController","views/draw/3D/primitives/Path3D"],
-    (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D)->
+    ["views/Abstract", "views/Camera", "views/Mouse", "views/Keyboard", "views/CameraController","views/draw/3D/primitives/Path3D","views/draw/3D/tools/SelectTool","views/draw/3D/tools/PathTool"],
+    (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D,SelectTool,PathTool)->
         class CC.views.draw.Stage3d extends Abstract
             ###
             This class represent the Stage area where all the elements are represented
@@ -25,6 +25,10 @@ define(
                 @zoom = 1
                 @lastvert =0
                 
+                # Tools
+                @selectTool = new SelectTool(this)
+                @pathTool = new PathTool(this)
+
                 #@camera.toOrthographic()
 
                 # Create the real Scene

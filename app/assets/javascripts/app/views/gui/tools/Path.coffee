@@ -1,4 +1,3 @@
-
 define(
     "views/gui/tools/Path",
     ["views/gui/tools/AbstractTool"],
@@ -16,7 +15,7 @@ define(
                 return html
 
             do:=>
-                CC.mainController.stage2d.activeTool = CC.mainController.stage2d.pathTool
+                CC.mainController.stage3d.activeTool = CC.mainController.stage3d.pathTool
 
         # Singleton
         CC.views.gui.tools.Path = new Path()

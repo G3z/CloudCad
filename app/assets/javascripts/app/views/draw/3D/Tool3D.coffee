@@ -4,9 +4,8 @@ define(
         class CC.views.draw.Tool3D
             @active
             @path
-            @stage2d
-            constructor:(stage)->
-                @stage2d = stage
-                @path = stage.path
+            @stage3d
+            constructor:(@stage3d)->
+                @path = @stage3d.activePath
                 @active = false
 )

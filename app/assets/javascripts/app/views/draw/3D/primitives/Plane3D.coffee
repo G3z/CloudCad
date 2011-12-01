@@ -5,18 +5,19 @@ define(
         class CC.views.draw.primitives.Plane3D extends Primitive
             constructor:(attr)->
                 super()
+                
                 defaults = {
                     position : new THREE.Vector3()
                     rotation : new THREE.Vector3()
                     color : 0xaa0000
                     layer:"scene"
                 }
+
                 unless attr?
                     @position = defaults.position
                     @rotation = defaults.rotation
                     @color = defaults.color
                     layer = defaults.layer
-
                 else
                     if attr.position? then @position = attr.position else @position = defaults.position
                     if attr.rotation? then @rotation = attr.rotation else @rotation = defaults.rotation

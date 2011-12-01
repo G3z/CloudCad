@@ -26,44 +26,31 @@ define(
             constructor:(attr)->
                 super()
 
-                if attr?.color?
-                    @color = attr.color
-                else
-                    @color = 0x8866ff
-
-                if attr?.threePath?
-                    @threePath = attr.threePath 
-                else
-                    if attr?.points?
-                        @line = new THREE.Line(
-                                                    new THREE.CurvePath.prototype.createGeometry(attr.points),
-                                                    new THREE.LineBasicMaterial({ 
-                                                        color: @color
-                                                        linewidth: 2 
-                                                    })
-                                                )
-                        @add(@line)
-                    else
-                        @line = new THREE.Line(
-                                                    new THREE.CurvePath.prototype.createGeometry([]),
-                                                    new THREE.LineBasicMaterial( {
-                                                        color: @color
-                                                        linewidth: 2
-                                                    })
-                                                )
-                        @add(@line)
-                if attr?.points?
-                    @points = attr.points
-                else
-                    @points = []    
+                defaults = {
+                    points : []
+                    name : undefined
+                    color : 0x8866ff
+                    layer:"scene"
+                }
                 
-                if attr?.name?
-                    @paperPath.name = @name = attr.name
+                unless attr?
+                    @points = defaults.points
+                    @name = defaults.name
+                    @color = defaults.color
+                    layer = defaults.layer
+                else
+                    if attr.points? then @points = attr.points else @points = defaults.points
+                    if attr.name? then @name = attr.name else @name = defaults.name
+                    if attr.color? then @color = attr.color else @color = defaults.color
 
-                if attr? && @validatePoint(attr) != false
-                    @start(@validatePoint(attr))
-                else if attr?.start? and @validatePoint(attr.start) != false
-                    @start(@validatePoint(attr.start))
+                @line = new THREE.Line(
+                                            new THREE.CurvePath.prototype.createGeometry(@points),
+                                            new THREE.LineBasicMaterial( {
+                                                color: @color
+                                                linewidth: 2
+                                            })
+                                        )
+                @add(@line)
                 
                 @particles = new THREE.Geometry()
                 pMaterial = new THREE.ParticleBasicMaterial({

@@ -105,7 +105,7 @@ define(
                 @particleSystem.dynamic = true
                 @line.add(@particleSystem)
                 #@threePath.father = this
-                window.stage3d.world.add(this)
+                @addToLayer("world")
 
             #### *update()* method takes no argument
             #Update forces updates to the internals

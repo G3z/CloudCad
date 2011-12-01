@@ -1,7 +1,7 @@
 define(
     "views/draw/3D/Stage3d"
-    ["views/Abstract", "views/Camera", "views/Mouse", "views/Keyboard", "views/CameraController","views/draw/3D/primitives/Path3D","views/draw/3D/tools/SelectTool","views/draw/3D/tools/PathTool"],
-    (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D,SelectTool,PathTool)->
+    ["views/Abstract", "views/Camera", "views/Mouse", "views/Keyboard", "views/CameraController","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Plane3D","views/draw/3D/tools/SelectTool","views/draw/3D/tools/PathTool"],
+    (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D,Plane3D,SelectTool,PathTool)->
         class CC.views.draw.Stage3d extends Abstract
             ###
             This class represent the Stage area where all the elements are represented
@@ -82,37 +82,6 @@ define(
                 @cameraPlane.visible = false
                 @scene.add(@cameraPlane)
                 
-                
-                planeX = new THREE.Mesh( new THREE.PlaneGeometry( 600, 400, 2, 2 ), new THREE.MeshBasicMaterial( { 
-                            color: 0xaa0000
-                            opacity: .3
-                            transparent: false
-                            wireframe: true
-                        }))
-
-                planeY = new THREE.Mesh( new THREE.PlaneGeometry( 600, 400, 2, 2 ), new THREE.MeshBasicMaterial( { 
-                            color: 0x00aa00
-                            opacity: .3
-                            transparent: false
-                            wireframe: true
-                        }))
-                planeY.rotation.x = Math.toRadian(90) #1.570796327
-
-                planeZ = new THREE.Mesh( new THREE.PlaneGeometry( 600, 400, 2, 2 ), new THREE.MeshBasicMaterial( { 
-                            color: 0x0000aa
-                            opacity: .3
-                            transparent: false
-                            wireframe: true
-                        }))
-                planeZ.rotation.y = Math.toRadian(90) #1.570796327
-                
-                @scene.add(planeX)
-                @scene.add(planeY)
-                @scene.add(planeZ)
-
-
-                
-
                 @mouse = new Mouse($(@canvas))
                 @keyboard = new Keyboard()
 
@@ -139,6 +108,7 @@ define(
                 document.body.appendChild( @renderer.domElement )
 
                 window.stage3d = this
+                
                 @createGeom()
 
                 # Event listeners
@@ -194,6 +164,24 @@ define(
                 @renderer.render(@scene,@camera)
 
             createGeom:=>
+                @planeX = new Plane3D({
+                    rotation: new THREE.Vector3(0,0,0)
+                    color: 0xaa0000
+                    layer:"scene"
+                })
+
+                @planeY = new Plane3D({
+                    rotation: new THREE.Vector3(Math.toRadian(90),0,0)
+                    color: 0x00aa00
+                    layer:"scene"  
+                })
+
+                @planeZ = new Plane3D({
+                    rotation: new THREE.Vector3(0,Math.toRadian(90),0)
+                    color: 0x0000aa
+                    layer:"scene"
+                })
+
                 vertices =[
                     new THREE.Vector2(0,0)
                     new THREE.Vector2(0,100)
@@ -204,10 +192,10 @@ define(
                 @linea = new Path3D({
                     points: vertices
                 })
-
+                @linea.position.x = 50
+                
                 @linea2 = new Path3D({
                     points: vertices
                 })
                 @linea2.position.x = -150
-                #@world.add(@linea.threePath)
 )

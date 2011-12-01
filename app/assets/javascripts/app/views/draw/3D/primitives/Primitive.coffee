@@ -8,5 +8,6 @@ define(
                 super()
                 @id = Math.guid()
             
-            
+            addToLayer:(layer)=>
+                window.stage3d[layer].add(this)
 )

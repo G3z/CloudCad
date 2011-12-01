@@ -35,21 +35,23 @@ define(
                     @threePath = attr.threePath 
                 else
                     if attr?.points?
-                        @threePath = new THREE.Line(
-                            new THREE.CurvePath.prototype.createGeometry(attr.points),
-                            new THREE.LineBasicMaterial({ 
-                                color: @color
-                                linewidth: 2 
-                            })
-                        )
+                        @line = new THREE.Line(
+                                                    new THREE.CurvePath.prototype.createGeometry(attr.points),
+                                                    new THREE.LineBasicMaterial({ 
+                                                        color: @color
+                                                        linewidth: 2 
+                                                    })
+                                                )
+                        @add(@line)
                     else
-                        @threePath = new THREE.Line(
-                            new THREE.CurvePath.prototype.createGeometry([]),
-                            new THREE.LineBasicMaterial( {
-                                color: @color
-                                linewidth: 2
-                            })
-                        )
+                        @line = new THREE.Line(
+                                                    new THREE.CurvePath.prototype.createGeometry([]),
+                                                    new THREE.LineBasicMaterial( {
+                                                        color: @color
+                                                        linewidth: 2
+                                                    })
+                                                )
+                        @add(@line)
                 if attr?.points?
                     @points = attr.points
                 else
@@ -72,9 +74,9 @@ define(
                     if i < @points.length
                         particle = new THREE.Vertex(vertice)
                         @particles.vertices.push(particle)
-                        particle.father = @threePath
+                        particle.father = this
                         particle.idx = i
-                        position = new THREE.Vector3(vertice.x,vertice.y,@threePath.position.z)
+                        position = new THREE.Vector3(vertice.x,vertice.y,@position.z)
 
                         radius = 10
                         segments = 4
@@ -94,23 +96,23 @@ define(
                         sphere.position.x = vertice.x
                         sphere.position.y = vertice.y
                         
-                        @threePath.add(sphere)
+                        @line.add(sphere)
 
                 @particleSystem = new THREE.ParticleSystem(
                     @particles,
                     pMaterial
                 )
                 @particleSystem.dynamic = true
-                @threePath.add(@particleSystem)
-                @threePath.father = this
-                window.stage3d.world.add(@threePath)
+                @line.add(@particleSystem)
+                #@threePath.father = this
+                window.stage3d.world.add(this)
 
             #### *update()* method takes no argument
             #Update forces updates to the internals
             update:=>
                 @lastPoint = @point("last")
-                @threePath.geometry.__dirtyVertices = true
-                @threePath.geometry.__dirtyNormals = true
+                @line.geometry.__dirtyVertices = true
+                @line.geometry.__dirtyNormals = true
                 @particles.__dirtyVertices = true
             
             #### *start(`point`)* method takes one argument
@@ -125,16 +127,16 @@ define(
 
             #### *add(`point`)* method takes one argument
             #* the *point* to be added to the Path
-            add:(point)=>
-                point = @validatePoint(point)
-                if point
-                    point.idx = @points.length
-                    point.father = this
-                    @points.push(point)
-                    if @points.length>0
-                        @threePath.lineTo(point)
-                    else
-                        @threePath.moveTo(point)
+            #add:(point)=>
+            #    point = @validatePoint(point)
+            #    if point
+            #        point.idx = @points.length
+            #        point.father = this
+            #        @points.push(point)
+            #        if @points.length>0
+            #            @threePath.lineTo(point)
+            #        else
+            #            @threePath.moveTo(point)
 
             insert:(idx,point)=>
                 ###
@@ -184,14 +186,14 @@ define(
                     @points[0] = newPoint
                     @points[last] = newPoint
 
-                    @threePath.geometry.vertices[0].position = newPoint
-                    @threePath.geometry.vertices[last].position = newPoint
+                    @line.geometry.vertices[0].position = newPoint
+                    @line.geometry.vertices[last].position = newPoint
                     
                     @particles.vertices[0].position = newPoint
                     @particles.vertices[last].position = newPoint
                 else
                     @points[index] = newPoint
-                    @threePath.geometry.vertices[index].position = newPoint
+                    @line.geometry.vertices[index].position = newPoint
                     @particles.vertices[index].position = newPoint
                 @update()
 

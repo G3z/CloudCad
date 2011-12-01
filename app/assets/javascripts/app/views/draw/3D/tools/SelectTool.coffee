@@ -17,7 +17,7 @@ define(
                         obj = c[0].object
                         if @stage3d.selectedMesh? and @stage3d.selectedMesh != obj
                             @stage3d.selectedMesh.parent.material.color.setHex(@SM.oldcolor)
-                        if obj.parent? and obj.parent instanceof THREE.Line
+                        if obj.parent?
                             @SM.oldcolor = obj.parent.material.color.getHex()
                             obj.parent?.material?.color?.setHex(0x0000bb)
                         @stage3d.selectedMesh = obj

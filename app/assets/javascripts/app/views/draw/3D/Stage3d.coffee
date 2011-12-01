@@ -208,6 +208,6 @@ define(
                 @linea2 = new Path3D({
                     points: vertices
                 })
-                @linea2.threePath.position.x = -150
+                @linea2.position.x = -150
                 #@world.add(@linea.threePath)
 )

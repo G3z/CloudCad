@@ -23,5 +23,9 @@
     "coffee-script": "latest",
     "Three.js": "r46",
     "Spine": "latest"
+  },
+  "docco_configuration": {
+    "css": "docs.css",
+    "show_timestamp": false
   }
 }

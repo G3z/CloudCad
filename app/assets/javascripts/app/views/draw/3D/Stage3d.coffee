@@ -1,6 +1,14 @@
 define(
     "views/draw/3D/Stage3d"
-    ["views/Abstract", "views/Camera", "views/Mouse", "views/Keyboard", "views/CameraController","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Plane3D"],
+    [
+        "views/Abstract"
+        "views/Camera"
+        "views/Mouse"
+        "views/Keyboard"
+        "views/CameraController"
+        "views/draw/3D/primitives/Path3D"
+        "views/draw/3D/primitives/Plane3D"
+    ],
     (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D,Plane3D)->
         class CC.views.draw.Stage3d extends Abstract
             ###
@@ -19,7 +27,7 @@ define(
 
             constructor:(@glOrNot)->
                 super()
-
+                @tools = {}
                 # Renderer
                 @canvas = document.createElement( 'canvas' )
                 $(@canvas).attr("id","canvas3d")

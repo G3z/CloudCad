@@ -5,8 +5,8 @@ define(
         class Extrude extends AbstractTool
 
             constructor:->
-                @icon = "layer-resize-replicate-vertical.png"
                 super()
+                @icon = "layer-resize-replicate-vertical.png"
 
         # Singleton
         tool = new Extrude()

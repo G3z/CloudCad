@@ -5,8 +5,8 @@ define(
         class Path extends AbstractTool
 
             constructor:->
-                @icon = "layer-shape-polygon.png"
                 super()
+                @icon = "layer-shape-polygon.png"
             
             mouseDown:()=>
                 c = @getMouseTarget(@stage3d.world)

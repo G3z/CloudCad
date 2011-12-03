@@ -5,11 +5,12 @@ define(
         class Select extends AbstractTool
 
             constructor:->
+                super()
                 @icon = "cursor.png"
                 @selectedIdx=null
                 @SM = {} #Selected Mesh
 
-                super()
+                
 
             mouseDown:()=>
                 c = @getMouseTarget(@stage3d.world)

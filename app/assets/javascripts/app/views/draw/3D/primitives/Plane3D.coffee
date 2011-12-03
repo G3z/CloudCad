@@ -1,6 +1,8 @@
 define(
     "views/draw/3D/primitives/Plane3D"
-    ["views/draw/3D/primitives/Primitive"],
+    [
+        "views/draw/3D/primitives/Primitive"
+    ],
     (Primitive)->
         class CC.views.draw.primitives.Plane3D extends Primitive
             constructor:(attr)->

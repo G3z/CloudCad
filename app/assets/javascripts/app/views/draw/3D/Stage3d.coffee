@@ -1,7 +1,7 @@
 define(
     "views/draw/3D/Stage3d"
-    ["views/Abstract", "views/Camera", "views/Mouse", "views/Keyboard", "views/CameraController","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Plane3D","views/draw/3D/tools/SelectTool","views/draw/3D/tools/PathTool"],
-    (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D,Plane3D,SelectTool,PathTool)->
+    ["views/Abstract", "views/Camera", "views/Mouse", "views/Keyboard", "views/CameraController","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Plane3D"],
+    (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D,Plane3D)->
         class CC.views.draw.Stage3d extends Abstract
             ###
             This class represent the Stage area where all the elements are represented
@@ -19,12 +19,6 @@ define(
 
             constructor:(@glOrNot)->
                 super()
-                                
-                # Tools
-                @selectTool = new SelectTool(this)
-                @pathTool = new PathTool(this)
-
-                @activeTool = @selectTool
 
                 # Renderer
                 @canvas = document.createElement( 'canvas' )
@@ -181,6 +175,9 @@ define(
                     color: 0x0000aa
                     layer:"scene"
                 })
+                @scene.add(@planeX)
+                @scene.add(@planeY)
+                @scene.add(@planeZ)
 
                 vertices =[
                     new THREE.Vector2(0,0)
@@ -193,9 +190,12 @@ define(
                     points: vertices
                 })
                 @linea.position.x = 50
-                
+
                 @linea2 = new Path3D({
                     points: vertices
                 })
                 @linea2.position.x = -150
+
+                @world.add(@linea)
+                @world.add(@linea2)
 )

@@ -5,7 +5,6 @@ define(
     ["views/draw/3D/primitives/Primitive","views/draw/3D/primitives/Point3D","views/draw/3D/primitives/Segment"],
     (Primitive,Point3D,Segment)->
         class CC.views.draw.primitives.Path3D extends Primitive
-            @threePath
             @points
             @segments
             @plane
@@ -32,7 +31,7 @@ define(
                     color : 0x8866ff
                     layer:"scene"
                 }
-                
+
                 unless attr?
                     @points = defaults.points
                     @name = defaults.name
@@ -50,6 +49,7 @@ define(
                                                 linewidth: 2
                                             })
                                         )
+                @line.father = this
                 @add(@line)
                 
                 @particles = new THREE.Geometry()
@@ -82,7 +82,7 @@ define(
                         sphere.vertexIndex = i
                         sphere.position.x = vertice.x
                         sphere.position.y = vertice.y
-                        
+                        sphere.father = this
                         @line.add(sphere)
 
                 @particleSystem = new THREE.ParticleSystem(
@@ -90,9 +90,9 @@ define(
                     pMaterial
                 )
                 @particleSystem.dynamic = true
+                @particleSystem.father = this
                 @line.add(@particleSystem)
-                #@threePath.father = this
-                @addToLayer("world")
+                #@addToLayer("world")
 
             #### *update()* method takes no argument
             #Update forces updates to the internals

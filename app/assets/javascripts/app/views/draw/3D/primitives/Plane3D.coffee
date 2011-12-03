@@ -5,7 +5,7 @@ define(
         class CC.views.draw.primitives.Plane3D extends Primitive
             constructor:(attr)->
                 super()
-                
+
                 defaults = {
                     position : new THREE.Vector3()
                     rotation : new THREE.Vector3()
@@ -30,7 +30,8 @@ define(
                                 transparent: false
                                 wireframe: true
                             }))
+                @plane.father = this
                 @add(@plane)
-                @addToLayer(layer)
+                #@addToLayer(layer)
                     
 )

@@ -5,7 +5,8 @@ define(
             @active
             @path
             @stage3d
-            constructor:(@stage3d)->
+            constructor:()->
+                @stage3d = window.stage3d
                 @path = @stage3d.activePath
                 @active = false
 

@@ -6,6 +6,10 @@ define(
             @name
             constructor:()->
                 super()
+                if @constructor.toString?
+                    arr = @constructor.toString().match(/function\s*(\w+)/)
+                    if arr? and  arr.length == 2
+                        @class = arr[1]
                 @id = Math.guid()
             
             addToLayer:(layer)=>

@@ -6,7 +6,7 @@ define(
         class CC.views.gui.tools.AbstractTool
             #### *constructor()* method takes no arguments
             #
-            # `@icon` propery is created to contain the default tool icon
+            # `@icon` propery is created to contain the default tool icon  
             # `@class` propery is created to contain the class name
             constructor:->
                 @icon = "hammer.png"

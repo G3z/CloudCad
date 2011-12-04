@@ -1,15 +1,15 @@
-### Path3D Class ###
-# Path3D Class combines Three.js path and shape classes providing an object that is editable under mouse interaction and that easily convertible into a solid shape
+### Solid3D Class ###
+# Solid3D Class combines Three.js path and shape classes providing an object that is editable under mouse interaction and that easily convertible into a solid shape
 define(
-    "views/draw/3D/primitives/Path3D"
+    "views/draw/3D/primitives/Solid3D"
     [
         "views/draw/3D/primitives/Primitive"
         "views/draw/3D/primitives/Point3D"
         "views/draw/3D/primitives/Segment"
-        "views/draw/3D/primitives/Solid3D"
+        "views/draw/3D/primitives/Path3D"
     ],
-    (Primitive,Point3D,Segment,Solid3D)->
-        class CC.views.draw.primitives.Path3D extends Primitive
+    (Primitive,Point3D,Segment,Path3D)->
+        class CC.views.draw.primitives.Solid3D extends Primitive
             @points
             @segments
             @plane
@@ -31,82 +31,50 @@ define(
                 super()
 
                 defaults = {
-                    points : []
-                    name : undefined
+                    generator : undefined
+                    extrusionValue : undefined
                     color : 0x8866ff
                     layer:"scene"
                 }
 
                 unless attr?
-                    @points = defaults.points
-                    @name = defaults.name
+                    @generator = defaults.generator
+                    @extrusionValue = defaults.extrusionValue
                     @color = defaults.color
                     layer = defaults.layer
                 else
-                    if attr.points? then @points = attr.points else @points = defaults.points
-                    if attr.name? then @name = attr.name else @name = defaults.name
+                    if attr.generator? then @generator = attr.generator else @generator = defaults.generator
+                    if attr.extrusionValue? then @extrusionValue = attr.extrusionValue else @extrusionValue = defaults.extrusionValue
                     if attr.color? then @color = attr.color else @color = defaults.color
-
-                @line = new THREE.Line(
-                                            new THREE.CurvePath.prototype.createGeometry(@points),
-                                            new THREE.LineBasicMaterial( {
-                                                color: @color
-                                                linewidth: 2
-                                            })
-                                        )
-                @line.father = this
-                @add(@line)
                 
-                @particles = new THREE.Geometry()
-                pMaterial = new THREE.ParticleBasicMaterial({
-                    color: @color,
-                    size: 10
-                })
-                for vertice, i in @points
-                    if i < @points.length
-                        particle = new THREE.Vertex(vertice)
-                        @particles.vertices.push(particle)
-                        particle.father = this
-                        particle.idx = i
-                        position = new THREE.Vector3(vertice.x,vertice.y,@position.z)
-
-                        radius = 10
-                        segments = 4
-                        rings = 4
-                        sphere = new THREE.Mesh(
-                            new THREE.SphereGeometry(radius,segments,rings),
-                            new THREE.MeshBasicMaterial({
-                                color: @color
-                                opacity: 0.25
-                                transparent: true
-                                wireframe: true
-                            })
-                        )
-                        sphere.placeholder = true
-                        sphere.visible = false
-                        sphere.vertexIndex = i
-                        sphere.position.x = vertice.x
-                        sphere.position.y = vertice.y
-                        sphere.father = this
-                        @line.add(sphere)
-
-                @particleSystem = new THREE.ParticleSystem(
-                    @particles,
-                    pMaterial
-                )
-                @particleSystem.dynamic = true
-                @particleSystem.father = this
-                @line.add(@particleSystem)
-                #@addToLayer("world")
+                if @generator? and @generator.class = "Path3D"
+                    shape = new THREE.Shape(@generator.points)
+                    material = new THREE.MeshLambertMaterial({
+                        color: @generator.color
+                        ambient: 0x111111
+                        blending: 1
+                        shading: 1
+                    })
+                    @mesh = new THREE.Mesh(
+                        shape.extrude({
+                            amount:@extrusionValue,
+                            bevelEnabled:false,
+                            material: material,
+                            extrudeMaterial: material
+                        }),
+                        material
+                    )
+                    @mesh.father = this
+                    @add(@mesh)
 
             toggleSelection:(hexColor)=>
                 color = if hexColor? then hexColor else 0x0000bb
                 if @selected
                     @selected = false
-                    @line.material.color.setHex(@color)
+                    @mesh.material.color.setHex(@color)
                 else
                     @selected = true
-                    @line.material.color.setHex(color)
+                    @mesh.material.color.setHex(color)
 
             #### *update()* method takes no argument
             #Update forces updates to the internals
@@ -252,16 +220,26 @@ define(
             # This method returns a new mesh containig the extruded shape  
             # Path is turned invisible when creating the 3D shape
             extrude:(value)=>
-                @extrusion = new Solid3D({
-                    generator: this
-                    extrusionValue : 10
+                @line.visible = false
+                shape = new THREE.Shape(@points)
+                material = new THREE.MeshLambertMaterial({
+                    color: @color
+                    ambient: 0x111111
+                    blending: 1
+                    shading: 1
                 })
+                @extrusion = new THREE.Mesh(
+                    shape.extrude({
+                        amount:value,
+                        bevelEnabled:false,
+                        material: material,
+                        extrudeMaterial: material
+                    }),
+                    material
+                )
                 @extrusion.generator = this
-                @extrusion.position = @position
-                @extrusion.rotation = @rotation
-                @parent?.add(@extrusion)
-                @parent?.remove(this)
-
+                window.stage3d.world.remove(this)
+                window.stage3d.world.add(@extrusion)
             #### *validatePoint(`point`)* method takes one argument
             #* the *point* variable that needs to be checked  
             # This method checks if the argument is a valid point and attemps to create one if it can othwise `false` is returned

@@ -7,39 +7,39 @@ define(
             constructor:->
                 super()
                 @icon = "layer-shape-polygon.png"
+                @activePoint = null
             
             mouseDown:()=>
-                c = @getMouseTarget(@stage3d.world)
+                
+                c = @getMouseTarget(@stage3d.selectedObject)
                 if c? and c.length>0
                     if c[0].object? and c[0].object != @stage3d.cameraPlane
                         obj = c[0].object
-                        if @stage3d.selectedMesh?
-                            @stage3d.selectedMesh.material.color.setHex(0x53aabb)
                         obj.material.color.setHex(0x0000bb)
-                        @stage3d.selectedMesh = obj
+                        @activePoint = obj
                     else
-                        @stage3d.selectedMesh = null
+                        @activePoint = null
                 else
-                    @stage3d.selectedMesh = null
+                    @activePoint = null 
             
             mouseDragged:()=>
-                if (!@stage3d.selectedMesh and !@stage3d.selectedParticle) || @stage3d.mouse.btn1.delta.w * 1 != @stage3d.mouse.btn1.delta.w || @stage3d.mouse.btn1.delta.h * 1 != @stage3d.mouse.btn1.delta.h
+                if (!@activePoint and !@stage3d.selectedParticle) || @stage3d.mouse.btn1.delta.w * 1 != @stage3d.mouse.btn1.delta.w || @stage3d.mouse.btn1.delta.h * 1 != @stage3d.mouse.btn1.delta.h
                     return
 
-                if @stage3d.selectedMesh?
-                    @stage3d.cameraPlane.position.copy( @stage3d.selectedMesh.position )
+                if @activePoint?
+                    @stage3d.cameraPlane.position.copy( @activePoint.position )
 
                 else if @stage3d.selectedParticle?
                     @stage3d.cameraPlane.position.copy( @stage3d.selectedParticle.position )
 
                 intersects = @getMouseTarget(@stage3d.cameraPlane)
-                if intersects[0]? and @stage3d.selectedMesh.placeholder==true
-                    intersects[0].object.position.copy(@stage3d.selectedMesh.position)
+                if intersects[0]? and @activePoint.placeholder==true
+                    intersects[0].object.position.copy(@activePoint.position)
                     newPoint = intersects[0].point.clone()
-                    @stage3d.selectedMesh.position.x = newPoint.x - @stage3d.selectedMesh.father.position.x
-                    @stage3d.selectedMesh.position.y = newPoint.y - @stage3d.selectedMesh.father.position.y
+                    @activePoint.position.x = newPoint.x - @activePoint.father.position.x
+                    @activePoint.position.y = newPoint.y - @activePoint.father.position.y
 
-                    @stage3d.linea.movePoint(@stage3d.selectedMesh.vertexIndex , @stage3d.selectedMesh.position) 
+                    @stage3d.linea.movePoint(@activePoint.vertexIndex , @activePoint.position) 
             
             checkAlignment:(point)->
                 if @path.points.length > 1

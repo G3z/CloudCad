@@ -7,6 +7,15 @@ define(
             constructor:->
                 super()
                 @icon = "layer-resize-replicate-vertical.png"
+            
+            mouseDown:()=>
+                @activeObj = @stage3d.selectedObject
+                if @activeObj.class == "Path3D"
+                    @activeObj.extrude(5)
+
+            mouseDragged:()=>
+
+            mouseUp:()=>
 
         # Singleton
         tool = new Extrude()

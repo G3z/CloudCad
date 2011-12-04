@@ -7,9 +7,10 @@ define(
         "views/Keyboard"
         "views/CameraController"
         "views/draw/3D/primitives/Path3D"
+        "views/draw/3D/primitives/Solid3D"
         "views/draw/3D/primitives/Plane3D"
     ],
-    (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D,Plane3D)->
+    (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D,Solid3D,Plane3D)->
         class CC.views.draw.Stage3d extends Abstract
             ###
             This class represent the Stage area where all the elements are represented

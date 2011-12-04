@@ -7,25 +7,18 @@ define(
             constructor:->
                 super()
                 @icon = "cursor.png"
-                @selectedIdx=null
                 @SM = {} #Selected Mesh
-
-                
 
             mouseDown:()=>
                 c = @getMouseTarget(@stage3d.world)
                 if c? and c.length>0
                     if c[0].object? and c[0].object != @stage3d.cameraPlane
                         obj = c[0].object
-                        if @stage3d.selectedMesh? and @stage3d.selectedMesh != obj
-                            @stage3d.selectedMesh.parent.material.color.setHex(@SM.oldcolor)
-                        if obj.parent?
-                            @SM.oldcolor = obj.parent.material.color.getHex()
-                            obj.parent?.material?.color?.setHex(0x0000bb)
-                        @stage3d.selectedMesh = obj
-                    else
-                        @stage3d.selectedMesh = null
-                            
+                        if @stage3d.selectedObject? and @stage3d.selectedObject.id != obj.father?.id?
+                            @stage3d.selectedObject.toggleSelection()
+                        if obj.father?
+                            obj.father.toggleSelection()
+                        @stage3d.selectedObject = obj.father
 
             mouseDragged:()=>
 

@@ -1,5 +1,5 @@
 ### Solid3D Class ###
-# Solid3D Class combines Three.js path and shape classes providing an object that is editable under mouse interaction and that easily convertible into a solid shape
+# Solid3D is the main class for all solids, currently only extrusion solid are supported generated via Path3D
 define(
     "views/draw/3D/primitives/Solid3D"
     [
@@ -66,7 +66,11 @@ define(
                     )
                     @mesh.father = this
                     @add(@mesh)
-
+            
+            #### *toggleSelection(`hexColor`)* method takes one argument
+            #* the *hexColor* number that represent the color for the selection  
+            #
+            # If object is not selected then selection color is applied otherwise the original color is applied
             toggleSelection:(hexColor)=>
                 color = if hexColor? then hexColor else 0x0000bb
                 if @selected

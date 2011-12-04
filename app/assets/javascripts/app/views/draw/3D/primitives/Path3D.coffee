@@ -26,7 +26,6 @@ define(
             #   * *start*: a single point where the path is starting
             #
             # If one of the above options isn't specified or attr isn't given the appropriate default is set.  
-            # Also a `Particle System` is used to identify points along the shape and an hidden Shperical mesh is attached to each vertext to detect collision
             constructor:(attr)->
                 super()
 
@@ -46,7 +45,12 @@ define(
                     if attr.points? then @points = attr.points else @points = defaults.points
                     if attr.name? then @name = attr.name else @name = defaults.name
                     if attr.color? then @color = attr.color else @color = defaults.color
-
+                
+                @createGeometry()
+                
+            createGeometry:=>
+                if @line?
+                    @remove(@line)
                 @line = new THREE.Line(
                                             new THREE.CurvePath.prototype.createGeometry(@points),
                                             new THREE.LineBasicMaterial( {
@@ -57,7 +61,7 @@ define(
                 @line.father = this
                 @add(@line)
                 
-                @particles = new THREE.Geometry()
+                particles = new THREE.Geometry()
                 pMaterial = new THREE.ParticleBasicMaterial({
                     color: @color,
                     size: 10
@@ -65,7 +69,7 @@ define(
                 for vertice, i in @points
                     if i < @points.length
                         particle = new THREE.Vertex(vertice)
-                        @particles.vertices.push(particle)
+                        particles.vertices.push(particle)
                         particle.father = this
                         particle.idx = i
                         position = new THREE.Vector3(vertice.x,vertice.y,@position.z)
@@ -89,16 +93,19 @@ define(
                         sphere.position.y = vertice.y
                         sphere.father = this
                         @line.add(sphere)
-
+                    
                 @particleSystem = new THREE.ParticleSystem(
-                    @particles,
+                    particles,
                     pMaterial
                 )
                 @particleSystem.dynamic = true
                 @particleSystem.father = this
                 @line.add(@particleSystem)
-                #@addToLayer("world")
-
+            
+            #### *toggleSelection(`hexColor`)* method takes one argument
+            #* the *hexColor* number that represent the color for the selection  
+            #
+            # If object is not selected then selection color is applied otherwise the original color is applied
             toggleSelection:(hexColor)=>
                 color = if hexColor? then hexColor else 0x0000bb
                 if @selected
@@ -114,7 +121,7 @@ define(
                 @lastPoint = @point("last")
                 @line.geometry.__dirtyVertices = true
                 @line.geometry.__dirtyNormals = true
-                @particles.__dirtyVertices = true
+                @particleSystem.geometry.__dirtyVertices = true
             
             #### *start(`point`)* method takes one argument
             #* the starting *point* from wich the Path should start
@@ -140,30 +147,25 @@ define(
             #            @threePath.moveTo(point)
 
             insert:(idx,point)=>
-                ###
+                
                 #debugger
                 split = idx
                 idx++
 
-                if @validatePoint(point)
-                    point.father = this
-                    point.idx = idx
-                    points_before = @points[0..split]
-                    points_before.push(point)
-                    points_after = @points[idx..@points.length-1]
-                    @points = points_before.concat(points_after)
-                    @paperPath.insert(idx,point)
-                    @rearrangePoints()
-                    @update()
-                ###
+                points_before = @points[0..split]
+                points_before.push(point)
+                points_after = @points[idx..@points.length-1]
+                @points = points_before.concat(points_after)
+                @points[0] = @points[@points.length-1]
+                @createGeometry()
+                @update()
+                
 
-            remove:(el)=>
-                ###
-                if el instanceof Point3D
-                    @removePoint(el)
-                else if el instanceof Segment
-                    @removeSegment(el)
-                ###
+            #remove:(el)=>
+            #    if el instanceof Point3D
+            #        @removePoint(el)
+            #    else if el instanceof Segment
+            #        @removeSegment(el)
 
             removePoint:(point)=>
                 ###
@@ -190,12 +192,12 @@ define(
                     @line.geometry.vertices[0].position = newPoint
                     @line.geometry.vertices[last].position = newPoint
                     
-                    @particles.vertices[0].position = newPoint
-                    @particles.vertices[last].position = newPoint
+                    @particleSystem.geometry.vertices[0].position = newPoint
+                    @particleSystem.geometry.vertices[last].position = newPoint
                 else
                     @points[index] = newPoint
                     @line.geometry.vertices[index].position = newPoint
-                    @particles.vertices[index].position = newPoint
+                    @particleSystem.geometry.vertices[index].position = newPoint
                 @update()
 
             moveSegment:(el,newPos)=>
@@ -259,8 +261,12 @@ define(
                 @extrusion.generator = this
                 @extrusion.position = @position
                 @extrusion.rotation = @rotation
+
                 @parent?.add(@extrusion)
                 @parent?.remove(this)
+                if window.stage3d.selectedObject?.id == @id
+                    window.stage3d.selectedObject = @extrusion
+                    @extrusion.toggleSelection()
 
             #### *validatePoint(`point`)* method takes one argument
             #* the *point* variable that needs to be checked  

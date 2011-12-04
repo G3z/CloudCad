@@ -33,6 +33,7 @@ define(
                     points : []
                     name : undefined
                     color : 0x8866ff
+                    selectedColor : 0x0000bb
                     layer:"scene"
                 }
 
@@ -40,21 +41,24 @@ define(
                     @points = defaults.points
                     @name = defaults.name
                     @color = defaults.color
+                    @selectedColor = defaults.selectedColor
                     layer = defaults.layer
                 else
                     if attr.points? then @points = attr.points else @points = defaults.points
                     if attr.name? then @name = attr.name else @name = defaults.name
                     if attr.color? then @color = attr.color else @color = defaults.color
+                    if attr.selectedColor? then @selectedColor = attr.selectedColor else @selectedColor = defaults.selectedColor
                 
                 @createGeometry()
                 
             createGeometry:=>
                 if @line?
                     @remove(@line)
+                color = unless @selected then @color else @selectedColor
                 @line = new THREE.Line(
                                             new THREE.CurvePath.prototype.createGeometry(@points),
                                             new THREE.LineBasicMaterial( {
-                                                color: @color
+                                                color: color
                                                 linewidth: 2
                                             })
                                         )
@@ -106,14 +110,13 @@ define(
             #* the *hexColor* number that represent the color for the selection  
             #
             # If object is not selected then selection color is applied otherwise the original color is applied
-            toggleSelection:(hexColor)=>
-                color = if hexColor? then hexColor else 0x0000bb
+            toggleSelection:()=>
                 if @selected
                     @selected = false
                     @line.material.color.setHex(@color)
                 else
                     @selected = true
-                    @line.material.color.setHex(color)
+                    @line.material.color.setHex(@selectedColor)
 
             #### *update()* method takes no argument
             #Update forces updates to the internals

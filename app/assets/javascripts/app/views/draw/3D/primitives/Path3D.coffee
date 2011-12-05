@@ -20,7 +20,6 @@ define(
             #* the *attr* object that cointains various options  
             #Currently these options are supported:  
             #   * *color*: (the color of the path and of the extruded mesh)
-            #   * *threePath*: (an existing THREE.Path to be converted to Path3D)
             #   * *points*: (an array of points representig the points of the path)
             #   * *name*: (a name for the object, useful for yet to be implemented object referencing)
             #   * *start*: a single point where the path is starting
@@ -78,25 +77,20 @@ define(
                         particle.idx = i
                         position = new THREE.Vector3(vertice.x,vertice.y,@position.z)
 
-                        radius = 10
-                        segments = 4
-                        rings = 4
-                        sphere = new THREE.Mesh(
-                            new THREE.SphereGeometry(radius,segments,rings),
-                            new THREE.MeshBasicMaterial({
+                        size = 8
+                        cube = new THREE.Mesh(new THREE.CubeGeometry(size,size,size),new THREE.MeshBasicMaterial({
                                 color: @color
                                 opacity: 0.25
                                 transparent: true
                                 wireframe: true
-                            })
-                        )
-                        sphere.placeholder = true
-                        sphere.visible = false
-                        sphere.vertexIndex = i
-                        sphere.position.x = vertice.x
-                        sphere.position.y = vertice.y
-                        sphere.father = this
-                        @line.add(sphere)
+                            }))
+                        cube.placeholder = true
+                        cube.visible = false
+                        cube.vertexIndex = i
+                        cube.position.x = vertice.x
+                        cube.position.y = vertice.y
+                        cube.father = this
+                        @line.add(cube)
                     
                 @particleSystem = new THREE.ParticleSystem(
                     particles,
@@ -134,7 +128,6 @@ define(
                     point.idx = @points.length
                     point.father = this
                     @points.push(point)
-                    @threePath.moveTo(point)
 
             #### *add(`point`)* method takes one argument
             #* the *point* to be added to the Path
@@ -145,9 +138,7 @@ define(
             #        point.father = this
             #        @points.push(point)
             #        if @points.length>0
-            #            @threePath.lineTo(point)
             #        else
-            #            @threePath.moveTo(point)
 
             insert:(idx,point)=>
                 
@@ -259,7 +250,7 @@ define(
             extrude:(value)=>
                 @extrusion = new Solid3D({
                     generator: this
-                    extrusionValue : 10
+                    extrusionValue : value
                 })
                 @extrusion.generator = this
                 @extrusion.position = @position

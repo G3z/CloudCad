@@ -46,7 +46,12 @@ define(
                     if attr.generator? then @generator = attr.generator else @generator = defaults.generator
                     if attr.extrusionValue? then @extrusionValue = attr.extrusionValue else @extrusionValue = defaults.extrusionValue
                     if attr.color? then @color = attr.color else @color = defaults.color
-                
+
+                @createGeometry()
+
+            createGeometry:=>
+                if @mesh?
+                    @remove(@mesh)
                 if @generator? and @generator.class = "Path3D"
                     shape = new THREE.Shape(@generator.points)
                     material = new THREE.MeshLambertMaterial({
@@ -66,6 +71,40 @@ define(
                     )
                     @mesh.father = this
                     @add(@mesh)
+
+                    particles = new THREE.Geometry()
+                    pMaterial = new THREE.ParticleBasicMaterial({
+                        color: @color,
+                        size: 10
+                    })
+                    for vertice,i in @mesh.geometry.vertices
+                        if i < @mesh.geometry.vertices.length
+                            particle = new THREE.Vertex(vertice.position)
+                            particles.vertices.push(particle)
+                            particle.father = this
+                            particle.idx = i
+
+                            size = 8
+                            cube = new THREE.Mesh(new THREE.CubeGeometry(size,size,size),new THREE.MeshBasicMaterial({
+                                    color: @color*1.1
+                                    opacity: 0.25
+                                    transparent: true
+                                    wireframe: true
+                                }))
+                            cube.placeholder = true
+                            cube.visible = false
+                            cube.vertexIndex = i
+                            cube.position = vertice.position
+                            cube.father = this
+                            @mesh.add(cube)
+                    @particleSystem = new THREE.ParticleSystem(
+                        particles,
+                        pMaterial
+                    )
+                    @particleSystem.dynamic = true
+                    @particleSystem.father = this
+                    @mesh.add(@particleSystem)
+                    
             
             #### *toggleSelection(`hexColor`)* method takes one argument
             #* the *hexColor* number that represent the color for the selection  

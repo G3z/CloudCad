@@ -248,10 +248,13 @@ define(
             # This method returns a new mesh containig the extruded shape  
             # Path is turned invisible when creating the 3D shape
             extrude:(value)=>
+                
                 @extrusion = new Solid3D({
                     generator: this
                     extrusionValue : value
                 })
+                if value < 0
+                    @extrusion.mesh.flipSided = true
                 @extrusion.generator = this
                 @extrusion.position = @position
                 @extrusion.rotation = @rotation

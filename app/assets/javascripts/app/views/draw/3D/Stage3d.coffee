@@ -24,7 +24,7 @@ define(
             @light
             @ambientLight
             @origin
-            @selectedMesh
+            @selectedObject
 
             constructor:(@glOrNot)->
                 super()
@@ -129,33 +129,39 @@ define(
                         @activeTool.mouseUp()
                 
                 #alt + number events
-                Spine.bind 'keyboard:67_up', =>
+                Spine.bind 'keyboard:c_up', =>
                     @camera.toggleType()
 
-                Spine.bind 'keyboard:49_up', =>         # 1
+                Spine.bind 'keyboard:1_up', =>
                     if @keyboard.isKeyDown("alt")
                         @cameraController.toFrontView()
 
-                Spine.bind 'keyboard:50_up', =>         # 2
+                Spine.bind 'keyboard:2_up', =>
                     if @keyboard.isKeyDown("alt")
                         @cameraController.toBackView()
 
-                Spine.bind 'keyboard:51_up', =>         # 3
+                Spine.bind 'keyboard:3_up', =>
                     if @keyboard.isKeyDown("alt")
                         @cameraController.toTopView()
 
-                Spine.bind 'keyboard:52_up', =>         # 4
+                Spine.bind 'keyboard:4_up', =>
                     if @keyboard.isKeyDown("alt")
                         @cameraController.toBottomView()
 
-                Spine.bind 'keyboard:192_up', =>         # 5
-                    #if @keyboard.isKeyDown("alt")
-                    @cameraController.toLeftView()
+                Spine.bind 'keyboard:5_up', =>
+                    if @keyboard.isKeyDown("alt")
+                        @cameraController.toLeftView()
 
-                Spine.bind 'keyboard:54_up', =>         # 6
+                Spine.bind 'keyboard:6_up', =>
                     if @keyboard.isKeyDown("alt")
                         @cameraController.toRightView()
-                                                                        
+
+                Spine.bind 'keyboard:spacebar_up', =>
+                     if @selectedObject?
+                        @selectedObject.toggleSelection()
+                        @selectedObject = undefined
+                        if @tools.selectTool?
+                            @tools.selectTool.do()
                 
             animate:=>
                 requestAnimFrame(@animate)

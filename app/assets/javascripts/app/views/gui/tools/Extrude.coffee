@@ -10,7 +10,7 @@ define(
             
             mouseDown:()=>
                 @activeObj = @stage3d.selectedObject
-                if @activeObj.class == "Path3D"
+                if @activeObj?.class == "Path3D"
                     @activeObj.extrude(5)
 
             mouseDragged:()=>

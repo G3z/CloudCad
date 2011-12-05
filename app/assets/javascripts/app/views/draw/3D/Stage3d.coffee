@@ -117,15 +117,15 @@ define(
                 # Event listeners
                 # Mouse events
                 Spine.bind 'mouse:btn1_down', =>
-                    unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("lalt") or @keyboard.isKeyDown("ctrl")
+                    unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
                         @activeTool.mouseDown()
                         
                 Spine.bind 'mouse:btn1_drag', =>
-                    unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("lalt") or @keyboard.isKeyDown("ctrl")
+                    unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
                         @activeTool.mouseDragged()
                 
                 Spine.bind 'mouse:btn1_up', =>
-                    unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("lalt") or @keyboard.isKeyDown("ctrl")
+                    unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
                         @activeTool.mouseUp()
                 
                 #alt + number events

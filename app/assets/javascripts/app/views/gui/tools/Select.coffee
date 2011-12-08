@@ -9,6 +9,12 @@ define(
                 @icon = "cursor.png"
                 @SM = {} #Selected Mesh
 
+            do:=>
+                super()
+                if @stage3d.selectedObject?
+                    @stage3d.selectedObject.toggleSelection()
+                    @stage3d.selectedObject = undefined
+
             mouseDown:()=>
                 c = @getMouseTarget(@stage3d.world)
                 if c? and c.length>0

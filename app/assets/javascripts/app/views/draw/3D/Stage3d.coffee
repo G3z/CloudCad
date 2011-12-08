@@ -54,7 +54,9 @@ define(
                 @projector = new THREE.Projector()
 
                 @world = new THREE.Object3D()
+                @planes = new THREE.Object3D()
                 @scene.add(@world)
+                @scene.add(@planes)
 
                 # Setup camera
                 @camera = new Camera((window.innerWidth),(window.innerHeight-40),35, 1, 15000,1, 15000)
@@ -79,8 +81,8 @@ define(
                 @scene.add(@ambientLight)
                 
 
-                # Piani di Default
-                @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: false, wireframe: false } ) )
+                # piano per le interazioni della camera
+                @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 2, 2 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: false, wireframe: true } ) )
                 @cameraPlane.lookAt( @camera.position )
                 @cameraPlane.visible = false
                 @scene.add(@cameraPlane)
@@ -173,27 +175,28 @@ define(
                 @renderer.render(@scene,@camera)
 
             createGeom:=>
-                @planeX = new Plane3D({
-                    rotation: new THREE.Vector3(0,0,0)
-                    color: 0xaa0000
-                    layer:"scene"
-                })
-
-                @planeY = new Plane3D({
-                    rotation: new THREE.Vector3(Math.toRadian(90),0,0)
-                    color: 0x00aa00
-                    layer:"scene"  
-                })
-
                 @planeZ = new Plane3D({
-                    rotation: new THREE.Vector3(0,Math.toRadian(90),0)
+                    rotation: new THREE.Vector3(0,0,0)
                     color: 0x0000aa
                     layer:"scene"
                 })
-                @scene.add(@planeX)
-                @scene.add(@planeY)
-                @scene.add(@planeZ)
-
+                
+                
+                @planeY = new Plane3D({
+                    rotation: new THREE.Vector3(Math.toRadian(-90),0,0)
+                    color: 0x00aa00
+                    layer:"scene"  
+                })
+                
+                @planeX = new Plane3D({
+                    rotation: new THREE.Vector3(0,Math.toRadian(-90),0)
+                    color: 0xaa0000
+                    layer:"scene"
+                })
+                @planes.add(@planeX)
+                @planes.add(@planeY)
+                @planes.add(@planeZ)
+                ###
                 vertices =[
                     new THREE.Vector2(0,0)
                     new THREE.Vector2(0,100)
@@ -213,4 +216,5 @@ define(
 
                 @world.add(@linea)
                 @world.add(@linea2)
+                ###
 )

@@ -12,7 +12,7 @@ define(
             mouseDown:()=>
                 c = @getMouseTarget(@stage3d.world)
                 if c? and c.length>0
-                    if c[0].object? and c[0].object != @stage3d.cameraPlane
+                    if c[0].object?
                         obj = c[0].object
                         if @stage3d.selectedObject? and @stage3d.selectedObject.id != obj.father?.id?
                             @stage3d.selectedObject.toggleSelection()

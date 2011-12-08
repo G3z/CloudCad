@@ -2,7 +2,7 @@ define(
     "views/draw/3D/primitives/Point3D"
     ["views/draw/3D/primitives/Primitive","views/draw/3D/primitives/Path3D"],
     (Primitive,Path3D)->
-        class CC.views.draw.primitives.Point3D extends Primitive
+        class CC.views.draw.primitives.Point3D extends THREE.Vertex
             @x
             @y
             @z
@@ -11,14 +11,20 @@ define(
             @idx
 
             constructor:(@x,@y,@z,@name,@father)->
-                super()
+                super(@x,@y,@z)
+                if @constructor.toString?
+                    arr = @constructor.toString().match(/function\s*(\w+)/)
+                    if arr? and  arr.length == 2
+                        @class = arr[1]
+                @id = Math.guid()
 
             moveTo:(@x,@y,@z)=>
                 if @father?
-                    if @father instanceof Path3D
-                       @father.ThreePath.geometry.vertices[@idx].position.x = @x
-                       @father.ThreePath.geometry.vertices[@idx].position.y = @y
-                       #@father.ThreePath.geometry.vertices[@idx].selected = true
+                    if @father.class = "Path3D"
+                       @father.points[@idx].position.x = @x
+                       @father.points[@idx].position.y = @y
+                       @father.points[@idx].position.z = @z
+                       @father.points[@idx].selected = true
                        @father.update()
 
             coords:=>
@@ -47,7 +53,9 @@ define(
                     if @x <= point.x + tollerance && @x >= point.x - tollerance && @y <= point.y + tollerance && @y >= point.y - tollerance && @z <= point.z + tollerance && @z >= point.z - tollerance
                         return true
                 return false
-
+            
+            toString:=>
+                "x:#{@x}\ny:#{@y}\nz:#{@z}"
             remove:->
                 if @father? && @father instanceof Path3D
                     @father.removePoint(this)

@@ -14,8 +14,7 @@ define(
             @segments
             @plane
             @lastPoint
-            @selectedPoint
-            @selectedSegment
+            @closed
             #### *constructor(`attr`)* method takes one argument
             #* the *attr* object that cointains various options  
             #Currently these options are supported:  
@@ -27,7 +26,7 @@ define(
             # If one of the above options isn't specified or attr isn't given the appropriate default is set.  
             constructor:(attr)->
                 super()
-
+                @closed = false
                 defaults = {
                     points : []
                     name : undefined
@@ -70,34 +69,41 @@ define(
                     size: 10
                 })
                 for vertice, i in @points
-                    if i < @points.length
-                        particle = new THREE.Vertex(vertice)
-                        particles.vertices.push(particle)
-                        particle.father = this
-                        particle.idx = i
-                        position = new THREE.Vector3(vertice.x,vertice.y,@position.z)
+                    point = @validatePoint(vertice)
+                    if point
+                        point.idx = i
+                        point.father = this
+                        @points[i] = point
+                    particle = new THREE.Vertex(vertice)
+                    particles.vertices.push(particle)
+                    particle.father = this
+                    particle.idx = i
+                    position = new THREE.Vector3(vertice.x,vertice.y,@position.z)
 
-                        size = 8
-                        cube = new THREE.Mesh(new THREE.CubeGeometry(size,size,size),new THREE.MeshBasicMaterial({
-                                color: @color
-                                opacity: 0.25
-                                transparent: true
-                                wireframe: true
-                            }))
-                        cube.placeholder = true
-                        cube.visible = false
-                        cube.vertexIndex = i
-                        cube.position.x = vertice.x
-                        cube.position.y = vertice.y
-                        cube.father = this
-                        @line.add(cube)
-                    
+                    size = 8
+                    cube = new THREE.Mesh(new THREE.CubeGeometry(size,size,size),new THREE.MeshBasicMaterial({
+                            color: @color
+                            opacity: 0.25
+                            transparent: true
+                            wireframe: true
+                        }))
+                    cube.placeholder = true
+                    cube.visible = false
+                    cube.vertexIndex = i
+                    cube.position.x = vertice.x
+                    cube.position.y = vertice.y
+                    cube.position.z = vertice.z
+                    cube.father = this
+                    @line.add(cube)
+                
                 @particleSystem = new THREE.ParticleSystem(
                     particles,
                     pMaterial
                 )
                 @particleSystem.dynamic = true
                 @particleSystem.father = this
+                if @points[0] == @points[@points.length-1]
+                    @closed = true
                 @line.add(@particleSystem)
             
             #### *toggleSelection(`hexColor`)* method takes one argument
@@ -129,16 +135,14 @@ define(
                     point.father = this
                     @points.push(point)
 
-            #### *add(`point`)* method takes one argument
+            #### *lineTo(`point`)* method takes one argument
             #* the *point* to be added to the Path
-            #add:(point)=>
-            #    point = @validatePoint(point)
-            #    if point
-            #        point.idx = @points.length
-            #        point.father = this
-            #        @points.push(point)
-            #        if @points.length>0
-            #        else
+            lineTo:(point)=>
+                validPoint = @validatePoint(point)
+                if validPoint
+                    @points.push(validPoint)
+                    @createGeometry()
+                    @update()
 
             insert:(idx,point)=>
                 
@@ -192,23 +196,22 @@ define(
                     @points[index] = newPoint
                     @line.geometry.vertices[index].position = newPoint
                     @particleSystem.geometry.vertices[index].position = newPoint
+                @createGeometry()
                 @update()
 
             moveSegment:(el,newPos)=>
 
             point:(selector)=>
-                ###
+                intSel = parseInt(selector,10)
                 unless selector?
                     return null
                 else if selector == "last"
-                    return @points[@points.length-1]
+                    return @line.children[@points.length-1]
                 else if selector == "first"
-                    return @points[0]
-                else if selector == "selected"
-                    return @points[@selectedPoint]
-                else if typeof(selector) == "number" && selector < @points.length && selector > -1
-                    return @points[parseInt(selector)]
-                ###
+                    return @line.children[0]
+                else if $.type(intSel) == "number" && intSel < @points.length && intSel > -1
+                    return @line.children[intSel]
+                
             
             pointNear:(point,tollerance)=>
                 ###
@@ -275,8 +278,13 @@ define(
                             return point = new Point3D(point[0],point[1],name + points.length,this) 
                         else
                             return point = new Point3D(point[0],point[1],null,this)
-                else if point instanceof Point3D
+                else if point.class? == "Point3D"
                     return point
+                else if point.x? and point.y? and point.z?
+                    point.x = Math.round(point.x*100)/100
+                    point.y = Math.round(point.y*100)/100
+                    point.z = Math.round(point.z*100)/100
+                    return new Point3D(point.x,point.y,point.z)
                 else
                     return false
 

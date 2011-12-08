@@ -17,18 +17,17 @@ define(
                 @activePlane = null
                 @activePath = null
             mouseDown:=>
-                #if @stage3d.selectedObject? and @stage3d.selectedObject.class == "Path3D"
-                #    c = @getMouseTarget(@stage3d.selectedObject)
-                #    if c? and c.length>0
-                #        if c[0].object?
-                #            obj = c[0].object
-                #            obj.material.color.setHex(0x0000bb)
-                #            @activePoint = obj
-                #        else
-                #            @activePoint = null
-                #    else
-                #        @activePoint = null
-                #else unless @activePlane?
+                if @stage3d.selectedObject? and @stage3d.selectedObject.class == "Path3D"
+                    c = @getMouseTarget(@stage3d.selectedObject)
+                    if c? and c.length>0
+                        if c[0].object?
+                            obj = c[0].object
+                            obj.material.color.setHex(0x0000bb)
+                            @activePoint = obj
+                        else
+                            @activePoint = null
+                    else
+                        @activePoint = null
 
                 #Seleziono il piano su cui lavorare
                 unless @activePlane?

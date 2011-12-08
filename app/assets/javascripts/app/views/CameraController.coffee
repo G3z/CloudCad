@@ -202,6 +202,19 @@ define(
                 else if (@mouse.btn1.down and @keyboard.isKeyDown("alt")) or ( @mouse.btn2.down and @keyboard.isKeyDown("alt"))
                     @_rotateEnd = @getMouseProjectionOnBall( @mouse.currentPos.x,@mouse.currentPos.y )
             
+            normalTo:(plane)=>
+                if plane.class == "Plane3D"
+                    distance = @stage3d.camera.position.distanceTo(@target)
+                    @target = plane.position.clone()
+
+                    @stage3d.camera.position.copy(@target)
+                    @stage3d.camera.up = plane.up.clone()
+                    @stage3d.camera.rotationAutoUpdate = false
+
+                    normal = plane.normal.clone()
+                    normal.multiplyScalar(-1).multiplyScalar(distance)
+                    @stage3d.camera.position.subSelf(normal)
+
             toFrontView:=>
                 distance = @stage3d.camera.position.distanceTo(@target)
                 @stage3d.camera.position.copy(@target)

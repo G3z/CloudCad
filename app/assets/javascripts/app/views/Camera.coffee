@@ -11,8 +11,8 @@ define(
                 @top = @height / 2
                 @bottom = -@height / 2
 
-                @cameraO = new THREE.OrthographicCamera( @width / - 2, @width / 2, @height / 2, @height / - 2,  @oNear, @oFar );
-                @cameraP = new THREE.PerspectiveCamera( @fov, @width/@height, @pNear, @pFar );
+                @cameraO = new THREE.OrthographicCamera( @width / - 2, @width / 2, @height / 2, @height / - 2,  @oNear, @oFar )
+                @cameraP = new THREE.PerspectiveCamera( @fov, @width/@height, @pNear, @pFar )
                 
                 @zoom = 1
                 @distance = 1
@@ -21,14 +21,14 @@ define(
                 @aspect = @width/@height
             
             toPerspective:=>
-                @near = @cameraP.near;
-                @far = @cameraP.far;
-                @cameraP.fov =  @fov / @zoom ;
-                @cameraP.updateProjectionMatrix();
-                @projectionMatrix = @cameraP.projectionMatrix;
+                @near = @cameraP.near
+                @far = @cameraP.far
+                @cameraP.fov =  @fov / @zoom
+                @cameraP.updateProjectionMatrix()
+                @projectionMatrix = @cameraP.projectionMatrix
                 
-                @inPersepectiveMode = true;
-                @inOrthographicMode = false;    
+                @inPersepectiveMode = true
+                @inOrthographicMode = false
             
             toOrthographic:=>
                 fov = @fov

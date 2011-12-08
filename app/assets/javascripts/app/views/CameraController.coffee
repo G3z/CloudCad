@@ -212,7 +212,7 @@ define(
                     @stage3d.camera.rotationAutoUpdate = false
 
                     normal = plane.normal.clone()
-                    normal.multiplyScalar(-1).multiplyScalar(distance)
+                    normal.multiplyScalar(distance)
                     @stage3d.camera.position.subSelf(normal)
 
             toFrontView:=>

@@ -2,7 +2,7 @@ define(
     "views/draw/3D/primitives/Point3D"
     ["views/draw/3D/primitives/Primitive","views/draw/3D/primitives/Path3D"],
     (Primitive,Path3D)->
-        class CC.views.draw.primitives.Point3D extends THREE.Vertex
+        class CC.views.draw.primitives.Point3D extends THREE.Vector3
             @x
             @y
             @z

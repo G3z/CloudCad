@@ -16,4 +16,5 @@ app/assets/tags
 tags
 iOS app/cloudCad.xcodeproj/xcuserdata/
 iOS app/cloudCad.xcodeproj/project.xcworkspace/xcuserdata/
-docs/
+db/production.sqlite3
+log/production.log

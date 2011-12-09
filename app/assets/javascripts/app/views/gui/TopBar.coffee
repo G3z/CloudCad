@@ -17,23 +17,30 @@ define(
                 alert("HELLO")
 
             runScript:->
-                id = new Date().getTime()
-                html = "<div class='codeeditor' id='codeeditor_" + id + "'>"
-                html += "<textarea id='textarea_" + id + "'></textarea>"
-                html += "<br />"
-                html += "<input type='Submit' class='btn primary' value='Run' />"
-                html += "</div>"
+                
+                require(["/js/codemirror2/lib/codemirror.js"], ()->
+                    # devo spezzarlo perchè questo script richiede che codemirror sia già stato elaborato
+                    require(['/js/codemirror2/mode/coffeescript/coffeescript.js'], ()->
+                
+                        id = new Date().getTime()
+                        html = "<div class='codeeditor' id='codeeditor_" + id + "'>"
+                        html += "<textarea id='textarea_" + id + "'></textarea>"
+                        html += "<br />"
+                        html += "<input type='Submit' class='btn primary' value='Run' />"
+                        html += "</div>"
 
-                win = new Window(html)
+                        win = new Window(html)
 
-                editor = CodeMirror.fromTextArea(
-                    $('#textarea_' + id).get(0),{
-                        theme: "cobalt"
-                    })
+                        editor = CodeMirror.fromTextArea(
+                            $('#textarea_' + id).get(0),{
+                                theme: "cobalt"
+                            })
 
-                $('#codeeditor_' + id + " input").bind('click', (evt)=>
-                    text = editor.getValue()
-                    CC.controllers.CommandExecutor.eval(text)
+                        $('#codeeditor_' + id + " input").bind('click', (evt)=>
+                            text = editor.getValue()
+                            CC.controllers.CommandExecutor.eval(text)
+                        )
+                    )
                 )
 
         # Store the instance

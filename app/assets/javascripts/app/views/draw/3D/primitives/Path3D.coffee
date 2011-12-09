@@ -196,7 +196,7 @@ define(
                     @points[index] = newPoint
                     @line.geometry.vertices[index].position = newPoint
                     @particleSystem.geometry.vertices[index].position = newPoint
-                @createGeometry()
+                #@createGeometry()
                 @update()
 
             moveSegment:(el,newPos)=>

@@ -3,12 +3,17 @@ class CommandExecutor extends CC.controllers.Abstract
         super()
 
     eval:(code)=>
-        code = CoffeeScript.compile(code)
+        
+        self = @
+        
+        require(["/js/coffee-script.js"], ()->
+            code = CoffeeScript.compile(code)
 
-        # Elements in these namespace are directly available in the code
-        code = @addToGlobalNamespace(code, "CC.views.draw.primitives")
+            # Elements in these namespace are directly available in the code
+            code = self.addToGlobalNamespace(code, "CC.views.draw.primitives")
 
-        eval(code)
+            eval(code)
+        )
 
     # Takes all the elements of the current namespace and
     # make them available to code

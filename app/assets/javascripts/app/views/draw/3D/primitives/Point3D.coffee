@@ -56,6 +56,7 @@ define(
             
             toString:=>
                 "x:#{@x}\ny:#{@y}\nz:#{@z}"
+                
             remove:->
                 if @father? && @father instanceof Path3D
                     @father.removePoint(this)

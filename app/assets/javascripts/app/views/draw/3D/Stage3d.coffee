@@ -29,6 +29,8 @@ define(
             constructor:(@glOrNot)->
                 super()
                 @tools = {}
+                @snapTolerance = 8
+
                 # Renderer
                 @canvas = document.createElement( 'canvas' )
                 $(@canvas).attr("id","canvas3d")

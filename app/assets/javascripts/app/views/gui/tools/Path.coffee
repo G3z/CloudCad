@@ -1,7 +1,7 @@
 define(
     "views/gui/tools/Path",
-    ["views/gui/tools/AbstractTool","views/draw/3D/primitives/Path3D"],
-    (AbstractTool,Path3D)->
+    ["views/gui/tools/AbstractTool","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Point3D"],
+    (AbstractTool,Path3D,Point3D)->
         class Path extends AbstractTool
 
             constructor:->
@@ -93,31 +93,38 @@ define(
                     newPoint.x -= @activePoint.father.position.x
                     newPoint.y -= @activePoint.father.position.y
                     newPoint.z = 0
+                    newPoint = new Point3D(newPoint.x,newPoint.y,newPoint.z)
+                    newPoint = @checkAlignment(newPoint)
 
                     @stage3d.selectedObject.movePoint(@activePoint.vertexIndex , newPoint)
+                    
                     @hasChanges = true
-            
+            mouseUp:=>
+                #@removeDoubles()
+
             checkAlignment:(point)->
                 if @activePath?.points.length > 1
                     tollerance = @stage3d.snapTolerance
-                    for pathPoint in @path.points
+                    for pathPoint in @activePath.points
                         if point.isNear("x",pathPoint,tollerance)
-                           point.moveTo(pathPoint.x,point.y)
+                           point.x = pathPoint.x
 
                         if point.isNear("y",pathPoint,tollerance)
-                            point.moveTo(point.x,pathPoint.y)
+                            point.y = pathPoint.y
+                    return point
+                        
 
             removeIfDouble:(point)->
-                if @path.points.length > 1
+                if @activePath.points.length > 1
                     if point.idx !=0
-                        previousPoint = @path.point(point.idx-1)
+                        previousPoint = @activePath.point(point.idx-1)
                     else
-                        previousPoint = @path.lastPoint
+                        previousPoint = @activePath.lastPoint
 
-                    if point.idx != @path.points.length-1
-                        nextPoint = @path.point(point.idx+1)
+                    if point.idx != @activePath.points.length-1
+                        nextPoint = @activePath.point(point.idx+1)
                     else
-                        nextPoint = @path.point(0)
+                        nextPoint = @activePath.point(0)
                     
                     if point.isNear("xyz",previousPoint,0)
                         point.remove()

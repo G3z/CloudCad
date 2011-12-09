@@ -69,6 +69,7 @@ define(
                         }),
                         material
                     )
+                    @mesh.geometry.dynamic = true
                     @mesh.father = this
                     @add(@mesh)
 
@@ -123,9 +124,9 @@ define(
             #Update forces updates to the internals
             update:=>
                 @lastPoint = @point("last")
-                @line.geometry.__dirtyVertices = true
-                @line.geometry.__dirtyNormals = true
-                @particles.__dirtyVertices = true
+                @mesh.geometry.__dirtyVertices = true
+                @mesh.geometry.__dirtyNormals = true
+                @particleSystem.geometry.__dirtyVertices = true
             
             #### *start(`point`)* method takes one argument
             #* the starting *point* from wich the Path should start
@@ -182,7 +183,7 @@ define(
                 @paperPath.removeSegment(point.idx)
                 @rearrangePoints()
                 ###
-
+    
             move:(el,newPos)=>
                 if el instanceof Point3D
                     @movePoint(el,newPos)
@@ -224,7 +225,14 @@ define(
                 else if typeof(selector) == "number" && selector < @points.length && selector > -1
                     return @points[parseInt(selector)]
                 ###
-            
+            vertexIndexForFacesWithNormal:(normal)=>
+                vertices = []
+                for face in @mesh.geometry.faces
+                    if face.normal.x == normal.x and face.normal.y == normal.y and face.normal.z == normal.z
+                        vertices.push face.a
+                        vertices.push face.b
+                        vertices.push face.c
+                return $.unique(vertices)
             pointNear:(point,tollerance)=>
                 ###
                 for i in [0...@segments.length]

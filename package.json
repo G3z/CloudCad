@@ -25,7 +25,9 @@
     "Spine": "latest"
   },
   "docco_configuration": {
+    "path":"app/assets/javascripts/app/",
     "css": "docs.css",
-    "show_timestamp": false
+    "show_timestamp": false,
+    "git_stats": true
   }
 }

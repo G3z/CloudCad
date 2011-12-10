@@ -50,25 +50,26 @@ define(
                 @createGeometry()
 
             createGeometry:=>
+                console.log @class,"create Geometry"
                 if @mesh?
                     @remove(@mesh)
                 if @generator? and @generator.class = "Path3D"
                     shape = new THREE.Shape(@generator.points)
-                    material = new THREE.MeshLambertMaterial({
+                    material = new THREE.MeshLambertMaterial
                         color: @generator.color
                         ambient: 0x111111
                         blending: 1
                         shading: 1
-                    })
+                    
                     @mesh = new THREE.Mesh(
-                        shape.extrude({
+                        shape.extrude
                             amount:@extrusionValue,
                             bevelEnabled:false,
                             material: material,
                             extrudeMaterial: material
-                        }),
                         material
                     )
+                    
                     @mesh.geometry.dynamic = true
                     @mesh.father = this
                     @add(@mesh)
@@ -226,13 +227,13 @@ define(
                     return @points[parseInt(selector)]
                 ###
             vertexIndexForFacesWithNormal:(normal)=>
-                vertices = []
+                vertices = {}
                 for face in @mesh.geometry.faces
                     if face.normal.x == normal.x and face.normal.y == normal.y and face.normal.z == normal.z
-                        vertices.push face.a
-                        vertices.push face.b
-                        vertices.push face.c
-                return $.unique(vertices)
+                        vertices[face.a] = true
+                        vertices[face.b] = true
+                        vertices[face.c] = true
+                return vertices
             pointNear:(point,tollerance)=>
                 ###
                 for i in [0...@segments.length]

@@ -16,6 +16,7 @@ define(
                 @activePoint = null
                 @activePlane = null
                 @activePath = null
+
             mouseDown:=>
                 if @stage3d.selectedObject? and @stage3d.selectedObject.class == "Path3D"
                     c = @getMouseTarget(@stage3d.selectedObject)
@@ -98,19 +99,31 @@ define(
 
                     @stage3d.selectedObject.movePoint(@activePoint.vertexIndex , newPoint)
                     
-                    @hasChanges = true
             mouseUp:=>
                 #@removeDoubles()
 
             checkAlignment:(point)->
                 if @activePath?.points.length > 1
                     tollerance = @stage3d.snapTolerance
+                    foundx =false
+                    foundy =false
                     for pathPoint in @activePath.points
-                        if point.isNear("x",pathPoint,tollerance)
-                           point.x = pathPoint.x
-
-                        if point.isNear("y",pathPoint,tollerance)
+                        if point.isNear("xy",pathPoint,tollerance)
+                            point.y = pathPoint.x
                             point.y = pathPoint.y
+                            return point
+
+                        else if point.isNear("x",pathPoint,tollerance)
+                           point.x = pathPoint.x
+                           foundx = true
+
+                        else if point.isNear("y",pathPoint,tollerance)
+                            point.y = pathPoint.y
+                            foundy = true
+
+                        if foundx and foundy
+                            return point
+
                     return point
                         
 

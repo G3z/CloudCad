@@ -50,16 +50,17 @@ define(
                 @createGeometry()
                 
             createGeometry:=>
+                console.log @class,"create Geometry"
                 if @line?
                     @remove(@line)
                 color = unless @selected then @color else @selectedColor
                 @line = new THREE.Line(
-                                            new THREE.CurvePath.prototype.createGeometry(@points),
-                                            new THREE.LineBasicMaterial( {
-                                                color: color
-                                                linewidth: 2
-                                            })
-                                        )
+                    new THREE.CurvePath.prototype.createGeometry(@points),
+                    new THREE.LineBasicMaterial
+                        color: color
+                        linewidth: 2
+                )
+                                        
                 @line.father = this
                 @add(@line)
                 
@@ -281,9 +282,11 @@ define(
                 else if point.class? == "Point3D"
                     return point
                 else if point.x? and point.y? and point.z?
+                    ###
                     point.x = Math.round(point.x*100)/100
                     point.y = Math.round(point.y*100)/100
                     point.z = Math.round(point.z*100)/100
+                    ###
                     return new Point3D(point.x,point.y,point.z)
                 else
                     return false

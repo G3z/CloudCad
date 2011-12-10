@@ -29,7 +29,7 @@ define(
             constructor:(@glOrNot)->
                 super()
                 @tools = {}
-                @snapTolerance = 8
+                @snapTolerance = 15
 
                 # Renderer
                 @canvas = document.createElement( 'canvas' )
@@ -163,11 +163,11 @@ define(
                         @cameraController.toRightView()
 
                 Spine.bind 'keyboard:spacebar_up', =>
-                     if @selectedObject?
+                    if @selectedObject?
                         @selectedObject.toggleSelection()
-                        @selectedObject = undefined
-                        if @tools.selectTool?
-                            @tools.selectTool.do()
+                    @selectedObject = undefined
+                    if @tools.selectTool?
+                        @tools.selectTool.do()
                 
             animate:->
                 requestAnimFrame(window.stage3d.animate)
@@ -187,7 +187,7 @@ define(
                 
                 
                 @planeY = new Plane3D({
-                    rotation: new THREE.Vector3(Math.toRadian(-90),0,0)
+                    rotation: new THREE.Vector3(Math.toRadian(90),0,0)
                     color: 0x00aa00
                     layer:"scene"  
                 })

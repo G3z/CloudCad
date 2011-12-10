@@ -35,20 +35,20 @@ define(
                 @canvas = document.createElement( 'canvas' )
                 $(@canvas).attr("id","canvas3d")
                 if glOrNot == "canvas"
-                    @renderer =new THREE.CanvasRenderer({canvas:@canvas})
+                    @renderer =new THREE.CanvasRenderer
+                        canvas:@canvas
                 else if glOrNot == "svg"
-                    @renderer =new THREE.SVGRenderer({canvas:@canvas})
+                    @renderer =new THREE.SVGRenderer 
+                        canvas: @canvas
                 else
-                    @renderer = new THREE.WebGLRenderer({
+                    @renderer = new THREE.WebGLRenderer
                         antialias: true
                         canvas: @canvas
                         clearColor: 0x111188
                         clearAlpha: 0.2
                         maxLights: 4
-                        #stencil: true
-                        preserveDrawingBuffer: false
                         sortObjects:true
-                    })
+                    
                     #@renderer.setFaceCulling("back","cw")
 
                 # scena
@@ -173,7 +173,7 @@ define(
 
             render:->
                 @cameraController.update()
-                @cameraPlane.lookAt( @camera.position );
+                @cameraPlane.lookAt( @camera.position )
                 @renderer.render(@scene,@camera)
 
             createGeom:=>

@@ -47,6 +47,8 @@ define(
                         clearColor: 0x111188
                         clearAlpha: 0.2
                         maxLights: 4
+                        #stencil: true
+                        #preserveDrawingBuffer: false
                         sortObjects:true
                     
                     #@renderer.setFaceCulling("back","cw")

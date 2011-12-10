@@ -20,8 +20,9 @@ define(
             mouseDragged:()=>
                 verts = @activeObj.mesh.geometry.vertices
                 for idx in @activeVertices
-                    verts[idx].position.z += @stage3d.mouse.btn1.delta.h * 0.1
+                    verts[idx].position.z += (@stage3d.mouse.btn1.delta.h - @stage3d.mouse.btn1.delta.w)  * -0.01
                 @activeObj.update()
+
             mouseUp:()=>
 
         # Singleton

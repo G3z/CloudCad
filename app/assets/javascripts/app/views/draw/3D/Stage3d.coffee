@@ -167,11 +167,11 @@ define(
                         if @tools.selectTool?
                             @tools.selectTool.do()
                 
-            animate:=>
-                requestAnimFrame(@animate)
-                @render()
+            animate:->
+                requestAnimFrame(window.stage3d.animate)
+                window.stage3d.render()
 
-            render:=>
+            render:->
                 @cameraController.update()
                 @cameraPlane.lookAt( @camera.position );
                 @renderer.render(@scene,@camera)

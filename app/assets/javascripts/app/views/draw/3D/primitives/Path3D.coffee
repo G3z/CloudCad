@@ -53,59 +53,62 @@ define(
                 console.log @class,"create Geometry"
                 if @line?
                     @remove(@line)
-                color = unless @selected then @color else @selectedColor
-                @line = new THREE.Line(
-                    new THREE.CurvePath.prototype.createGeometry(@points),
-                    new THREE.LineBasicMaterial
-                        color: color
-                        linewidth: 2
-                )
-                                        
-                @line.father = this
-                @add(@line)
-                
-                particles = new THREE.Geometry()
-                pMaterial = new THREE.ParticleBasicMaterial({
-                    color: @color,
-                    size: 10
-                })
-                for vertice, i in @points
-                    point = @validatePoint(vertice)
-                    if point
-                        point.idx = i
-                        point.father = this
-                        @points[i] = point
-                    particle = new THREE.Vertex(vertice)
-                    particles.vertices.push(particle)
-                    particle.father = this
-                    particle.idx = i
-                    position = new THREE.Vector3(vertice.x,vertice.y,@position.z)
+                if @points.length > 0
+                    color = unless @selected then @color else @selectedColor
+                    @line = new THREE.Line(
+                        new THREE.CurvePath.prototype.createGeometry(@points),
+                        new THREE.LineBasicMaterial
+                            color: color
+                            linewidth: 2
+                    )
+                                            
+                    @line.father = this
+                    @add(@line)
+                    
+                    particles = new THREE.Geometry()
+                    pMaterial = new THREE.ParticleBasicMaterial({
+                        color: @color,
+                        size: 10
+                    })
+                    for vertice, i in @points
+                        point = @validatePoint(vertice)
+                        if point
+                            point.idx = i
+                            point.father = this
+                            @points[i] = point
+                        particle = new THREE.Vertex(vertice)
+                        particles.vertices.push(particle)
+                        particle.father = this
+                        particle.idx = i
+                        position = new THREE.Vector3(vertice.x,vertice.y,@position.z)
 
-                    size = 8
-                    cube = new THREE.Mesh(new THREE.CubeGeometry(size,size,size),new THREE.MeshBasicMaterial({
-                            color: @color
-                            opacity: 0.25
-                            transparent: true
-                            wireframe: true
-                        }))
-                    cube.placeholder = true
-                    cube.visible = false
-                    cube.vertexIndex = i
-                    cube.position.x = vertice.x
-                    cube.position.y = vertice.y
-                    cube.position.z = vertice.z
-                    cube.father = this
-                    @line.add(cube)
-                
-                @particleSystem = new THREE.ParticleSystem(
-                    particles,
-                    pMaterial
-                )
-                @particleSystem.dynamic = true
-                @particleSystem.father = this
-                if @points[0] == @points[@points.length-1]
-                    @closed = true
-                @line.add(@particleSystem)
+                        size = 8
+                        cube = new THREE.Mesh(new THREE.CubeGeometry(size,size,size),new THREE.MeshBasicMaterial({
+                                color: @color
+                                opacity: 0.25
+                                transparent: true
+                                wireframe: true
+                            }))
+                        cube.placeholder = true
+                        cube.visible = false
+                        cube.vertexIndex = i
+                        cube.position.x = vertice.x
+                        cube.position.y = vertice.y
+                        cube.position.z = vertice.z
+                        cube.father = this
+                        @line.add(cube)
+                    
+                    @particleSystem = new THREE.ParticleSystem(
+                        particles,
+                        pMaterial
+                    )
+                    @particleSystem.dynamic = true
+                    @particleSystem.father = this
+                    if @points[0] == @points[@points.length-1]
+                        @closed = true
+                    @line.add(@particleSystem)
+                else
+                    debugger
             
             #### *toggleSelection(`hexColor`)* method takes one argument
             #* the *hexColor* number that represent the color for the selection  

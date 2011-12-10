@@ -19,7 +19,7 @@ define(
             mouseDragged:()=>
                 verts = @activeObj.mesh.geometry.vertices
                 firstPoint = undefined
-                for idx of @activeVertices
+                for idx in @activeVertices
                     unless firstPoint?
                         firstPoint = verts[idx]
                     verts[idx].position.z += (@stage3d.mouse.btn1.delta.h - @stage3d.mouse.btn1.delta.w)  * -0.05

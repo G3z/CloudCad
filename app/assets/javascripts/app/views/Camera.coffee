@@ -19,6 +19,8 @@ define(
                 @toPerspective()
 
                 @aspect = @width/@height
+
+                
             
             toPerspective:=>
                 @near = @cameraP.near

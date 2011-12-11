@@ -9,8 +9,9 @@ define(
         "views/draw/3D/primitives/Path3D"
         "views/draw/3D/primitives/Solid3D"
         "views/draw/3D/primitives/Plane3D"
+        "views/draw/3D/Axes"
     ],
-    (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D,Solid3D,Plane3D)->
+    (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D,Solid3D,Plane3D,Axes)->
         class CC.views.draw.Stage3d extends Abstract
             ###
             This class represent the Stage area where all the elements are represented
@@ -177,6 +178,7 @@ define(
                 @cameraController.update()
                 @cameraPlane.lookAt( @camera.position )
                 @renderer.render(@scene,@camera)
+                #@axes.update()
 
             createGeom:=>
                 @planeZ = new Plane3D({
@@ -200,6 +202,10 @@ define(
                 @planes.add(@planeX)
                 @planes.add(@planeY)
                 @planes.add(@planeZ)
+
+                #@axes = new Axes(this)
+                
+                #@scene.add(@axes)
                 ###
                 vertices =[
                     new THREE.Vector2(0,0)

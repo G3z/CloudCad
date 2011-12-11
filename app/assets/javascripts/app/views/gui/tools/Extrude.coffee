@@ -7,14 +7,21 @@ define(
             constructor:->
                 super()
                 @icon = "layer-resize-replicate-vertical.png"
+
+                class Pref extends Spine.Model
+                    @configure "Pref", "float_value", "bool_side"
+                    
+                @prefs = Pref.create(
+                    "float_value": 20    
+                    "bool_side": 1
+                ) 
             
             mouseDown:()=>
                 @activeObj = @stage3d.selectedObject
                 if @activeObj?.class == "Path3D"
-                    @activeObj.extrude(20)
+                    @activeObj.extrude(@prefs.float_value)
                     @activeObj = @stage3d.selectedObject
                     @activeVertices = @activeObj.vertexIndexForFacesWithNormal(new THREE.Vector3(0,0,1))
-                    console.log @activeVertices
 
             mouseDragged:()=>
                 verts = @activeObj.mesh.geometry.vertices
@@ -28,8 +35,11 @@ define(
                 else 
                     @activeObj.mesh.flipSided = true
                 @activeObj.update()
-
+    
             mouseUp:()=>
+            
+            prefChange:(prefModel)=>
+                #TODO: aggiornare estrusione
 
         # Singleton
         tool = new Extrude()

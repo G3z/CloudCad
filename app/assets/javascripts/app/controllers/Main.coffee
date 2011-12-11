@@ -4,8 +4,8 @@
 
 define(
     "controllers/Main",
-    ["controllers/Abstract", "views/draw/3D/Stage3d", "views/gui/MainToolbar", "views/gui/TopBar"],
-    (Abstract, Stage3d, MainToolbar)->
+    ["controllers/Abstract", "views/draw/3D/Stage3d", "views/gui/MainToolbar", "views/gui/OptionsToolbar", "views/gui/TopBar"],
+    (Abstract, Stage3d, MainToolbar,OptionsToolbar, TopBar)->
         class CC.controllers.Main extends Abstract
 
             @stage3d
@@ -15,20 +15,16 @@ define(
                 super @view
 
                 # Create the stage with the correct rendering
-                if Modernizr.webgl
-                    @stage3d = new Stage3d()
-                else
-                    if Modernizr.canvas
-                        @stage3d = new Stage3d("canvas")
-                    else
-                        @stage3d = new Stage3d("svg")
-
+                @stage3d = new Stage3d()
                 @stage3d.animate()
 
                 #@stage2d = new CC.views.draw.Stage2d()
 
+                
                 # Create the toolbar
-                tb = new MainToolbar()
+                optTb = new OptionsToolbar()
+                mainTb = new MainToolbar()
+                
 
             to3d:=>
                 return

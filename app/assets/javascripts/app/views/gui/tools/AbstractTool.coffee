@@ -3,7 +3,7 @@
 define(
     "views/gui/tools/AbstractTool"
     ()->
-        class CC.views.gui.tools.AbstractTool
+        class AbstractTool
             #### *constructor()* method takes no arguments
             #
             # `@icon` propery is created to contain the default tool icon  
@@ -42,7 +42,17 @@ define(
                 id = "#" + @toolName
                 $(id).addClass("selected").removeClass("unselected")
                 @stage3d = window.stage3d
-            
+                Spine.trigger "current_tool_changed",this
+
+            #### *getPrefModel()* method takes no arguments
+            #
+            # this method is called when mouse button is clicked while tool is active.
+            # this method is meant to be implemented in subClasses
+            getPrefModel:=>
+                if @prefs?
+                    @prefs.bind "update", @prefChange
+                    return @prefs
+
             #### *mouseDown()* method takes no arguments
             #
             # this method is called when mouse button is clicked while tool is active.

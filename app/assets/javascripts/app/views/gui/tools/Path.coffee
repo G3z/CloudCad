@@ -49,7 +49,7 @@ define(
                             contactPoint = c[0].point
                             contactPoint = @activePlane.matrix.multiplyVector3(contactPoint.clone())
                             #creo una nuova Path
-                            unless @activePath?
+                            unless @activePath? and contactPoint?
                                 @activePath = new Path3D({points:[contactPoint]})
                                 planeRotation = @activePlane.rotation.clone()
                                 @activePath.rotation = planeRotation.multiplyScalar(-1)
@@ -82,9 +82,6 @@ define(
                     @stage3d.cameraPlane.position.copy( @activePoint.position )
                     #@stage3d.cameraPlane.rotation.copy(@activePoint.father.rotation)
 
-                else if @stage3d.selectedParticle?
-                    @stage3d.cameraPlane.position.copy( @stage3d.selectedParticle.position )
-
                 intersects = @getMouseTarget(@stage3d.cameraPlane)
                 if intersects[0]? and @activePoint.placeholder==true
                     intersects[0].object.position.copy(@activePoint.position)
@@ -107,22 +104,23 @@ define(
                     tollerance = @stage3d.snapTolerance
                     foundx =false
                     foundy =false
-                    for pathPoint in @activePath.points
-                        if point.isNear("xy",pathPoint,tollerance)
-                            point.y = pathPoint.x
-                            point.y = pathPoint.y
-                            return point
+                    for pathPoint,i in @activePath.points
+                        if i < @activePath.points.length-1
+                            if point.isNear("xy",pathPoint,tollerance)
+                                point.x = pathPoint.x
+                                point.y = pathPoint.y
+                                return point
 
-                        else if point.isNear("x",pathPoint,tollerance)
-                           point.x = pathPoint.x
-                           foundx = true
+                            else if point.isNear("x",pathPoint,tollerance)
+                               point.x = pathPoint.x
+                               foundx = true
 
-                        else if point.isNear("y",pathPoint,tollerance)
-                            point.y = pathPoint.y
-                            foundy = true
+                            else if point.isNear("y",pathPoint,tollerance)
+                                point.y = pathPoint.y
+                                foundy = true
 
-                        if foundx and foundy
-                            return point
+                            if foundx and foundy
+                                return point
 
                     return point
                         

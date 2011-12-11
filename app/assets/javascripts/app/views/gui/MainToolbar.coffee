@@ -8,14 +8,18 @@ define(
         "views/gui/tools/Extrude"
     ],
     (AbstractToolbar, Select, Path, Extrude)->
-        class CC.views.gui.MainToolbar extends AbstractToolbar
+
+        tools = arguments
+
+        class MainToolbar extends AbstractToolbar
 
             constructor:->
 
                 html = ""
-                html += Select.button()
-                html += Path.button()
-                html += Extrude.button()
+                for k,v of tools
+                    continue if k == "0"
+                    html += v.button()
+                
 
                 super(html)
                 Select.do()

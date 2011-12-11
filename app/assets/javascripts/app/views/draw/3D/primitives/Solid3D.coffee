@@ -108,7 +108,6 @@ define(
             update:=>
                 @mesh.geometry.__dirtyVertices = true
                 @mesh.geometry.__dirtyNormals = true
-                @particleSystem.geometry.__dirtyVertices = true
             
             booleanOps:(op,target)=>
                 @remove(@mesh)
@@ -125,13 +124,13 @@ define(
                 @add(@mesh)
 
             plus:(object)=>
-                booleanOps("plus",object)
+                @booleanOps("plus",object)
             
             minus:(object)=>
-                booleanOps("minus",object)
+                @booleanOps("minus",object)
             
             intersect:(object)=>
-                booleanOps("intersect",object)
+                @booleanOps("intersect",object)
   
             vertexIndexForFacesWithNormal:(normal)=>
                 vertices = {}

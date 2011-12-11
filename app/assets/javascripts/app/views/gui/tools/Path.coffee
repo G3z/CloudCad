@@ -48,36 +48,37 @@ define(
                         if c[0].point?
                             contactPoint = c[0].point
                             contactPoint = @activePlane.matrix.multiplyVector3(contactPoint.clone())
-                            #creo una nuova Path
-                            unless @activePath? and contactPoint?
-                                @activePath = new Path3D({points:[contactPoint]})
-                                planeRotation = @activePlane.rotation.clone()
-                                @activePath.rotation = planeRotation.multiplyScalar(-1)
-                                @activePath.toggleSelection() unless @activePath.selected
-                                @stage3d.world.add(@activePath)
-                                @stage3d.selectedObject = @activePath
-                                @activePoint = @activePath.point("last")
-                            #aggiungo punti ad alla Path attiva
-                            else
-                                pathContact = @getMouseTarget(@activePath)
-                                if pathContact? and pathContact.length>0
-                                    if pathContact[0].object?
-                                        obj = pathContact[0].object
-                                        if obj.father?
-                                            obj.father.toggleSelection() unless obj.father.selected
-                                            @activePoint = obj
+                            if contactPoint?
+                                #creo una nuova Path
+                                unless @activePath?
+
+                                    @activePath = new Path3D({points:[contactPoint]})
+                                    planeRotation = @activePlane.rotation.clone()
+                                    @activePath.rotation = planeRotation.multiplyScalar(-1)
+                                    @activePath.toggleSelection() unless @activePath.selected
+                                    @stage3d.world.add(@activePath)
+                                    @stage3d.selectedObject = @activePath
+                                    @activePoint = @activePath.point("last")
+                                #aggiungo punti ad alla Path attiva
+                                else
+                                    pathContact = @getMouseTarget(@activePath)
+                                    if pathContact? and pathContact.length>0
+                                        if pathContact[0].object?
+                                            obj = pathContact[0].object
+                                            if obj.father?
+                                                obj.father.toggleSelection() unless obj.father.selected
+                                                @activePoint = obj
+                                        else
+                                            @activePath.lineTo(contactPoint)
+                                            @activePoint = @activePath.point("last")
                                     else
                                         @activePath.lineTo(contactPoint)
                                         @activePoint = @activePath.point("last")
-                                else
-                                    @activePath.lineTo(contactPoint)
-                                    @activePoint = @activePath.point("last")
                                 
             
             mouseDragged:=>
-                unless @activePoint?
+                unless @activePoint?.vertexIndex?
                     return
-
                 if @activePoint?
                     @stage3d.cameraPlane.position.copy( @activePoint.position )
                     #@stage3d.cameraPlane.rotation.copy(@activePoint.father.rotation)
@@ -92,6 +93,7 @@ define(
                     newPoint.y -= @activePoint.father.position.y
                     newPoint.z = 0
                     newPoint = new Point3D(newPoint.x,newPoint.y,newPoint.z)
+                    newPoint.vertexIndex = @activePoint.vertexIndex
                     newPoint = @checkAlignment(newPoint)
 
                     @stage3d.selectedObject.movePoint(@activePoint.vertexIndex , newPoint)
@@ -105,7 +107,7 @@ define(
                     foundx =false
                     foundy =false
                     for pathPoint,i in @activePath.points
-                        if i < @activePath.points.length-1
+                        if i != point.vertexIndex
                             if point.isNear("xy",pathPoint,tollerance)
                                 point.x = pathPoint.x
                                 point.y = pathPoint.y
@@ -122,7 +124,7 @@ define(
                             if foundx and foundy
                                 return point
 
-                    return point
+                return point
                         
 
             removeIfDouble:(point)->

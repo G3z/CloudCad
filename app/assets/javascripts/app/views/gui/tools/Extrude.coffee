@@ -22,24 +22,34 @@ define(
                     @activeObj.extrude(@prefs.float_value)
                     @activeObj = @stage3d.selectedObject
                     @activeVertices = @activeObj.vertexIndexForFacesWithNormal(new THREE.Vector3(0,0,1))
+                    @prefs.updateAttribute('float_value', @prefs.float_value)
 
             mouseDragged:()=>
+                verts = @activeObj.mesh.geometry.vertices
+                value = verts[@activeVertices[0]].position.z + (@stage3d.mouse.btn1.delta.h + @stage3d.mouse.btn1.delta.w)  * 0.05
+                value = Math.round(value*1000)/1000
+                @prefs.updateAttribute('float_value', value)
+            
+            mouseUp:()=>
+            
+            prefChange:(prefModel)=>
+                console.log @prefs.float_value
+                $(".float_value").val(@prefs.float_value)
+                @moveExtrudedFaces(parseFloat(@prefs.float_value))
+
+            moveExtrudedFaces:(ammount)=>
                 verts = @activeObj.mesh.geometry.vertices
                 firstPoint = undefined
                 for idx in @activeVertices
                     unless firstPoint?
                         firstPoint = verts[idx]
-                    verts[idx].position.z += (@stage3d.mouse.btn1.delta.h - @stage3d.mouse.btn1.delta.w)  * -0.05
+                    verts[idx].position.z = ammount
                 if verts[0].position.z < firstPoint.position.z
                     @activeObj.mesh.flipSided = false
                 else 
                     @activeObj.mesh.flipSided = true
                 @activeObj.update()
-    
-            mouseUp:()=>
-            
-            prefChange:(prefModel)=>
-                #TODO: aggiornare estrusione
+
 
         # Singleton
         tool = new Extrude()

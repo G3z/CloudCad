@@ -111,16 +111,18 @@ define(
             
             booleanOps:(op,target)=>
                 @remove(@mesh)
-                target = THREE.CSG.toCSG(target)
+                target.parent.remove(target)
+                #debugger
+                target = THREE.CSG.toCSG(target.mesh)
                 self = THREE.CSG.toCSG(@mesh)
                 if op == "plus"
-                    geometry = THREE.CSG.fromCSG( self.union(toAdd) )
+                    geometry = THREE.CSG.fromCSG( self.union(target) )
                 else if op == "minus"
-                    geometry = THREE.CSG.fromCSG( self.subtract(toAdd) )
+                    geometry = THREE.CSG.fromCSG( self.subtract(target) )
                 else if op == "intersect"
-                    geometry = THREE.CSG.fromCSG( self.intersect(toAdd) )
+                    geometry = THREE.CSG.fromCSG( self.intersect(target) )
                 
-                @mesh = THREE.CSG.fromCSG( geometry, @mesh.material )
+                @mesh = new THREE.Mesh( geometry, @mesh.material )
                 @add(@mesh)
 
             plus:(object)=>

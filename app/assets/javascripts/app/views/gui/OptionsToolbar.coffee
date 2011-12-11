@@ -23,8 +23,9 @@ define(
                             evtName = "change"
                         else if type == "float"
                             dom = $("<input>").attr("type","text")
-                            evtName = "keypress"
+                            evtName = "keyup"
                         dom?.attr("label",label)
+                            .addClass(k)
                             .data("option_name", k)
                             .on(evtName, (evt)->
                                 target = $(evt.currentTarget)

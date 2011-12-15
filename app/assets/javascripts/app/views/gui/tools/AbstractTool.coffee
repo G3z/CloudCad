@@ -77,40 +77,49 @@ define(
             # this method retuns the first object, child of `object`, under mouse position, either in perspective or orthographic mode
             # this is an utility method for subClasses.  
             getMouseTarget:(object)=>  
-                if @stage3d.camera.inPersepectiveMode
-                    vector = new THREE.Vector3(
-                        @stage3d.mouse.currentPos.stage3Dx
-                        @stage3d.mouse.currentPos.stage3Dy
-                        0.5
-                    )
-                    @stage3d.projector.unprojectVector(vector, @stage3d.camera)
-                    ray = new THREE.Ray(@stage3d.camera.position, vector.subSelf( @stage3d.camera.position ).normalize())
-                    if object? 
-                        return ray.intersectObject(object) 
-                    else 
-                        return ray.intersectObject(@stage3d.world)
-                else
-                    vecOrigin = new THREE.Vector3( 
-                        @stage3d.mouse.currentPos.stage3Dx
-                        @stage3d.mouse.currentPos.stage3Dy
-                        -1
-                    )
-                    vecTarget = new THREE.Vector3( 
-                        @stage3d.mouse.currentPos.stage3Dx
-                        @stage3d.mouse.currentPos.stage3Dy
-                        1
-                    )
-
-                    @stage3d.projector.unprojectVector( vecOrigin, @stage3d.camera )
-                    @stage3d.projector.unprojectVector( vecTarget, @stage3d.camera )
-                    vecTarget.subSelf( vecOrigin ).normalize()
-                    ray = new THREE.Ray( @stage3d.camera.position, vecTarget.subSelf( @stage3d.camera.position ).normalize())
-                    ray.origin = vecOrigin
-                    ray.direction = vecTarget
-                    if object?
-                        return ray.intersectObject(object) 
+                getTarget =(object)=>
+                    if @stage3d.camera.inPersepectiveMode
+                        vector = new THREE.Vector3(
+                            @stage3d.mouse.currentPos.stage3Dx
+                            @stage3d.mouse.currentPos.stage3Dy
+                            0.5
+                        )
+                        @stage3d.projector.unprojectVector(vector, @stage3d.camera)
+                        ray = new THREE.Ray(@stage3d.camera.position, vector.subSelf( @stage3d.camera.position ).normalize())
+                        if object? 
+                            return ray.intersectObject(object) 
+                        else 
+                            return ray.intersectObject(@stage3d.world)
                     else
-                        return ray.intersectObject(@stage3d.world)
+                        vecOrigin = new THREE.Vector3( 
+                            @stage3d.mouse.currentPos.stage3Dx
+                            @stage3d.mouse.currentPos.stage3Dy
+                            -1
+                        )
+                        vecTarget = new THREE.Vector3( 
+                            @stage3d.mouse.currentPos.stage3Dx
+                            @stage3d.mouse.currentPos.stage3Dy
+                            1
+                        )
+
+                        @stage3d.projector.unprojectVector( vecOrigin, @stage3d.camera )
+                        @stage3d.projector.unprojectVector( vecTarget, @stage3d.camera )
+                        vecTarget.subSelf( vecOrigin ).normalize()
+                        ray = new THREE.Ray( @stage3d.camera.position, vecTarget.subSelf( @stage3d.camera.position ).normalize())
+                        ray.origin = vecOrigin
+                        ray.direction = vecTarget
+                        if object?
+                            return ray.intersectObject(object) 
+                        else
+                            return ray.intersectObject(@stage3d.world)
+                if $.type(object) == "array"
+                    for obj in object
+                        result = getTarget(obj)
+                        if result?.length > 0
+                            return result
+                else
+                    return getTarget(object)
+
 
 )
 

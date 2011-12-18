@@ -5,9 +5,13 @@ define(
         "views/gui/AbstractToolbar"
     ]
     (AbstractToolbar)->
-        class OptionsToolBar extends AbstractToolbar
-            constructor:->
-                super("")
+        
+      class OptionsToolBar 
+            
+          constructor:->
+
+                @element = $('#tool_options_panel')
+
                 Spine.bind "current_tool_changed",(tool)=>
 
                     m = tool.getPrefModel()

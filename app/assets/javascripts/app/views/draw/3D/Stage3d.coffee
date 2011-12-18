@@ -59,8 +59,10 @@ define(
                 @projector = new THREE.Projector()
 
                 @world = new THREE.Object3D()
+                @_planes = new THREE.Object3D()
                 @planes = new THREE.Object3D()
                 @scene.add(@world)
+                @scene.add(@_planes)
                 @scene.add(@planes)
 
                 # Setup camera
@@ -190,6 +192,9 @@ define(
                 
                 @planeY = new Plane3D({
                     rotation: new THREE.Vector3(Math.toRadian(90),0,0)
+                    size:
+                        w:600
+                        h:600
                     color: 0x00aa00
                     layer:"scene"  
                 })
@@ -199,9 +204,9 @@ define(
                     color: 0xaa0000
                     layer:"scene"
                 })
-                @planes.add(@planeX)
-                @planes.add(@planeY)
-                @planes.add(@planeZ)
+                @_planes.add(@planeX)
+                @_planes.add(@planeY)
+                @_planes.add(@planeZ)
 
                 #@axes = new Axes(this)
                 

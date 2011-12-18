@@ -4,10 +4,11 @@ define(
     [
         "views/gui/AbstractToolbar"
         "views/gui/tools/Select"
+        "views/gui/tools/Plane"
         "views/gui/tools/Path"
         "views/gui/tools/Extrude"
     ],
-    (AbstractToolbar, Select, Path, Extrude)->
+    (AbstractToolbar, Select, Plane, Path, Extrude)->
 
         tools = arguments
 

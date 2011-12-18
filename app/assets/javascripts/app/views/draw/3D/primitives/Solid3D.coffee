@@ -108,6 +108,7 @@ define(
             update:=>
                 @mesh.geometry.__dirtyVertices = true
                 @mesh.geometry.__dirtyNormals = true
+                @mesh.geometry.computeCentroids()
             
             booleanOps:(op,target)=>
                 @remove(@mesh)
@@ -133,14 +134,40 @@ define(
             
             intersect:(object)=>
                 @booleanOps("intersect",object)
-  
+            
+            facesWithNormal:(normal,output)=>
+                
+                if output == "faces" or output == "centroids"
+                    result = []
+                    for face in @mesh.geometry.faces
+                        if face.normal.x == normal.x and face.normal.y == normal.y and face.normal.z == normal.z
+                            if output == "faces"
+                                result.push face
+                            else if output == "centroids"
+                                result.push face.centroid
+                else
+                    result = {}
+                    for face in @mesh.geometry.faces
+                        if face.normal.x == normal.x and face.normal.y == normal.y and face.normal.z == normal.z
+                            result[face.a] = true
+                            result[face.b] = true
+                            result[face.c] = true
+                    vertexIndices = Object.keys(result)
+                    if output == "vertex"
+                        result = [] 
+                        for idx in vertexIndices
+                            result.push @mesh.geometry.vertices[idx]
+                    else if output == "vertexIndices"
+                        result = vertexIndices
+                return result
+
             vertexIndexForFacesWithNormal:(normal)=>
                 vertices = {}
-                for face in @mesh.geometry.faces
-                    if face.normal.x == normal.x and face.normal.y == normal.y and face.normal.z == normal.z
-                        vertices[face.a] = true
-                        vertices[face.b] = true
-                        vertices[face.c] = true
+                faces = @facesWithNormal(normal,"faces")
+                for face in faces
+                    vertices[parseInt(face.a)] = true
+                    vertices[parseInt(face.b)] = true
+                    vertices[parseInt(face.c)] = true
                 return Object.keys(vertices)
             
             validatePoint:(point)=>

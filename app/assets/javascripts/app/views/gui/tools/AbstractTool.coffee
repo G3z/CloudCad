@@ -75,9 +75,10 @@ define(
             #* the *object* in witch the tool should be searching for collisions
             #
             # this method retuns the first object, child of `object`, under mouse position, either in perspective or orthographic mode
+            # if `object` is an array eache element is parsed until the first collision is found
             # this is an utility method for subClasses.  
             getMouseTarget:(object)=>  
-                getTarget =(object)=>
+                getTarget = (object)=>
                     if @stage3d.camera.inPersepectiveMode
                         vector = new THREE.Vector3(
                             @stage3d.mouse.currentPos.stage3Dx
@@ -119,6 +120,24 @@ define(
                             return result
                 else
                     return getTarget(object)
+
+            getBarycenter:(array)=>
+                finalX=0
+                finalY=0
+                finalZ=0
+                for point in array
+                    unless point.position?
+                        finalX += point.x
+                        finalY += point.y
+                        finalZ += point.z
+                    else
+                        finalX += point.position.x
+                        finalY += point.position.y
+                        finalZ += point.position.z
+                finalX /= array.length
+                finalY /= array.length
+                finalZ /= array.length
+                return new THREE.Vector3(finalX,finalY,finalZ)
 
 
 )

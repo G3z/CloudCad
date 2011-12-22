@@ -16,6 +16,7 @@ define(
 
                     m = tool.getPrefModel()
                     $(@element).html("")
+
                     for k,v of m
                         continue if k.indexOf("_") < 0
                         parArray = k.split("_")

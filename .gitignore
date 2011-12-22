@@ -20,3 +20,4 @@ db/production.sqlite3
 log/production.log
 docs/
 .sass-cache/
+node_modules/

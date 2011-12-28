@@ -21,16 +21,20 @@ define(
                             geo = new THREE.Geometry()
                             geo.vertices = faceVertices
                             geo.computeBoundingBox()
-                            w = geo.boundingBox.x[0]-geo.boundingBox.x[1]+10
-                            h = geo.boundingBox.y[0]-geo.boundingBox.y[1]+10
+                            w = geo.boundingBox.x[0]-geo.boundingBox.x[1]
+                            h = geo.boundingBox.y[0]-geo.boundingBox.y[1]
                             #debugger
                             barycenter = @getBarycenter faceVertices
                             plane = new Plane3D(
                                 position: barycenter
                                 size:
-                                    w:Math.abs(w)
-                                    h:Math.abs(h)
+                                    w:Math.abs(w)+10
+                                    h:Math.abs(h)+10
+                                color: 0xccaabb
                             )
+                            plane.normal = face.normal
+                            plane.updateMatrix()
+
                             @stage3d.planes.add(plane)
                             
                         #console.log obj.father,face,point

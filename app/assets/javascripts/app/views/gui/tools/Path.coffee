@@ -48,11 +48,13 @@ define(
                         if c[0].point?
                             contactPoint = c[0].point
                             contactPoint = @activePlane.matrix.multiplyVector3(contactPoint.clone())
+                            contactPoint.subSelf(@activePlane.position)
                             if contactPoint?
                                 #creo una nuova Path
                                 unless @activePath?
 
                                     @activePath = new Path3D({points:[contactPoint]})
+                                    @activePath.position = @activePlane.position
                                     planeRotation = @activePlane.rotation.clone()
                                     @activePath.rotation = planeRotation.multiplyScalar(-1)
                                     @activePath.toggleSelection() unless @activePath.selected

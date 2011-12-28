@@ -18,9 +18,9 @@ define(
                 #debugger
                 @screen = { 
                     width: window.innerWidth
-                    height: window.innerWidth-40        ## Da rendere dinamico
+                    height: window.innerHeight-80        ## Da rendere dinamico
                     offsetLeft: 0
-                    offsetTop: 40                       ## Da rendere dinamico
+                    offsetTop: 80                       ## Da rendere dinamico
                 }
                 @radius = ( @screen.width + @screen.height ) / 4
 

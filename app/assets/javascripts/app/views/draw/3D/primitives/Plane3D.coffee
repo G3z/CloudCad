@@ -34,6 +34,21 @@ define(
                 @rotation.y = Math.round(rotation.y*1000)/1000
                 @rotation.z = Math.round(rotation.z*1000)/1000
 
+                @points=[
+                    new THREE.Vector2(size.w/2*-1,size.h/2*-1)
+                    new THREE.Vector2(size.w/2*-1,size.h/2)
+                    new THREE.Vector2(size.w/2,size.h/2)
+                    new THREE.Vector2(size.w/2,size.h/2*-1)
+                    new THREE.Vector2(size.w/2*-1,size.h/2*-1)
+                ]
+
+                @line = new THREE.Line(
+                        new THREE.CurvePath.prototype.createGeometry(@points),
+                        new THREE.LineBasicMaterial
+                            color: @color
+                            linewidth: 1.5
+                    )
+                @add @line
                 @mesh = new THREE.Mesh( new THREE.PlaneGeometry( size.w, size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 
                                 color: @color
                                 opacity: .3
@@ -45,7 +60,9 @@ define(
                 
                 @updateMatrix()
                 @up = @matrix.multiplyVector3(@up.clone())
+                @up.subSelf(@position)
                 @normal = @matrix.multiplyVector3(@mesh.geometry.faces[0].normal.clone())
+                @normal.subSelf(@position)
                 @mesh.father = this
                 @add(@mesh)
                 #@addToLayer(layer)

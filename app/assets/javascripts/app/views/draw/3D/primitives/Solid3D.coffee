@@ -152,6 +152,8 @@ define(
                             result[face.a] = true
                             result[face.b] = true
                             result[face.c] = true
+                            if face.d?
+                                result[face.d] = true
                     vertexIndices = Object.keys(result)
                     if output == "vertex"
                         result = [] 
@@ -168,6 +170,8 @@ define(
                     vertices[parseInt(face.a)] = true
                     vertices[parseInt(face.b)] = true
                     vertices[parseInt(face.c)] = true
+                    if face.d?
+                        vertices[parseInt(face.d)] = true
                 return Object.keys(vertices)
             
             validatePoint:(point)=>

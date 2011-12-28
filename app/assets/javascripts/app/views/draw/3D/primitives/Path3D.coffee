@@ -46,7 +46,7 @@ define(
                     if attr.name? then @name = attr.name else @name = defaults.name
                     if attr.color? then @color = attr.color else @color = defaults.color
                     if attr.selectedColor? then @selectedColor = attr.selectedColor else @selectedColor = defaults.selectedColor
-                
+
                 @createGeometry()
                 
             createGeometry:=>

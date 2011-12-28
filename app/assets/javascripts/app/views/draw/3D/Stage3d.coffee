@@ -31,7 +31,9 @@ define(
                 super()
                 @tools = {}
                 @snapTolerance = 15
-
+                @size=
+                    w: window.innerWidth
+                    h: window.innerHeight-85
                 # Renderer
                 @canvas = document.createElement( 'canvas' )
                 $(@canvas).attr("id","canvas3d")
@@ -66,7 +68,7 @@ define(
                 @scene.add(@planes)
 
                 # Setup camera
-                @camera = new Camera((window.innerWidth),(window.innerHeight-40),35, 1, 15000,1, 15000)
+                @camera = new Camera(@size.w,@size.h,35, 1, 15000,1, 15000)
                 @camera.position.z = 1000
                 @scene.add(@camera)
 
@@ -104,7 +106,7 @@ define(
 
 
                 # Define rendere size
-                @renderer.setSize( window.innerWidth, window.innerHeight-50 )
+                @renderer.setSize( @size.w,@size.h )
                 @renderer.shadowMapEnabled = true;
                 @renderer.shadowMapSoft = true;
 

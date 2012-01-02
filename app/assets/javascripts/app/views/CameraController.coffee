@@ -63,10 +63,16 @@ define(
                 Spine.bind 'mouse:btn1_drag', =>
                     @mouseDrag()
 
-                Spine.bind 'mouse:btn3_drag', =>
+                Spine.bind 'mouse:btn1_up', =>
+                    @mouseUp()
+
+                Spine.bind 'mouse:btn2_down', =>
+                    @mouseDown()
+
+                Spine.bind 'mouse:btn2_drag', =>
                     @mouseDrag()
 
-                Spine.bind 'mouse:btn1_up', =>
+                Spine.bind 'mouse:btn2_up', =>
                     @mouseUp()
 
                 Spine.bind 'mouse:wheel_changed', =>
@@ -176,13 +182,13 @@ define(
             mouseDown:=>
                 if @_state == @STATE.NONE
                     @_state = @STATE.ACTIVE
-                    if (@mouse.btn1.down and @keyboard.isKeyDown("alt") and @keyboard.isKeyDown("shift")) or @mouse.btn2.down
+                    if (@mouse.btn1.down and @keyboard.isKeyDown("alt") and @keyboard.isKeyDown("shift")) or (@mouse.btn2.down and @keyboard.isKeyDown("alt"))
                         @_panStart = @_panEnd = @getMouseOnScreen( @mouse.currentPos.x,@mouse.currentPos.y )
 
                     else if (@mouse.btn1.down and @keyboard.isKeyDown("alt") and @keyboard.isKeyDown("ctrl")) or (@mouse.btn2.down and @keyboard.isKeyDown("shift"))
                         @_zoomStart = @_zoomEnd = @getMouseOnScreen( @mouse.currentPos.x,@mouse.currentPos.y )
 
-                    else if (@mouse.btn1.down and @keyboard.isKeyDown("alt")) or ( @mouse.btn2.down and @keyboard.isKeyDown("alt"))
+                    else if (@mouse.btn1.down and @keyboard.isKeyDown("alt")) or ( @mouse.btn2.down )
                         @_rotateStart = @_rotateEnd = @getMouseProjectionOnBall( @mouse.currentPos.x,@mouse.currentPos.y )
 
             mouseDrag:=>
@@ -193,15 +199,23 @@ define(
                     @_keyPressed = false
                 if @_state == @STATE.NONE
                     return
-                else if (@mouse.btn1.down and @keyboard.isKeyDown("alt") and @keyboard.isKeyDown("shift")) or @mouse.btn2.down
+                else if (@mouse.btn1.down and @keyboard.isKeyDown("alt") and @keyboard.isKeyDown("shift")) or (@mouse.btn2.down and @keyboard.isKeyDown("alt"))
                     @_panEnd = @getMouseOnScreen( @mouse.currentPos.x,@mouse.currentPos.y )
 
                 else if (@mouse.btn1.down and @keyboard.isKeyDown("alt") and @keyboard.isKeyDown("ctrl")) or (@mouse.btn2.down and @keyboard.isKeyDown("shift"))
                     @_zoomEnd = @getMouseOnScreen( @mouse.currentPos.x,@mouse.currentPos.y )
 
-                else if (@mouse.btn1.down and @keyboard.isKeyDown("alt")) or ( @mouse.btn2.down and @keyboard.isKeyDown("alt"))
+                else if (@mouse.btn1.down and @keyboard.isKeyDown("alt")) or ( @mouse.btn2.down )
                     @_rotateEnd = @getMouseProjectionOnBall( @mouse.currentPos.x,@mouse.currentPos.y )
-            
+
+            mouseUp:=>
+                @_state = @STATE.NONE
+
+            mouseWheel:=>
+                #console.log "qui"
+                @factor = @mouse.wheel.speed
+                #console.log @_wheelDelta
+
             normalTo:(plane)=>
                 if plane.class == "Plane3D"
                     distance = @stage3d.camera.position.distanceTo(@target)
@@ -257,12 +271,5 @@ define(
                 @stage3d.camera.rotationAutoUpdate = false
                 @stage3d.camera.position.x -= distance
 
-            mouseUp:=>
-                @_state = @STATE.NONE
-
-            mouseWheel:=>
-                #console.log "qui"
-                @factor = @mouse.wheel.speed
-                #console.log @_wheelDelta
 )
 

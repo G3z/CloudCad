@@ -17,25 +17,34 @@ define(
                         face = c[0].face
                         point = c[0].point
                         if obj.class == "Solid3D"
+                            normal = face.normal
                             faceVertices = obj.facesWithNormal(face.normal,"vertex")
+                            barycenter = @getBarycenter faceVertices
+
+                            emptyObj = new THREE.Object3D()
+                            emptyObj.position = barycenter
+
+                            #
+                            v = new THREE.Vector3()
+                            v.add(normal,barycenter)
+                            emptyObj.lookAt(v)
+
                             geo = new THREE.Geometry()
                             geo.vertices = faceVertices
                             geo.computeBoundingBox()
                             w = geo.boundingBox.x[0]-geo.boundingBox.x[1]
                             h = geo.boundingBox.y[0]-geo.boundingBox.y[1]
                             #debugger
-                            barycenter = @getBarycenter faceVertices
+                            
                             plane = new Plane3D(
                                 position: barycenter
+                                rotation: emptyObj.rotation
                                 size:
                                     w:Math.abs(w)+10
                                     h:Math.abs(h)+10
                                 color: 0xccaabb
                             )
-                            plane.normal = face.normal
-                            plane.updateMatrix()
-
-                            @stage3d.planes.add(plane)
+                            obj.add(plane)
                             
                         #console.log obj.father,face,point
 

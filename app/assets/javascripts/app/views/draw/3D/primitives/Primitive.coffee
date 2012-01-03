@@ -1,4 +1,4 @@
-define(
+S.export(
     "views/draw/3D/primitives/Primitive"
     ()->
         class Primitive extends THREE.Object3D

@@ -2,7 +2,7 @@
 #   Abstract class for every controller
 #
 
-define(
+S.export(
     "controllers/Abstract",
     ()->
         class CC.controllers.Abstract extends Spine.Controller

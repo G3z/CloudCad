@@ -1,4 +1,4 @@
-define(
+S.export(
     "views/gui/tools/Path",
     ["views/gui/tools/AbstractTool","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Point3D"],
     (AbstractTool,Path3D,Point3D)->

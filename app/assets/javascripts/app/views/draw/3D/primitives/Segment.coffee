@@ -1,4 +1,4 @@
-define(
+S.export(
     "views/draw/3D/primitives/Segment"
     ["views/draw/3D/primitives/Primitive","views/draw/3D/primitives/Path3D"],
     (Primitive,Path3D)->

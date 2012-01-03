@@ -1,6 +1,6 @@
 ### AbstracTool Class###
 # Abstract Tool is the base class that every tool should inherit from
-define(
+S.export(
     "views/gui/tools/AbstractTool"
     ()->
         class AbstractTool

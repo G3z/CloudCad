@@ -6,7 +6,7 @@ class CommandExecutor extends CC.controllers.Abstract
         
         self = @
         
-        require(["/js/coffee-script.js"], ()->
+        S.import(["/js/coffee-script.js"], ()->
             code = CoffeeScript.compile(code)
 
             # Elements in these namespace are directly available in the code

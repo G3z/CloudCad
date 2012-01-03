@@ -3,7 +3,7 @@
 
 CameraController Class is used to filter events such as mousemove o mousedown and present them in a meaningfull way to the system
 ###
-define( 
+S.export(
     "views/CameraController",
     ()->
         class CC.views.CameraController extends Spine.Module 

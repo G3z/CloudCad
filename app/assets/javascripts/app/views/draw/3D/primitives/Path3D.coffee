@@ -1,6 +1,6 @@
 ### Path3D Class ###
 # Path3D Class combines Three.js path and shape classes providing an object that is editable under mouse interaction and that easily convertible into a solid shape
-define(
+S.export(
     "views/draw/3D/primitives/Path3D"
     [
         "views/draw/3D/primitives/Primitive"

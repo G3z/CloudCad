@@ -1,5 +1,5 @@
 
-define(
+S.export(
     "views/Camera",
     ()->
         class CC.views.draw.Camera extends THREE.Camera

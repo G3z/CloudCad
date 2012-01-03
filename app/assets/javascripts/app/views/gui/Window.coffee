@@ -1,5 +1,5 @@
 
-define(
+S.export(
     "views/gui/Window",
     ["views/gui/AbstractPanel"],
     (AbstractPanel)->

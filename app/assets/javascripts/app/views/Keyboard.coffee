@@ -1,5 +1,5 @@
 
-define(
+S.export(
     "views/Keyboard",
     ()->
         

@@ -1,6 +1,6 @@
 ### Solid3D Class ###
 # Solid3D is the main class for all solids, currently only extrusion solid are supported generated via Path3D
-define(
+S.export(
     "views/draw/3D/primitives/Solid3D"
     [
         "views/draw/3D/primitives/Primitive"

@@ -2,7 +2,7 @@
 #   Main controller for the whole application
 #
 
-define(
+S.export(
     "controllers/Main",
     ["controllers/Abstract", "views/draw/3D/Stage3d", "views/gui/MainToolbar", "views/gui/OptionsToolbar", "views/gui/TopBar"],
     (Abstract, Stage3d, MainToolbar,OptionsToolbar, TopBar)->

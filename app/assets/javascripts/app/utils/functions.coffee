@@ -1,4 +1,4 @@
-define(
+S.export(
     "functions"
     ()->
         # Generatore di GUID

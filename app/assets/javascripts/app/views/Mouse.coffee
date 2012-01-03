@@ -1,6 +1,6 @@
 ### Mouse Class###
 # Mouse Class is used to filter events such as mousemove o mousedown and present them in a meaningfull way to the system
-define(
+S.export(
     "views/Mouse",
     ["views/MouseButton", "views/MouseWheel"],
     (MouseButton, MouseWheel)->

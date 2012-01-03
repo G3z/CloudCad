@@ -1,4 +1,4 @@
-define(
+S.export(
     "views/draw/3D/Stage3d"
     [
         "views/Abstract"

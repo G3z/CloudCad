@@ -1,4 +1,4 @@
-define(
+S.export(
     "views/draw/3D/primitives/Plane3D"
     [
         "views/draw/3D/primitives/Primitive"

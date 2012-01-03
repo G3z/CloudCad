@@ -1,4 +1,4 @@
-define(
+S.export(
     "views/gui/tools/Extrude",
     ["views/gui/tools/AbstractTool"],
     (AbstractTool)->

@@ -1,5 +1,5 @@
 
-define(
+S.export(
     "views/Abstract"
     ()->
         class CC.views.Abstract extends Backbone.View

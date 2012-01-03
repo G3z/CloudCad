@@ -1,5 +1,5 @@
 
-define(
+S.export(
     "views/gui/TopBar",
     ["views/Abstract", "views/gui/Window", "controllers/CommandExecutor"],
     (Abstract, Window)->
@@ -18,9 +18,9 @@ define(
 
             runScript:->
                 
-                require(["/js/codemirror2/lib/codemirror.js"], ()->
+                S.import(["/js/codemirror2/lib/codemirror.js"], ()->
                     # devo spezzarlo perchè questo script richiede che codemirror sia già stato elaborato
-                    require(['/js/codemirror2/mode/coffeescript/coffeescript.js'], ()->
+                    S.import(['/js/codemirror2/mode/coffeescript/coffeescript.js'], ()->
                 
                         id = new Date().getTime()
                         html = "<div class='codeeditor' id='codeeditor_" + id + "'>"

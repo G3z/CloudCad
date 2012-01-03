@@ -1,4 +1,4 @@
-define(
+S.export(
     "views/draw/3D/Axes"
     ()->
         class Axes extends THREE.Object3D

@@ -1,0 +1,3 @@
+[submodule "app/assets/javascripts/app/libs/solid"]
+	path = app/assets/javascripts/app/libs/solid
+	url = git@github.com:wezzy/solid.git

@@ -1,9 +1,5 @@
 
-# File principale
-#= require ./main
-
-# Librerie
-#= require json2
+# DA RIMUOVERE
 #= require jquery-tmpl
 #= require spine
 #= require spine/manager
@@ -11,9 +7,7 @@
 #= require spine/tmpl
 #= require spine/route
 #= require spine/route
+# FINE DA RIMUOVERE
 
-# require_tree ./utils
-# require_tree ./libs
-# require_tree ./models
-# require_tree ./controllers
-# require_tree ./views
+# Code
+#= require ./main

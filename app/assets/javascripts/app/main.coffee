@@ -13,13 +13,16 @@ window.CC.views.gui.tools = {} # Classes that defined GUI widgets
 window.CC.controllers = {}
 window.CC.models = {}
 
-require.config({
-    baseUrl: "/assets/app"
-})
+S.config = {
+    path: "/assets/app/libs/solid/framework/", # The path of the init file of solid
+    requireConfig:{ # Standard require configuration passed to the internal requirejs instance
+        baseUrl: "/assets/app"
+    }
+}
 
 # Startup dell'applicazione
 $(window).load ->
-    require(
+    S.import(
         ["controllers/Main","utils/functions"], 
         (Main,functions)->
             CC.mainController = new Main()

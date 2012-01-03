@@ -2,7 +2,7 @@
 define(
     "views/Abstract"
     ()->
-        class CC.views.Abstract extends Spine.Controller
+        class CC.views.Abstract extends Backbone.View
             
             @extend(Spine.Events)
             

@@ -127,53 +127,54 @@ S.export(
 
                 # Event listeners
                 # Mouse events
-                Spine.bind 'mouse:btn1_down', =>
-                    unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
-                        @activeTool.mouseDown()
-                        
-                Spine.bind 'mouse:btn1_drag', =>
-                    unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
-                        @activeTool.mouseDragged()
-                
-                Spine.bind 'mouse:btn1_up', =>
-                    unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
-                        @activeTool.mouseUp()
-                
-                #alt + number events
-                Spine.bind 'keyboard:c_up', =>
-                    @camera.toggleType()
+                $(document)
+                    .bind 'mouse:btn1_down', =>
+                        unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
+                            @activeTool.mouseDown()
 
-                Spine.bind 'keyboard:1_up', =>
-                    if @keyboard.isKeyDown("alt")
-                        @cameraController.toFrontView()
+                    .bind 'mouse:btn1_drag', =>
+                        unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
+                            @activeTool.mouseDragged()
 
-                Spine.bind 'keyboard:2_up', =>
-                    if @keyboard.isKeyDown("alt")
-                        @cameraController.toBackView()
+                    .bind 'mouse:btn1_up', =>
+                        unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
+                            @activeTool.mouseUp()
 
-                Spine.bind 'keyboard:3_up', =>
-                    if @keyboard.isKeyDown("alt")
-                        @cameraController.toTopView()
+                    .bind 'keyboard:c_up', =>
+                        #alt + number events
+                        @camera.toggleType()
 
-                Spine.bind 'keyboard:4_up', =>
-                    if @keyboard.isKeyDown("alt")
-                        @cameraController.toBottomView()
+                    .bind 'keyboard:1_up', =>
+                        if @keyboard.isKeyDown("alt")
+                            @cameraController.toFrontView()
 
-                Spine.bind 'keyboard:5_up', =>
-                    if @keyboard.isKeyDown("alt")
-                        @cameraController.toLeftView()
+                    .bind 'keyboard:2_up', =>
+                        if @keyboard.isKeyDown("alt")
+                            @cameraController.toBackView()
 
-                Spine.bind 'keyboard:6_up', =>
-                    if @keyboard.isKeyDown("alt")
-                        @cameraController.toRightView()
+                    .bind 'keyboard:3_up', =>
+                        if @keyboard.isKeyDown("alt")
+                            @cameraController.toTopView()
 
-                Spine.bind 'keyboard:spacebar_up', =>
-                    if @selectedObject?
-                        @selectedObject.toggleSelection()
-                    @selectedObject = undefined
-                    if @tools.selectTool?
-                        @tools.selectTool.do()
-                
+                    .bind 'keyboard:4_up', =>
+                        if @keyboard.isKeyDown("alt")
+                            @cameraController.toBottomView()
+
+                    .bind 'keyboard:5_up', =>
+                        if @keyboard.isKeyDown("alt")
+                            @cameraController.toLeftView()
+
+                    .bind 'keyboard:6_up', =>
+                        if @keyboard.isKeyDown("alt")
+                            @cameraController.toRightView()
+
+                    .bind 'keyboard:spacebar_up', =>
+                        if @selectedObject?
+                            @selectedObject.toggleSelection()
+                        @selectedObject = undefined
+                        if @tools.selectTool?
+                            @tools.selectTool.do()
+
             animate:->
                 requestAnimFrame(window.stage3d.animate)
                 window.stage3d.render()

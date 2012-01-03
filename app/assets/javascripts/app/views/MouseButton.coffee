@@ -4,7 +4,7 @@
 S.export(
     "views/MouseButton",
     ()->
-        class CC.views.MouseButton
+        class MouseButton
 
             constructor:->
                 @down = false

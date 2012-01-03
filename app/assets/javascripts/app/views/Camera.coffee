@@ -2,7 +2,7 @@
 S.export(
     "views/Camera",
     ()->
-        class CC.views.draw.Camera extends THREE.Camera
+        class Camera extends THREE.Camera
             constructor:(@width, @height,@fov,@pNear,@pFar, @oNear, @oFar)->
                 super()
                 

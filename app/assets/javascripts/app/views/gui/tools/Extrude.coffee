@@ -8,10 +8,10 @@ S.export(
                 super()
                 @icon = "layer-resize-replicate-vertical.png"
 
-                class Pref extends Spine.Model
-                    @configure "Pref", "float_value", "bool_side"
+                class Pref extends Backbone.Model
+                    # @configure "Pref", "float_value", "bool_side"
                     
-                @prefs = Pref.create(
+                @prefs = new Pref(
                     "float_value": 20    
                     "bool_side": false
                 ) 
@@ -22,8 +22,10 @@ S.export(
                     @activeObj.extrude(@prefs.float_value)
                     @activeObj = @stage3d.selectedObject
                     @activeVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,1),"vertexIndices")
-                    @prefs.updateAttribute('float_value', @prefs.float_value)
-                    @prefs.updateAttribute('bool_side', @prefs.bool_side)
+                    @prefs.set({
+                        'float_value': @prefs.float_value,
+                        'bool_side': @prefs.bool_side
+                    })
 
             mouseDragged:()=>
                 if @activeObj?.class == "Solid3D"
@@ -31,7 +33,7 @@ S.export(
                         verts = @activeObj.mesh.geometry.vertices
                         value = verts[@activeVertices[0]].position.z + (@stage3d.mouse.btn1.delta.h + @stage3d.mouse.btn1.delta.w)  * 0.05
                         value = Math.round(value*1000)/1000
-                        @prefs.updateAttribute('float_value', value)
+                        @prefs.set({'float_value': value})
             
             mouseUp:()=>
             

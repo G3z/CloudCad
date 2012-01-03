@@ -3,10 +3,19 @@
   <component name="ChangeListManager">
     <list default="true" id="f5d5a617-6fe3-4f92-8171-897af34e9919" name="Default" comment="Elementi di GUI">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/controllers/Abstract.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/controllers/Abstract.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/controllers/CommandExecutor.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/controllers/CommandExecutor.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/index.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/index.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/Abstract.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/Abstract.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/TopBar.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/TopBar.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/Camera.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/Camera.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/CameraController.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/CameraController.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/Keyboard.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/Keyboard.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/Mouse.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/Mouse.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/MouseButton.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/MouseButton.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/MouseWheel.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/MouseWheel.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/draw/2D/Stage2d.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/draw/2D/Stage2d.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/draw/3D/Stage3d.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/draw/3D/Stage3d.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/OptionsToolbar.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/OptionsToolbar.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/AbstractTool.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/AbstractTool.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/Extrude.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/Extrude.coffee" />
     </list>
     <ignored path="cad19.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,53 +42,8 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="main.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/main.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="0" selection-start="417" selection-end="417" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Abstract.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/Abstract.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="54" selection-start="146" selection-end="146" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Abstract.coffee" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/controllers/Abstract.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="34" selection-start="150" selection-end="150" vertical-scroll-proportion="0.32">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CommandExecutor.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/controllers/CommandExecutor.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="38" selection-start="129" selection-end="129" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TopBar.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/gui/TopBar.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="43" selection-start="1719" selection-end="1719" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Main.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/controllers/Main.coffee">
+      <file leaf-file-name="index.coffee" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/index.coffee">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
@@ -101,22 +65,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/AbstractPanel.coffee" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/AbstractToolbar.coffee" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/MainToolbar.coffee" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/OptionsToolbar.coffee" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/Window.coffee" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/WindowsManager.coffee" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/AbstractTool.coffee" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/Extrude.coffee" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/Path.coffee" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/Plane.coffee" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/Select.coffee" />
-        <option value="$PROJECT_DIR$/node_modules/docco-husky/node_modules/jade/support/stylus/examples/images.js" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/Abstract.coffee" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/TopBar.coffee" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/app/controllers/CommandExecutor.coffee" />
         <option value="$PROJECT_DIR$/app/assets/javascripts/app/controllers/Abstract.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/models/Project.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/models/Abstract.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/Abstract.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/Camera.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/Mouse.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/CameraController.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/Keyboard.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/MouseButton.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/MouseWheel.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/draw/2D/Stage2d.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/draw/3D/Stage3d.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/AbstractTool.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/OptionsToolbar.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/Extrude.coffee" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/app/index.coffee" />
       </list>
     </option>
   </component>
@@ -233,100 +197,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cad19" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cad19" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="javascripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cad19" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cad19" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="javascripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cad19" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cad19" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="javascripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -464,6 +334,13 @@
       <CUCUMBER_RUN_CONFIG_SETTINGS_ID NAME="CUCUMBER_RUNNER_PATH" VALUE="" />
       <CUCUMBER_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_RUNNER" VALUE="false" />
       <CUCUMBER_RUN_CONFIG_SETTINGS_ID NAME="SETTINGS_VERSION" VALUE="2" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
+      <JSDebuggerConfigurationSettings>
+        <option name="engineId" />
+        <option name="fileUrl" />
+      </JSDebuggerConfigurationSettings>
       <method />
     </configuration>
     <configuration default="true" type="TestUnitRunConfigurationType" factoryName="Test::Unit/Shoulda">
@@ -693,114 +570,114 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/Plane.coffee">
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/CameraController.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="111" column="36" selection-start="3860" selection-end="3860" vertical-scroll-proportion="0.35863096">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/Path.coffee">
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/Keyboard.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="90" column="27" selection-start="2390" selection-end="2390" vertical-scroll-proportion="-12.307693">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/docco-husky/node_modules/jade/support/stylus/examples/js-functions.js">
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/Mouse.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="3" selection-start="1134" selection-end="1134" vertical-scroll-proportion="0.64444447">
+        <state line="61" column="60" selection-start="2364" selection-end="2364" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/docco-husky/node_modules/jade/support/stylus/lib/functions/url.js">
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/MouseButton.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="9" selection-start="785" selection-end="785" vertical-scroll-proportion="0.31777778">
+        <state line="6" column="14" selection-start="253" selection-end="253" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/codemirror2/mode/velocity/index.html">
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/MouseWheel.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="1" selection-start="1032" selection-end="1032" vertical-scroll-proportion="0.31764707">
+        <state line="6" column="14" selection-start="233" selection-end="233" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/jquery.js">
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/draw/3D/Stage3d.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="969" column="4" selection-start="25357" selection-end="25357" vertical-scroll-proportion="0.3180778">
+        <state line="143" column="44" selection-start="5485" selection-end="5485" vertical-scroll-proportion="-0.4859335">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/paper.js">
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/draw/2D/Stage2d.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="422" column="17" selection-start="10588" selection-end="10588" vertical-scroll-proportion="0.3180778">
+        <state line="22" column="16" selection-start="656" selection-end="656" vertical-scroll-proportion="0.81860465">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/require.js">
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/gui/OptionsToolbar.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1595" column="44" selection-start="65423" selection-end="65423" vertical-scroll-proportion="0.3180778">
+        <state line="36" column="42" selection-start="1383" selection-end="1383" vertical-scroll-proportion="0.64444447">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/libs/solid/framework/libs/coffee-script.js">
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/Extrude.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="73" selection-start="212" selection-end="212" vertical-scroll-proportion="0.03661327">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/libs/solid/framework/libs/backbone.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="50" selection-start="973" selection-end="973" vertical-scroll-proportion="0.3318078">
+        <state line="63" column="8" selection-start="2646" selection-end="2664" vertical-scroll-proportion="1.2814646">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/main.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="0" selection-start="417" selection-end="417" vertical-scroll-proportion="0.0">
+        <state line="11" column="7" selection-start="309" selection-end="309" vertical-scroll-proportion="0.33333334">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/Abstract.coffee">
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/AbstractTool.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="54" selection-start="146" selection-end="146" vertical-scroll-proportion="0.0">
+        <state line="23" column="71" selection-start="1030" selection-end="1030" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/controllers/Main.coffee">
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/Select.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="8" selection-start="1114" selection-end="1114" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/gui/tools/Plane.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="8" selection-start="2213" selection-end="2213" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/app/assets/javascripts/app/main.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="71" selection-start="11991" selection-end="11991" vertical-scroll-proportion="-5.8">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/app/assets/javascripts/app/views/gui/tools/AbstractTool.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="132" selection-start="14262" selection-end="14262" vertical-scroll-proportion="0.33737865">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/index.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/views/gui/TopBar.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="43" selection-start="1719" selection-end="1719" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/controllers/CommandExecutor.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="38" selection-start="129" selection-end="129" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/app/controllers/Abstract.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="34" selection-start="150" selection-end="150" vertical-scroll-proportion="0.32">
           <folding />
         </state>
       </provider>

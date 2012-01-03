@@ -5,9 +5,9 @@ CameraController Class is used to filter events such as mousemove o mousedown an
 ###
 S.export(
     "views/CameraController",
-    ()->
-        class CC.views.CameraController extends Spine.Module 
-            @extend(Spine.Events)
+    ['views/Abstract']
+    (Abstract)->
+        class CameraController extends Abstract
 
             constructor:(@stage3d)->
                 @keyboard = @stage3d.keyboard
@@ -57,27 +57,23 @@ S.export(
                 @_panStart = new THREE.Vector2()
                 @_panEnd = new THREE.Vector2()
 
-                Spine.bind 'mouse:btn1_down', =>
-                    @mouseDown()
 
-                Spine.bind 'mouse:btn1_drag', =>
-                    @mouseDrag()
+                $(document)
+                    .bind 'mouse:btn1_down', =>
+                        @mouseDown()
+                    .bind 'mouse:btn1_drag', =>
+                        @mouseDrag()
+                    .bind 'mouse:btn1_up', =>
+                        @mouseUp()
+                    .bind 'mouse:btn2_down', =>
+                        @mouseDown()
+                    .bind 'mouse:btn2_drag', =>
+                        @mouseDrag()
+                    .bind 'mouse:btn2_up', =>
+                        @mouseUp()
+                    .bind 'mouse:wheel_changed', =>
+                        @mouseWheel()
 
-                Spine.bind 'mouse:btn1_up', =>
-                    @mouseUp()
-
-                Spine.bind 'mouse:btn2_down', =>
-                    @mouseDown()
-
-                Spine.bind 'mouse:btn2_drag', =>
-                    @mouseDrag()
-
-                Spine.bind 'mouse:btn2_up', =>
-                    @mouseUp()
-
-                Spine.bind 'mouse:wheel_changed', =>
-                    @mouseWheel()
-                #debugger
 
             getMouseOnScreen:( x, y ) =>
                 return new THREE.Vector2(
@@ -272,4 +268,3 @@ S.export(
                 @stage3d.camera.position.x -= distance
 
 )
-

@@ -18,11 +18,12 @@ class CC.views.draw.Stage2d extends CC.views.Abstract
 
 
         #Gestione degli eventi
-        Spine.bind 'mouse:btn1_down', =>
-            @activeTool.mouseDown(@mouse.currentPos)
-        Spine.bind 'mouse:btn1_drag', =>
-            @activeTool.mouseDragged(@mouse.currentPos)
-        Spine.bind 'mouse:btn1_up', =>
-            @activeTool.mouseUp(@mouse.currentPos)
+        $(document)
+            .bind 'mouse:btn1_down', =>
+                @activeTool.mouseDown(@mouse.currentPos)
+            .bind 'mouse:btn1_drag', =>
+                @activeTool.mouseDragged(@mouse.currentPos)
+            .bind 'mouse:btn1_up', =>
+                @activeTool.mouseUp(@mouse.currentPos)
 
         

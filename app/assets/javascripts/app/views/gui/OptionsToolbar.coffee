@@ -1,9 +1,7 @@
 
 S.export(
     "views/gui/OptionsToolbar"
-    [
-        "views/gui/AbstractToolbar"
-    ]
+    ["views/gui/AbstractToolbar"]
     (AbstractToolbar)->
         
       class OptionsToolBar 
@@ -12,7 +10,7 @@ S.export(
 
                 @element = $('#tool_options_panel')
 
-                Spine.bind "current_tool_changed",(tool)=>
+                $(document).bind "current_tool_changed", (evt, tool)=>
 
                     m = tool.getPrefModel()
                     $(@element).html("")
@@ -36,7 +34,7 @@ S.export(
                                 target = $(evt.currentTarget)
                                 obj = {}
                                 obj[target.data("option_name")] = target.val()
-                                m.updateAttributes(obj)
+                                m.set(obj)
                             )
                         $(@element).append(dom)
 )

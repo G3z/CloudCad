@@ -1,7 +1,8 @@
 
 S.export(
     "views/Keyboard",
-    ()->
+    ["views/Abstract"]
+    (Abstract)->
         
         ###
         # Keyboard Class #
@@ -9,8 +10,7 @@ S.export(
         Keyboard Class is used to filter keyboard events such as keyup o keydown and present them in a meaningfull way to the system
         ###
 
-        class CC.views.Keyboard extends Spine.Module 
-            @extend(Spine.Events)
+        class Keyboard extends Abstract
 
             constructor:(@canvas)->
                 @_keys = {
@@ -83,12 +83,12 @@ S.export(
             _keyDown:(keyCode)=>
                 #console.log keyCode
                 @_keysState[keyCode] = true
-                Spine.trigger 'keyboard:' + @keyForKeycode(keyCode) + '_down'
+                $(document).trigger 'keyboard:' + @keyForKeycode(keyCode) + '_down'
                 return true
 
             _keyUp:(keyCode)=>
                 @_keysState[keyCode] = false
-                Spine.trigger 'keyboard:' + @keyForKeycode(keyCode) + '_up'
+                $(document).trigger 'keyboard:' + @keyForKeycode(keyCode) + '_up'
                 return true
 
             isKeyDown:(keyCode)=>

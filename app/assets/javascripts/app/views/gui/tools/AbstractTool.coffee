@@ -42,7 +42,7 @@ S.export(
                 id = "#" + @toolName
                 $(id).addClass("selected").removeClass("unselected")
                 @stage3d = window.stage3d
-                Spine.trigger "current_tool_changed",this
+                $(document).trigger("current_tool_changed", this)
 
             #### *getPrefModel()* method takes no arguments
             #

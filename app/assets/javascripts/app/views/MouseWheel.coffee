@@ -4,7 +4,7 @@
 S.export(
     "views/MouseWheel",
     ()->
-        class CC.views.MouseWheel
+        class MouseWheel
             constructor:->
                 @direction = ""
                 @speed = 0

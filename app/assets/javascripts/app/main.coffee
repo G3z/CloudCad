@@ -10,8 +10,6 @@ window.CC.views.draw.primitives = {}
 window.CC.views.draw.tools = {}
 window.CC.views.gui = {} # Classes that defined GUI widgets
 window.CC.views.gui.tools = {} # Classes that defined GUI widgets
-window.CC.controllers = {}
-window.CC.models = {}
 
 S.config = {
     path: "/assets/app/libs/solid/framework/", # The path of the init file of solid
@@ -24,6 +22,7 @@ S.config = {
 $(window).load ->
     S.import(
         ["controllers/Main","utils/functions"], 
-        (Main,functions)->
-            CC.mainController = new Main()
+        (Main)->
+            console.log("Startup")
     )
+

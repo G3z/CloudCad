@@ -6,7 +6,7 @@ S.export(
     "controllers/Main",
     ["controllers/Abstract", "views/draw/3D/Stage3d", "views/gui/MainToolbar", "views/gui/OptionsToolbar", "views/gui/TopBar"],
     (Abstract, Stage3d, MainToolbar,OptionsToolbar, TopBar)->
-        class CC.controllers.Main extends Abstract
+        class Main extends Abstract
 
             @stage3d
             @stage2d
@@ -24,7 +24,11 @@ S.export(
                 # Create the toolbar
                 optTb = new OptionsToolbar()
                 mainTb = new MainToolbar()
-                
+
+                # Initialize backbone routes
+                Backbone.history.start({
+                    pushState: true
+                })
 
             to3d:=>
                 return
@@ -32,4 +36,6 @@ S.export(
             to2d:=>
                 return
 
+        # Singleton
+        return new Main()
 )

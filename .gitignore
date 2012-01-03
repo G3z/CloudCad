@@ -21,3 +21,4 @@ log/production.log
 docs/
 .sass-cache/
 node_modules/
+.idea/*

@@ -42,17 +42,31 @@ define(
                     new THREE.Vector2(size.w/2*-1,size.h/2*-1)
                 ]
 
-                @line = new THREE.Line(
+                @perimetralLine = new THREE.Line(
                         new THREE.CurvePath.prototype.createGeometry(@points),
                         new THREE.LineBasicMaterial
                             color: @color
-                            linewidth: 1.5
+                            linewidth: 1.3
                     )
-                @add @line
+                @horizontalLine = new THREE.Line(
+                        new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(size.w/2*-1,0),new THREE.Vector2(size.w/2,0)]),
+                        new THREE.LineBasicMaterial
+                            color: @color
+                            linewidth: .6
+                    )
+                @verticalLine = new THREE.Line(
+                        new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(0,size.h/2*-1),new THREE.Vector2(0,size.h/2)]),
+                        new THREE.LineBasicMaterial
+                            color: @color
+                            linewidth: .6
+                    )
+                @add @verticalLine
+                @add @horizontalLine
+                @add @perimetralLine
                 @mesh = new THREE.Mesh( new THREE.PlaneGeometry( size.w, size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 
                                 color: @color
-                                opacity: .3
-                                transparent: false
+                                opacity: 0.0
+                                transparent: true
                                 wireframe: true
                             }))
                 @mesh.doubleSided=true

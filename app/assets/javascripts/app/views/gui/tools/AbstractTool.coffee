@@ -122,21 +122,31 @@ define(
                     return getTarget(object)
 
             getBarycenter:(array)=>
-                finalX=0
-                finalY=0
-                finalZ=0
+                maxX=null
+                maxY=null
+                maxZ=null
+
+                minX=null
+                minY=null
+                minZ=null
                 for point in array
                     unless point.position?
-                        finalX += point.x
-                        finalY += point.y
-                        finalZ += point.z
+                        maxX = point.x if point.x > maxX or maxX == null
+                        maxY = point.y if point.y > maxY or maxY == null
+                        maxZ = point.z if point.z > maxZ or maxZ == null
+                        minX = point.x if point.x < minX or minX == null
+                        minY = point.y if point.y < minY or minY == null
+                        minZ = point.z if point.z < minZ or minZ == null
                     else
-                        finalX += point.position.x
-                        finalY += point.position.y
-                        finalZ += point.position.z
-                finalX /= array.length
-                finalY /= array.length
-                finalZ /= array.length
+                        maxX = point.position.x if point.position.x > maxX or maxX == null
+                        maxY = point.position.y if point.position.y > maxY or maxY == null
+                        maxZ = point.position.z if point.position.z > maxZ or maxZ == null
+                        minX = point.position.x if point.position.x < minX or minX == null
+                        minY = point.position.y if point.position.y < minY or minY == null
+                        minZ = point.position.z if point.position.z < minZ or minZ == null
+                finalX = (minX+maxX)/2
+                finalY = (minY+maxY)/2
+                finalZ = (minZ+maxZ)/2
                 return new THREE.Vector3(finalX,finalY,finalZ)
 
 

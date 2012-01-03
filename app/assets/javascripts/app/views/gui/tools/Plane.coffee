@@ -44,7 +44,7 @@ define(
                                     h:Math.abs(h)+10
                                 color: 0xccaabb
                             )
-                            obj.add(plane)
+                            @stage3d.planes.add(plane)
                             
                         #console.log obj.father,face,point
 

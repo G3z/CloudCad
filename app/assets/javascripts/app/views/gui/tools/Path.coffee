@@ -10,6 +10,11 @@ S.export(
                 @activePoint = null
                 @activePlane = null
                 @activePath = null
+                
+                # Register callback
+                $(document).bind("execute_tool_Path", =>
+                    @do()
+                )
 
             do:=>
                 super()
@@ -146,7 +151,6 @@ S.export(
                         point.remove()
 
         # Singleton
-        tool = new Path()
-        CC.views.gui.tools[tool.class] = tool
+        new Path()
 )
 

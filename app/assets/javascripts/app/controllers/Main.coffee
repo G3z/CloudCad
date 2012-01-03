@@ -26,14 +26,14 @@ S.export(
                 mainTb = new MainToolbar()
 
                 # Initialize backbone routes
-                Backbone.history.start({
-                    pushState: true
-                })
+                #Backbone.history.start({
+                #    pushState: true
+                #})
 
-            to3d:=>
+            to3d: =>
                 return
 
-            to2d:=>
+            to2d: =>
                 return
 
         # Singleton

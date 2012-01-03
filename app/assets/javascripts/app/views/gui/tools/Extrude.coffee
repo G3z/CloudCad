@@ -15,7 +15,12 @@ S.export(
                     "float_value": 20    
                     "bool_side": false
                 ) 
-            
+                
+                # Register callback
+                $(document).bind("execute_tool_Extrude", =>
+                    @do()
+                )
+
             mouseDown:()=>
                 @activeObj = @stage3d.selectedObject
                 if @activeObj?.class == "Path3D"
@@ -60,6 +65,6 @@ S.export(
 
 
         # Singleton
-        tool = new Extrude()
-        CC.views.gui.tools[tool.class] = tool
+        new Extrude()
+
 )

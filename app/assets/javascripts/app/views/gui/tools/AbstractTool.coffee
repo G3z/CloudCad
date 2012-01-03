@@ -21,7 +21,7 @@ S.export(
             # this method create the button representation of the tool
             button:=>
                 window.stage3d.tools[@toolName] = this
-                html = "<div class='toolbarButton unselected' onclick='CC.views.gui.tools.#{@class}.do()' id='#{@toolName}'>"
+                html = "<div class='toolbarButton unselected' onclick='$(document).trigger(\"execute_tool_#{@class}\")' id='#{@toolName}'>"
                 html += "<img src='/fugue-icons/icons/#{@icon}' />"
                 html += "</div>"
 

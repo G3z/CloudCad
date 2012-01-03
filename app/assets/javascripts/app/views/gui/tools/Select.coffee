@@ -8,6 +8,11 @@ S.export(
                 super()
                 @icon = "cursor.png"
                 @SM = {} #Selected Mesh
+                
+                # Register callback
+                $(document).bind("execute_tool_Select", =>
+                    @do()
+                )
 
             do:=>
                 super()
@@ -32,6 +37,5 @@ S.export(
             mouseUp:()=>
 
         # Singleton
-        tool = new Select()
-        CC.views.gui.tools[tool.class] = tool
+        new Select()
 )

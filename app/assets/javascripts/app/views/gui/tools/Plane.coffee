@@ -8,6 +8,11 @@ S.export(
                 super()
                 @icon = "border-all.png"
                 @SM = {} #Selected Mesh
+                
+                # Register callback
+                $(document).bind("execute_tool_Plane", =>
+                    @do()
+                )
 
             mouseDown:()=>
                 c = @getMouseTarget([@stage3d.world,@stage3d.planes])
@@ -55,6 +60,5 @@ S.export(
             
 
         # Singleton
-        tool = new Plane()
-        CC.views.gui.tools[tool.class] = tool
+        new Plane()
 )

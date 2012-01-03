@@ -38,8 +38,6 @@ define(
                             obj = c[0].object
                             @activePlane = obj.father
                             @stage3d.cameraController.normalTo(@activePlane)
-                            if @stage3d.camera.inPersepectiveMode
-                                @stage3d.camera.toggleType()
                     else
                         @activePlane = null
                 else if @activePlane?

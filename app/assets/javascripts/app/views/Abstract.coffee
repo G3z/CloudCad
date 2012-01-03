@@ -1,8 +1,9 @@
 
 S.export(
     "views/Abstract"
-    ()->
-        class CC.views.Abstract extends Backbone.View
+    ["solid.widgets.AbstractWidget"]
+    (AbstractWidget)->
+        class CC.views.Abstract extends AbstractWidget
             
             @extend(Spine.Events)
             

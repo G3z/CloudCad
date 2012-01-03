@@ -5,14 +5,11 @@
 S.export(
     "controllers/Abstract",
     ()->
-        class CC.controllers.Abstract extends Spine.Controller
+        class Abstract
 
             constructor: (view) ->
-                super()
                 @view = view
 
             getView:->
-                return @view;
+                return @view
 )
-
-    

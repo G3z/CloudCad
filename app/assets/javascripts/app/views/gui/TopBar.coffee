@@ -2,7 +2,7 @@
 S.export(
     "views/gui/TopBar",
     ["views/Abstract", "views/gui/Window", "controllers/CommandExecutor"],
-    (Abstract, Window)->
+    (Abstract, Window, CommandExecutor)->
         class TopBar extends Abstract
 
             ###
@@ -38,7 +38,7 @@ S.export(
 
                         $('#codeeditor_' + id + " input").bind('click', (evt)=>
                             text = editor.getValue()
-                            CC.controllers.CommandExecutor.eval(text)
+                            CommandExecutor.eval(text)
                         )
                     )
                 )

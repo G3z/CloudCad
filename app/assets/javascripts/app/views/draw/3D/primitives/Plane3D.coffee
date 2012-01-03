@@ -56,7 +56,7 @@ define(
                                 wireframe: true
                             }))
                 @mesh.doubleSided=true
-                @mesh.dynamic=true
+                @mesh.dynamic=false
                 
                 @updateMatrix()
                 @up = @matrix.multiplyVector3(@up.clone())

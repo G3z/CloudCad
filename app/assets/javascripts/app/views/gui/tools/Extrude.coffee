@@ -13,7 +13,7 @@ define(
                     
                 @prefs = Pref.create(
                     "float_value": 20    
-                    "bool_side": 1
+                    "bool_side": false
                 ) 
             
             mouseDown:()=>
@@ -23,6 +23,7 @@ define(
                     @activeObj = @stage3d.selectedObject
                     @activeVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,1),"vertexIndices")
                     @prefs.updateAttribute('float_value', @prefs.float_value)
+                    @prefs.updateAttribute('bool_side', @prefs.bool_side)
 
             mouseDragged:()=>
                 if @activeObj?.class == "Solid3D"
@@ -35,12 +36,14 @@ define(
             mouseUp:()=>
             
             prefChange:(prefModel)=>
-                console.log @prefs.float_value
+                #console.log @prefs.float_value
                 $(".float_value").val(@prefs.float_value)
+                $(".bool_side").attr('checked',@prefs.bool_side)
+                
                 @moveExtrudedFaces(parseFloat(@prefs.float_value))
 
             moveExtrudedFaces:(ammount)=>
-                if @activeVertices.length? and @activeVertices.length >0
+                if @activeVertices?.length? and @activeVertices?.length >0
                     verts = @activeObj.mesh.geometry.vertices
                     firstPoint = undefined
                     for idx in @activeVertices

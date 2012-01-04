@@ -14,6 +14,7 @@ S.export(
                     size:
                         w:600
                         h:400
+                    normalSize: 100
                     color : 0xaa0000
                     layer:"scene"
                 }
@@ -21,12 +22,14 @@ S.export(
                     @position = defaults.position
                     rotation = defaults.rotation
                     size = defaults.size
+                    normalSize = defaults.normalSize
                     @color = defaults.color
                     layer = defaults.layer
                 else
                     if attr.position? then @position = attr.position else @position = defaults.position
                     if attr.rotation? then rotation = attr.rotation else rotation = defaults.rotation
                     if attr.size? then size = attr.size else size = defaults.size
+                    if attr.normalSize? then normalSize = attr.normalSize else normalSize = defaults.normalSize
                     if attr.color? then @color = attr.color else @color = defaults.color
                     if attr.layer? then layer = attr.layer else layer = defaults.layer
                 
@@ -64,7 +67,7 @@ S.export(
                             blending: THREE.AdditiveAlphaBlending
                     )
                 @normalLine = new THREE.Line(
-                        new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(0,0),new THREE.Vector2(100,0)]),
+                        new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(0,0),new THREE.Vector2(normalSize,0)]),
                         new THREE.LineBasicMaterial
                             color: @color
                             linewidth: 2
@@ -88,7 +91,6 @@ S.export(
                 @mesh.dynamic=false
                 
                 @updateMatrix()
-                console.log @up
                 @up = @matrix.multiplyVector3(@up.clone())
                 @up.subSelf(@position)
 

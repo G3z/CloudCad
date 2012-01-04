@@ -30,26 +30,23 @@ S.export(
                 @anyDown = false
 
                 #Mouse Events
-                @canvas.bind('contextmenu', (event)=>
-                    event.preventDefault()
-                )
-
-                @canvas.bind('mousemove', (event) =>
-                    @mouseMove(event)
-                )
-
-                @canvas.bind('mousedown', (event)=>
-                    @mouseDown(event)
-                )
-
-                @canvas.bind('mouseup', (event)=>
-                    @mouseUp(event)
-                )
-
-                @canvas.bind('mousewheel', (event,delta)=>
-                    event.preventDefault()
-                    @mouseWheel(event,delta)
-                )
+                @canvas
+                    .bind('contextmenu', (event)=>
+                        event.preventDefault()
+                    )
+                    .bind('mousemove', (event) =>
+                        @mouseMove(event)
+                    )
+                    .bind('mousedown', (event)=>
+                        @mouseDown(event)
+                    )
+                    .bind('mouseup', (event)=>
+                        @mouseUp(event)
+                    )
+                    .bind('mousewheel', (event,delta)=>
+                        event.preventDefault()
+                        @mouseWheel(event,delta)
+                    )
 
                 #Touch Events
                 #touchCanvas = @canvas.Touchable()
@@ -123,7 +120,7 @@ S.export(
             # it updates `delta` property of the proper `btn` while the mouse is beeing dragged  
             # it updates the `absoluteDelta` propery usefull for 3d rotation  
             # it updates `currentPos` of the mouse  
-            mouseDragged:(point,btn)=>
+            mouseDragged:(point, btn)=>
                 btn.absoluteDelta = {
                     w:btn.oldDelta.w + @eventToPoint(event).x - btn.start.x
                     h:btn.oldDelta.h + @eventToPoint(event).y - btn.start.y

@@ -11,11 +11,17 @@ S.export(
                 @element = $('#tool_options_panel')
 
                 $(document).bind "current_tool_changed", (evt, tool)=>
-
+                    
                     m = tool.getPrefModel()
+                    
+                    if !m 
+                        return
+
+                    data = m.toJSON()
+                    
                     $(@element).html("")
 
-                    for k,v of m
+                    for k,v of data
                         continue if k.indexOf("_") < 0
                         parArray = k.split("_")
                         type = parArray[0]

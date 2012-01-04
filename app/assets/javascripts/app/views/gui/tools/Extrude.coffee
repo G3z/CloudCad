@@ -33,12 +33,15 @@ S.export(
                     })
 
             mouseDragged:()=>
+                console.log("DRAGGED")
                 if @activeObj?.class == "Solid3D"
                     if @activeVertices.length? and @activeVertices.length >0
                         verts = @activeObj.mesh.geometry.vertices
                         value = verts[@activeVertices[0]].position.z + (@stage3d.mouse.btn1.delta.h + @stage3d.mouse.btn1.delta.w)  * 0.05
                         value = Math.round(value*1000)/1000
                         @prefs.set({'float_value': value})
+
+                        return value
             
             mouseUp:()=>
             

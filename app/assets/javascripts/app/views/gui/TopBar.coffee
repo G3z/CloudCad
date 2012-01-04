@@ -5,13 +5,14 @@ S.export(
     (Abstract, Window, CommandExecutor)->
         class TopBar extends Abstract
 
-            ###
-            This class holds events from the TopBar, *this CC.views.gui.TopBar it's NOT a class it's an instance* that's
-            because we need just one TopBar and we don't need to instantiate new TopBars
-            ###
+            constructor:->
+                super()
+                $("#top_bar_runscript").bind("click", @runScript)
+                $("#top_bar_help").bind("click", @help)
 
             @get: (args) -> # Must be a static method
                 _instance ?= new _TopBar args
+        
 
             help:->
                 alert("HELLO")

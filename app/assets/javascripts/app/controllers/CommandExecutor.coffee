@@ -14,7 +14,7 @@ S.export(
                     code = CoffeeScript.compile(code)
 
                     # Elements in these namespace are directly available in the code
-                    code = self.addToGlobalNamespace(code, "CC.views.draw.primitives")
+                    # code = self.addToGlobalNamespace(code, "CC.views.draw.primitives")
 
                     eval(code)
                 )

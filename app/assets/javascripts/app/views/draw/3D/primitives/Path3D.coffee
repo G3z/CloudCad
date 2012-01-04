@@ -9,7 +9,7 @@ S.export(
         "views/draw/3D/primitives/Solid3D"
     ],
     (Primitive,Point3D,Segment,Solid3D)->
-        class CC.views.draw.primitives.Path3D extends Primitive
+        class Path3D extends Primitive
             @points
             @segments
             @plane

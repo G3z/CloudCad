@@ -8,6 +8,11 @@ S.export(
                 super()
                 @icon = "border-all.png"
                 @SM = {} #Selected Mesh
+                
+                # Register callback
+                $(document).bind("execute_tool_Plane", =>
+                    @do()
+                )
 
             mouseDown:()=>
                 if @stage3d.layers.solids? and @stage3d.layers.planes?
@@ -61,6 +66,5 @@ S.export(
             
 
         # Singleton
-        tool = new Plane()
-        CC.views.gui.tools[tool.class] = tool
+        new Plane()
 )

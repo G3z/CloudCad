@@ -2,7 +2,7 @@ S.export(
     "views/draw/3D/primitives/Segment"
     ["views/draw/3D/primitives/Primitive","views/draw/3D/primitives/Path3D"],
     (Primitive,Path3D)->
-        class CC.views.draw.primitives.Segment extends Primitive
+        class Segment extends Primitive
             @x
             @y
             @z

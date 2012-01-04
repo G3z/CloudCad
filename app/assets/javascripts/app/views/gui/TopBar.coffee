@@ -44,6 +44,6 @@ S.export(
                 )
 
         # Store the instance
-        CC.views.gui.TopBar = new TopBar()
+        new TopBar()
 
 )

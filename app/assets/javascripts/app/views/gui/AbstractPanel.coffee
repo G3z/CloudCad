@@ -3,7 +3,7 @@ S.export(
     "views/gui/AbstractPanel"
     ["views/Abstract", "views/gui/WindowsManager"]
     (Abstract, WindowsManager)->
-        class CC.views.gui.AbstractPanel extends Abstract
+        class AbstractPanel extends Abstract
 
             ###
             Handle windows on screen
@@ -22,7 +22,7 @@ S.export(
                     .addClass(css_class)
                     .html(html)
 
-                CC.views.gui.WindowsManager.add(id, @element)
+                WindowsManager.add(id, @element)
 
                 # Add event listeners
 

@@ -54,6 +54,7 @@ S.export(
                                 size:
                                     w:Math.abs(w)+10
                                     h:Math.abs(h)+10
+                                normalSize:Math.abs((w*2+h*2)/20)
                                 color: 0xccaabb
                             )
                             obj.add plane

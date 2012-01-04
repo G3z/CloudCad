@@ -21,7 +21,7 @@ S.export(
                     @stage3d.selectedObject = undefined
 
             mouseDown:()=>
-                c = @getMouseTarget(@stage3d.world)
+                c = @getMouseTarget([@stage3d.layers.solids,@stage3d.layers.paths,@stage3d.layers.planes])
                 if c? and c.length>0
                     if c[0].object?
                         obj = c[0].object

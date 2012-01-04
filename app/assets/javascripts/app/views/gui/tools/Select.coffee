@@ -26,9 +26,11 @@ S.export(
                     if c[0].object?
                         obj = c[0].object
                         if @stage3d.selectedObject? and @stage3d.selectedObject.id != obj.father?.id?
-                            @stage3d.selectedObject.toggleSelection()
+                            unless @stage3d.selectedObject.class == "Plane3D"
+                                @stage3d.selectedObject.toggleSelection()
                         if obj.father?
-                            obj.father.toggleSelection()
+                            unless obj.father.class == "Plane3D"
+                                obj.father.toggleSelection()
                         @stage3d.selectedObject = obj.father
 
             mouseDragged:()=>

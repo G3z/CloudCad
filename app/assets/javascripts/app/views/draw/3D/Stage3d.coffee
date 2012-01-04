@@ -103,6 +103,7 @@ S.export(
 
                 # Define rendere size
                 @renderer.setSize( @size.w,@size.h )
+                @renderer.sortObjects = false;
                 @renderer.shadowMapEnabled = true;
                 @renderer.shadowMapSoft = true;
 
@@ -206,29 +207,4 @@ S.export(
                 @world.add(@planeX)
                 @world.add(@planeY)
                 @world.add(@planeZ)
-
-                #@axes = new Axes(this)
-                
-                #@scene.add(@axes)
-                ###
-                vertices =[
-                    new THREE.Vector2(0,0)
-                    new THREE.Vector2(0,100)
-                    new THREE.Vector2(100,100)
-                    new THREE.Vector2(100,0)
-                    new THREE.Vector2(0,0)
-                ]
-                @linea = new Path3D({
-                    points: vertices
-                })
-                @linea.position.x = 50
-
-                @linea2 = new Path3D({
-                    points: vertices
-                })
-                @linea2.position.x = -150
-
-                @world.add(@linea)
-                @world.add(@linea2)
-                ###
 )

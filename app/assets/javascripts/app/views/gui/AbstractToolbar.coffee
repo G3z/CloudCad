@@ -3,7 +3,7 @@ S.export(
     "views/gui/AbstractToolbar",
     ['views/gui/AbstractPanel'],
     (AbstractPanel)->
-        class CC.views.gui.AbstractToolbar extends AbstractPanel
+        class AbstractToolbar extends AbstractPanel
 
             ###
             Toolbar

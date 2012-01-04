@@ -12,7 +12,7 @@ S.export(
         "views/draw/3D/Axes"
     ],
     (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D,Solid3D,Plane3D,Axes)->
-        class CC.views.draw.Stage3d extends Abstract
+        class Stage3d extends Abstract
             ###
             This class represent the Stage area where all the elements are represented
             ###

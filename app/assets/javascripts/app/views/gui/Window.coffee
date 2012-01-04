@@ -3,7 +3,7 @@ S.export(
     "views/gui/Window",
     ["views/gui/AbstractPanel"],
     (AbstractPanel)->
-        class CC.views.gui.Window extends AbstractPanel
+        class Window extends AbstractPanel
 
             ###
             Handle windows on screen

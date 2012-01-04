@@ -4,7 +4,7 @@ S.export(
         "views/draw/3D/primitives/Primitive"
     ],
     (Primitive)->
-        class CC.views.draw.primitives.Plane3D extends Primitive
+        class Plane3D extends Primitive
             constructor:(attr)->
                 super()
                 @matrixAutoUpdate = true

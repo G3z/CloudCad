@@ -32,6 +32,6 @@ S.export(
 
 
         # This class is a singleton
-        CC.views.gui.WindowsManager = new WindowsManager()
+        new WindowsManager()
 )
 

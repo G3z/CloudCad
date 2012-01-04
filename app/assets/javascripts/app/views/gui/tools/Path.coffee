@@ -37,7 +37,7 @@ S.export(
 
                 #Seleziono il piano su cui lavorare
                 unless @activePlane?
-                    c = @getMouseTarget([@stage3d.planes,@stage3d._planes])
+                    c = @getMouseTarget(@stage3d.layers.planes)
                     if c? and c.length>0
                         if c[0].object?
                             obj = c[0].object

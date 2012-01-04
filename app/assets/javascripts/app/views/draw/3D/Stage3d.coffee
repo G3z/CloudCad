@@ -65,7 +65,7 @@ S.export(
 
                 # Setup camera
                 @camera = new Camera(@size.w,@size.h,35, 1, 15000,1, 15000)
-                @camera.position.z = 1000
+                @camera.position.z = 1500
                 @scene.add(@camera)
 
                 # Luci
@@ -184,9 +184,8 @@ S.export(
 
             createGeom:=>
                 @planeZ = new Plane3D({
-                    rotation: new THREE.Vector3(0,0,0)
+                    rotation: new THREE.Vector3(0,Math.toRadian(180),0)
                     color: 0x0000aa
-                    layer:"scene"
                 })
                 
                 
@@ -196,13 +195,11 @@ S.export(
                         w:600
                         h:600
                     color: 0x00aa00
-                    layer:"scene"  
                 })
                 
                 @planeX = new Plane3D({
                     rotation: new THREE.Vector3(0,Math.toRadian(-90),0)
                     color: 0xaa0000
-                    layer:"scene"
                 })
                 @world.add(@planeX)
                 @world.add(@planeY)

@@ -78,7 +78,7 @@ S.export(
             # if `object` is an array eache element is parsed until the first collision is found
             # this is an utility method for subClasses.  
             getMouseTarget:(object)=>  
-                getTarget = (object)=>
+                getTarget = (target)=>
                     if @stage3d.camera.inPersepectiveMode
                         vector = new THREE.Vector3(
                             @stage3d.mouse.currentPos.stage3Dx
@@ -87,8 +87,11 @@ S.export(
                         )
                         @stage3d.projector.unprojectVector(vector, @stage3d.camera)
                         ray = new THREE.Ray(@stage3d.camera.position, vector.subSelf( @stage3d.camera.position ).normalize())
-                        if object? 
-                            return ray.intersectObject(object) 
+                        if target? 
+                            if $.type(target) == "array"
+                                return ray.intersectObjects(target) 
+                            else
+                                return ray.intersectObject(target) 
                         else 
                             return ray.intersectObject(@stage3d.world)
                     else
@@ -109,8 +112,11 @@ S.export(
                         ray = new THREE.Ray( @stage3d.camera.position, vecTarget.subSelf( @stage3d.camera.position ).normalize())
                         ray.origin = vecOrigin
                         ray.direction = vecTarget
-                        if object?
-                            return ray.intersectObject(object) 
+                        if target?
+                            if $.type(target) == "array"
+                                return ray.intersectObjects(target) 
+                            else
+                                return ray.intersectObject(target) 
                         else
                             return ray.intersectObject(@stage3d.world)
                 if $.type(object) == "array"
@@ -148,8 +154,4 @@ S.export(
                 finalY = (minY+maxY)/2
                 finalZ = (minZ+maxZ)/2
                 return new THREE.Vector3(finalX,finalY,finalZ)
-
-
 )
-
-

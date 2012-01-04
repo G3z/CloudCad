@@ -48,6 +48,7 @@ S.export(
                     if attr.selectedColor? then @selectedColor = attr.selectedColor else @selectedColor = defaults.selectedColor
 
                 @createGeometry()
+                window.stage3d
                 
             createGeometry:=>
                 console.log @class,"create Geometry"
@@ -60,6 +61,7 @@ S.export(
                         new THREE.LineBasicMaterial
                             color: color
                             linewidth: 2
+                            blending: THREE.AdditiveAlphaBlending
                     )
                                             
                     @line.father = this
@@ -255,6 +257,7 @@ S.export(
             # This method returns a new mesh containig the extruded shape  
             # Path is turned invisible when creating the 3D shape
             extrude:(value)=>
+                if value? then value = value * -1 
                 @extrusion = new Solid3D({
                     generator: this
                     extrusionValue : value

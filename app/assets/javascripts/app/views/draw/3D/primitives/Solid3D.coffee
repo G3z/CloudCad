@@ -58,7 +58,7 @@ S.export(
                     material = new THREE.MeshLambertMaterial
                         color: @generator.color
                         ambient: 0x111111
-                        blending: 1
+                        blending: THREE.AdditiveAlphaBlending
                         shading: 1
                     #mesh is created as an extrusion of it's generator
                     @mesh = new THREE.Mesh(
@@ -114,7 +114,13 @@ S.export(
                 @remove(@mesh)
                 target.parent.remove(target)
                 #debugger
-                target = THREE.CSG.toCSG(target.mesh)
+                mesh = target.mesh
+                mesh.position = target.position
+                rot = Math.toRadian(180)
+                mesh.rotation = target.rotation.addSelf(new THREE.Vector3(rot,rot,rot))
+                #mesh.rotation = target.rotation.multiplyScalar(-1)
+
+                target = THREE.CSG.toCSG(mesh)
                 self = THREE.CSG.toCSG(@mesh)
                 if op == "plus"
                     geometry = THREE.CSG.fromCSG( self.union(target) )

@@ -61,11 +61,7 @@ S.export(
                 @projector = new THREE.Projector()
 
                 @world = new THREE.Object3D()
-                @_planes = new THREE.Object3D()
-                @planes = new THREE.Object3D()
                 @scene.add(@world)
-                @scene.add(@_planes)
-                @scene.add(@planes)
 
                 # Setup camera
                 @camera = new Camera(@size.w,@size.h,35, 1, 15000,1, 15000)
@@ -122,7 +118,7 @@ S.export(
                 document.body.appendChild( @renderer.domElement )
 
                 window.stage3d = this
-                
+                @layers= {}
                 @createGeom()
 
                 # Event listeners
@@ -194,7 +190,7 @@ S.export(
                 
                 
                 @planeY = new Plane3D({
-                    rotation: new THREE.Vector3(Math.toRadian(90),0,0)
+                    rotation: new THREE.Vector3(Math.toRadian(90),0,Math.toRadian(180))
                     size:
                         w:600
                         h:600
@@ -207,9 +203,9 @@ S.export(
                     color: 0xaa0000
                     layer:"scene"
                 })
-                @_planes.add(@planeX)
-                @_planes.add(@planeY)
-                @_planes.add(@planeZ)
+                @world.add(@planeX)
+                @world.add(@planeY)
+                @world.add(@planeZ)
 
                 #@axes = new Axes(this)
                 

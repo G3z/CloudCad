@@ -46,35 +46,52 @@ S.export(
                         new THREE.CurvePath.prototype.createGeometry(@points),
                         new THREE.LineBasicMaterial
                             color: @color
-                            linewidth: 1.3
+                            linewidth: 1.5
+                            blending: THREE.AdditiveAlphaBlending
                     )
                 @horizontalLine = new THREE.Line(
                         new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(size.w/2*-1,0),new THREE.Vector2(size.w/2,0)]),
                         new THREE.LineBasicMaterial
                             color: @color
                             linewidth: .6
+                            blending: THREE.AdditiveAlphaBlending
                     )
                 @verticalLine = new THREE.Line(
                         new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(0,size.h/2*-1),new THREE.Vector2(0,size.h/2)]),
                         new THREE.LineBasicMaterial
                             color: @color
                             linewidth: .6
+                            blending: THREE.AdditiveAlphaBlending
                     )
-                @add @verticalLine
-                @add @horizontalLine
+                @normalLine = new THREE.Line(
+                        new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(0,0),new THREE.Vector2(100,0)]),
+                        new THREE.LineBasicMaterial
+                            color: @color
+                            linewidth: 2
+                            blending: THREE.AdditiveAlphaBlending
+                    )
+                
+
+                #@add @verticalLine
+                #@add @horizontalLine
                 @add @perimetralLine
+                @add @normalLine
+                @normalLine.rotation = new THREE.Vector3(0,Math.toRadian(90),0)
                 @mesh = new THREE.Mesh( new THREE.PlaneGeometry( size.w, size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 
                                 color: @color
-                                opacity: 0.0
+                                opacity: 0.05
                                 transparent: true
-                                wireframe: true
+                                wireframe: false
+                                blending: THREE.AdditiveAlphaBlending
                             }))
                 @mesh.doubleSided=true
                 @mesh.dynamic=false
                 
                 @updateMatrix()
+                console.log @up
                 @up = @matrix.multiplyVector3(@up.clone())
                 @up.subSelf(@position)
+
                 @normal = @matrix.multiplyVector3(@mesh.geometry.faces[0].normal.clone())
                 @normal.subSelf(@position)
                 @mesh.father = this

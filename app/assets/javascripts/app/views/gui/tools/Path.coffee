@@ -45,18 +45,16 @@ S.export(
                     if c? and c.length>0
                         if c[0].point?
                             contactPoint = c[0].point
-                            contactPoint = @activePlane.matrix.multiplyVector3(contactPoint.clone())
+                            #contactPoint = @activePlane.matrix.multiplyVector3(contactPoint.clone())
                             contactPoint.subSelf(@activePlane.position)
                             if contactPoint?
                                 #creo una nuova Path
                                 unless @activePath?
 
                                     @activePath = new Path3D({points:[contactPoint]})
-                                    @activePath.position = @activePlane.position
-                                    planeRotation = @activePlane.rotation.clone()
-                                    @activePath.rotation = planeRotation.multiplyScalar(-1)
+                                    #@activePath.position = @activePlane.position
                                     @activePath.toggleSelection() unless @activePath.selected
-                                    @stage3d.world.add(@activePath)
+                                    @activePlane.add(@activePath)
                                     @stage3d.selectedObject = @activePath
                                     @activePoint = @activePath.point("last")
                                 #aggiungo punti ad alla Path attiva
@@ -74,11 +72,15 @@ S.export(
                                     else
                                         @activePath.lineTo(contactPoint)
                                         @activePoint = @activePath.point("last")
+                                @moveOnPlane()
                                 
             
             mouseDragged:=>
                 unless @activePoint?.vertexIndex?
                     return
+                @moveOnPlane()
+                
+            moveOnPlane:=>
                 if @activePoint?
                     @stage3d.cameraPlane.position.copy( @activePoint.position )
                     #@stage3d.cameraPlane.rotation.copy(@activePoint.father.rotation)
@@ -96,8 +98,7 @@ S.export(
                     newPoint.vertexIndex = @activePoint.vertexIndex
                     newPoint = @checkAlignment(newPoint)
 
-                    @stage3d.selectedObject.movePoint(@activePoint.vertexIndex , newPoint)
-                    
+                    @stage3d.selectedObject.movePoint(@activePoint.vertexIndex , newPoint)    
             mouseUp:=>
                 #@removeDoubles()
 

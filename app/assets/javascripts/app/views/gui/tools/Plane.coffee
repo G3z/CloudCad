@@ -10,7 +10,14 @@ S.export(
                 @SM = {} #Selected Mesh
 
             mouseDown:()=>
-                c = @getMouseTarget([@stage3d.world,@stage3d.planes])
+                if @stage3d.layers.solids? and @stage3d.layers.planes?
+                    c = @getMouseTarget([@stage3d.layers.solids,@stage3d.layers.planes])
+                else if @stage3d.layers.solids? and not @stage3d.layers.planes?
+                    c = @getMouseTarget(@stage3d.layers.solids)
+                else if not @stage3d.layers.solids? and @stage3d.layers.planes?
+                    c = @getMouseTarget(@stage3d.layers.planes)
+                else
+                    return
                 if c? and c.length>0
                     if c[0].object? and c[0].face?
                         obj = c[0].object.father 
@@ -26,7 +33,7 @@ S.export(
 
                             #
                             v = new THREE.Vector3()
-                            v.add(normal,barycenter)
+                            v.add(barycenter,normal)
                             emptyObj.lookAt(v)
 
                             geo = new THREE.Geometry()
@@ -38,15 +45,14 @@ S.export(
                             
                             plane = new Plane3D(
                                 position: barycenter
-                                rotation: emptyObj.rotation
+                                rotation: emptyObj.rotation.addSelf(new THREE.Vector3(0,Math.toRadian(180),0))
                                 size:
                                     w:Math.abs(w)+10
                                     h:Math.abs(h)+10
                                 color: 0xccaabb
                             )
-                            @stage3d.planes.add(plane)
+                            obj.add plane
                             
-                        #console.log obj.father,face,point
 
             mouseDragged:()=>
 

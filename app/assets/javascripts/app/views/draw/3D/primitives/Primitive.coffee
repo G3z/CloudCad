@@ -10,8 +10,15 @@ S.export(
                     arr = @constructor.toString().match(/function\s*(\w+)/)
                     if arr? and  arr.length == 2
                         @class = arr[1]
+                        @layer = @class.toLowerCase()
+                        @layer = @layer.replace("3d","s")
+                        
                 @id = Math.guid()
+                @addToLayer()
             
-            addToLayer:(layer)=>
-                window.stage3d[layer].add(this)
+            addToLayer:()=>
+                if window.stage3d.layers[@layer]?
+                    window.stage3d.layers[@layer].push(this)
+                else
+                    window.stage3d.layers[@layer]=[this]
 )

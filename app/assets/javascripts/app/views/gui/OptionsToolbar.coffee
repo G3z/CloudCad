@@ -42,7 +42,11 @@ S.export(
                                 obj = {}
                                 obj[target.data("option_name")] = target.val()
                                 m.set(obj)
-                                #m.change()
                             )
-                        $(@element).append(dom)
+
+                        label = $("<label>").html(m.getLabel(k) + ":")
+
+                        $(@element)
+                            .append(label)
+                            .append(dom)
 )

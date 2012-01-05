@@ -46,3 +46,8 @@
 #tool_options_panel *{
   margin-left: 10px;
 }
+
+#tool_options_panel label{
+    width: auto;
+    float: none;
+}

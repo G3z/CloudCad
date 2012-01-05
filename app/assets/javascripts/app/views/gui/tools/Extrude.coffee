@@ -1,14 +1,15 @@
 S.export(
     "views/gui/tools/Extrude",
-    ["views/gui/tools/AbstractTool"],
-    (AbstractTool)->
+    ["views/gui/tools/AbstractTool", "views/gui/tools/ToolOption"],
+    (AbstractTool, ToolOption)->
+
         class Extrude extends AbstractTool
             @activeVertices
             constructor:->
                 super()
                 @icon = "layer-resize-replicate-vertical.png"
 
-                class Pref extends Backbone.Model
+                class Pref extends ToolOption
                     # @configure "Pref", "float_value", "bool_side"
                     
                 @prefs = new Pref(
@@ -16,6 +17,10 @@ S.export(
                     "bool_side": false
                 )
                 
+                # Set labels
+                @prefs.setLabel("float_value", "Value")
+                @prefs.setLabel("bool_side", "Flip side")
+
                 # Register callback
                 $(document).bind("execute_tool_Extrude", =>
                     @do()

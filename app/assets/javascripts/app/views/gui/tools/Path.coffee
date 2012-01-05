@@ -1,9 +1,17 @@
+### Path Tool Class###
+# Path tool is used to  create planar polygons by adding one point at a time
 S.export(
     "views/gui/tools/Path",
     ["views/gui/tools/AbstractTool","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Point3D"],
     (AbstractTool,Path3D,Point3D)->
         class Path extends AbstractTool
-
+            #### *constructor()* method takes no arguments
+            #
+            # `@icon` propery is overridden to contain the tool icon  
+            # `@activePlane` propery is initialized to contain the plane on which the path is drawn
+            # `@activePath` propery is initialized to contain the path in creation
+            # `@activePoint` propery is initialized to contain the last active point (moved or added)
+            # `execute_tool_Path` event is registered to fire `@do()`
             constructor:->
                 super()
                 @icon = "layer-shape-polygon.png"
@@ -15,29 +23,23 @@ S.export(
                 $(document).bind("execute_tool_Path", =>
                     @do()
                 )
-
+            #### *do()* method takes no arguments 
+            # `@activePlane` propery is reset to null
+            # `@activePath` propery is reset to null
+            # `@activePoint` propery is reset to null
             do:=>
                 super()
                 @activePoint = null
                 @activePlane = null
                 @activePath = null
-
+            
+            #### *mouseDown()* method takes no arguments 
+            # it checks if there is already an `@activePlane` otherwise the one under mouse cursor is selectedObject
+            # if an `@activePlane` is present a new contact point on the plane is discovered and it is 
             mouseDown:=>
-                if @stage3d.selectedObject? and @stage3d.selectedObject.class == "Path3D"
-                    c = @getMouseTarget(@stage3d.selectedObject)
-                    if c? and c.length>0
-                        if c[0].object?
-                            obj = c[0].object
-                            obj.material.color.setHex(0x0000bb)
-                            @activePoint = obj
-                        else
-                            @activePoint = null
-                    else
-                        @activePoint = null
-
                 #Seleziono il piano su cui lavorare
                 unless @activePlane?
-                    c = @getMouseTarget(@stage3d.layers.planes)
+                    c = @getMouseTarget([@stage3d.layers.planes,@stage3d.layers.originPlanes])
                     if c? and c.length>0
                         if c[0].object?
                             obj = c[0].object
@@ -50,9 +52,11 @@ S.export(
                     if c? and c.length>0
                         if c[0].point?
                             contactPoint = c[0].point
-                            #contactPoint = @activePlane.matrix.multiplyVector3(contactPoint.clone())
-                            contactPoint.subSelf(@activePlane.position)
                             if contactPoint?
+                                #console.log contactPoint
+                                contactPoint = @activePlane.matrix.multiplyVector3(contactPoint.clone())
+                                console.log contactPoint
+                                contactPoint.subSelf(@activePlane.position)
                                 #creo una nuova Path
                                 unless @activePath?
 

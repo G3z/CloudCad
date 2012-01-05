@@ -16,13 +16,13 @@ S.export(
 
             mouseDown:()=>
                 if @stage3d.layers.solids? and @stage3d.layers.planes?
-                    c = @getMouseTarget([@stage3d.layers.solids,@stage3d.layers.planes])
+                    c = @getMouseTarget([@stage3d.layers.solids,@stage3d.layers.planes,@stage3d.layers.originPlanes])
                 else if @stage3d.layers.solids? and not @stage3d.layers.planes?
-                    c = @getMouseTarget(@stage3d.layers.solids)
+                    c = @getMouseTarget([@stage3d.layers.solids,@stage3d.layers.originPlanes])
                 else if not @stage3d.layers.solids? and @stage3d.layers.planes?
-                    c = @getMouseTarget(@stage3d.layers.planes)
+                    c = @getMouseTarget([@stage3d.layers.planes,@stage3d.layers.originPlanes])
                 else
-                    return
+                    c = @getMouseTarget(@stage3d.layers.originPlanes)
                 if c? and c.length>0
                     if c[0].object? and c[0].face?
                         obj = c[0].object.father 

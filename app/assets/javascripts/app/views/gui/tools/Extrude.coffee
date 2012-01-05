@@ -12,9 +12,9 @@ S.export(
                     # @configure "Pref", "float_value", "bool_side"
                     
                 @prefs = new Pref(
-                    "float_value": 20    
+                    "float_value": 20
                     "bool_side": false
-                ) 
+                )
                 
                 # Register callback
                 $(document).bind("execute_tool_Extrude", =>
@@ -24,16 +24,15 @@ S.export(
             mouseDown:()=>
                 @activeObj = @stage3d.selectedObject
                 if @activeObj?.class == "Path3D"
-                    @activeObj.extrude(@prefs.float_value)
+                    @activeObj.extrude(@prefs.get('float_value'))
                     @activeObj = @stage3d.selectedObject
                     @activeVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,1),"vertexIndices")
                     @prefs.set({
-                        'float_value': @prefs.float_value,
-                        'bool_side': @prefs.bool_side
+                        'float_value': @prefs.get('float_value'),
+                        'bool_side': @prefs.get('bool_side')
                     })
 
             mouseDragged:()=>
-                console.log("DRAGGED")
                 if @activeObj?.class == "Solid3D"
                     if @activeVertices.length? and @activeVertices.length >0
                         verts = @activeObj.mesh.geometry.vertices
@@ -47,10 +46,9 @@ S.export(
             
             prefChange:(prefModel)=>
                 #console.log @prefs.float_value
-                $(".float_value").val(@prefs.float_value)
-                $(".bool_side").attr('checked',@prefs.bool_side)
-                
-                @moveExtrudedFaces(parseFloat(@prefs.float_value))
+                $(".float_value").val(@prefs.get('float_value'))
+                $(".bool_side").attr('checked',@prefs.get('bool_side'))
+                @moveExtrudedFaces(parseFloat(@prefs.get('float_value')))
 
             moveExtrudedFaces:(ammount)=>
                 if @activeVertices?.length? and @activeVertices?.length >0

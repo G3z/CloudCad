@@ -50,7 +50,7 @@ S.export(
             # this method is meant to be implemented in subClasses
             getPrefModel:=>
                 if @prefs?
-                    @prefs.bind "update", @prefChange
+                    @prefs.bind "change", @prefChange
                     return @prefs
 
             #### *mouseDown()* method takes no arguments

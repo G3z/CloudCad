@@ -4,7 +4,7 @@ S.export(
     ["views/gui/AbstractToolbar"]
     (AbstractToolbar)->
         
-      class OptionsToolBar 
+      class OptionsToolBar
             
           constructor:->
 
@@ -14,7 +14,7 @@ S.export(
                     
                     m = tool.getPrefModel()
                     
-                    if !m 
+                    if !m
                         return
 
                     data = m.toJSON()
@@ -33,14 +33,16 @@ S.export(
                         else if type == "float"
                             dom = $("<input>").attr("type","text")
                             evtName = "keyup"
-                        dom?.attr("label",label)
+                        dom?.attr("label", label)
                             .addClass(k)
                             .data("option_name", k)
                             .on(evtName, (evt)->
+                                console.log(evt)
                                 target = $(evt.currentTarget)
                                 obj = {}
                                 obj[target.data("option_name")] = target.val()
                                 m.set(obj)
+                                #m.change()
                             )
                         $(@element).append(dom)
 )

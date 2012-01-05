@@ -14,7 +14,6 @@ S.export(
                         @layer = @layer.replace("3d","s")
                         
                 @id = Math.guid()
-                @addToLayer()
             
             addToLayer:()=>
                 if window.stage3d.layers[@layer]?

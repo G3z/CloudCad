@@ -32,7 +32,6 @@ S.export(
                     name : undefined
                     color : 0x8866ff
                     selectedColor : 0x0000bb
-                    layer:"scene"
                 }
 
                 unless attr?
@@ -40,15 +39,15 @@ S.export(
                     @name = defaults.name
                     @color = defaults.color
                     @selectedColor = defaults.selectedColor
-                    layer = defaults.layer
                 else
                     if attr.points? then @points = attr.points else @points = defaults.points
                     if attr.name? then @name = attr.name else @name = defaults.name
                     if attr.color? then @color = attr.color else @color = defaults.color
                     if attr.selectedColor? then @selectedColor = attr.selectedColor else @selectedColor = defaults.selectedColor
+                    if attr.layer? then @layer = attr.layer
 
                 @createGeometry()
-                window.stage3d
+                @addToLayer()
                 
             createGeometry:=>
                 console.log @class,"create Geometry"
@@ -257,7 +256,7 @@ S.export(
             # This method returns a new mesh containig the extruded shape  
             # Path is turned invisible when creating the 3D shape
             extrude:(value)=>
-                if value? then value = value * -1 
+                if value? then value = value
                 @extrusion = new Solid3D({
                     generator: this
                     extrusionValue : value

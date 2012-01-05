@@ -14,7 +14,7 @@ S.export(
                     size:
                         w:600
                         h:400
-                    normalSize: 100
+                    normalSize: 50
                     color : 0xaa0000
                 }
                 unless attr?
@@ -29,6 +29,7 @@ S.export(
                     if attr.size? then size = attr.size else size = defaults.size
                     if attr.normalSize? then normalSize = attr.normalSize else normalSize = defaults.normalSize
                     if attr.color? then @color = attr.color else @color = defaults.color
+                    if attr.layer? then @layer = attr.layer
                 
                 @rotation.x = Math.round(rotation.x*1000)/1000
                 @rotation.y = Math.round(rotation.y*1000)/1000
@@ -76,22 +77,22 @@ S.export(
                 #@add @horizontalLine
                 @add @perimetralLine
                 @add @normalLine
-                @normalLine.rotation = new THREE.Vector3(0,Math.toRadian(90),0)
+                @normalLine.rotation = new THREE.Vector3(0,Math.toRadian(-90),0)
                 @graphicPlane = new THREE.Mesh( new THREE.PlaneGeometry( size.w, size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 
                                 color: @color
-                                opacity: 0.04
+                                opacity: 0.045
                                 transparent: true
                                 wireframe: false
                                 blending: THREE.AdditiveAlphaBlending
                             }))
-                @logicPlane = new THREE.Mesh( new THREE.PlaneGeometry( 3000, 3000, 2, 2 ), new THREE.MeshBasicMaterial( { 
+                @logicPlane = new THREE.Mesh( new THREE.PlaneGeometry( size.w, size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 
                                 color: @color
                                 opacity: 0.0
                                 transparent: true
                                 wireframe: true
                                 
                             }))
-                @graphicPlane.doubleSided=true
+                @logicPlane.doubleSided=true
                 
                 @updateMatrix()
                 @up = @matrix.multiplyVector3(@up.clone())
@@ -101,7 +102,9 @@ S.export(
                 @normal.subSelf(@position)
                 @graphicPlane.father = this
                 @logicPlane.father = this
+
                 @add(@logicPlane)
                 @add(@graphicPlane)
-                #@addToLayer(layer)
+                
+                @addToLayer()
 )

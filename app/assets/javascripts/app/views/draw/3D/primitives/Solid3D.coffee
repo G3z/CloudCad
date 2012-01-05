@@ -42,8 +42,10 @@ S.export(
                     if attr.generator? then @generator = attr.generator else @generator = defaults.generator
                     if attr.extrusionValue? then @extrusionValue = attr.extrusionValue else @extrusionValue = defaults.extrusionValue
                     if attr.color? then @color = attr.color else @color = defaults.color
+                    if attr.layer? then @layer = attr.layer
 
                 @createGeometry()
+                @addToLayer()
 
             #### *createGeometry()* method takes no argument
             #

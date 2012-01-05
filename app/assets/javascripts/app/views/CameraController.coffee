@@ -222,7 +222,7 @@ S.export(
                     @stage3d.camera.rotationAutoUpdate = false
 
                     normal = plane.normal.clone()
-                    normal.multiplyScalar(distance).multiplyScalar(1)
+                    normal.multiplyScalar(distance).multiplyScalar(-1)
                     @stage3d.camera.position.subSelf(normal)
 
             toFrontView:=>

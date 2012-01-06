@@ -179,29 +179,30 @@ S.export(
             render:->
                 @cameraController.update()
                 @cameraPlane.lookAt( @camera.position )
+                @cameraPlane.up.copy(@camera.up)
                 @renderer.render(@scene,@camera)
 
             createGeom:=>
                 @planeZ = new Plane3D({
-                    color: 0x0000aa
+                    color: 0x0000AA
                     layer:"originPlanes"
                 })
-                
                 
                 @planeY = new Plane3D({
                     rotation: new THREE.Vector3(Math.toRadian(-90),0,0)
                     size:
                         w:600
                         h:600
-                    color: 0x00aa00
+                    color: 0x00AA00
                     layer:"originPlanes"
                 })
                 
                 @planeX = new Plane3D({
                     rotation: new THREE.Vector3(0,Math.toRadian(90),0)
-                    color: 0xaa0000
+                    color: 0xAA0000
                     layer:"originPlanes"
                 })
+
                 @world.add(@planeX)
                 @world.add(@planeY)
                 @world.add(@planeZ)

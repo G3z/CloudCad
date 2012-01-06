@@ -20,14 +20,14 @@ S.export(
                 unless attr?
                     @position = defaults.position
                     rotation = defaults.rotation
-                    size = defaults.size
-                    normalSize = defaults.normalSize
+                    @size = defaults.size
+                    @normalSize = defaults.normalSize
                     @color = defaults.color
                 else
                     if attr.position? then @position = attr.position else @position = defaults.position
                     if attr.rotation? then rotation = attr.rotation else rotation = defaults.rotation
-                    if attr.size? then size = attr.size else size = defaults.size
-                    if attr.normalSize? then normalSize = attr.normalSize else normalSize = defaults.normalSize
+                    if attr.size? then @size = attr.size else @size = defaults.size
+                    if attr.normalSize? then @normalSize = attr.normalSize else @normalSize = defaults.normalSize
                     if attr.color? then @color = attr.color else @color = defaults.color
                     if attr.layer? then @layer = attr.layer
                 
@@ -35,37 +35,48 @@ S.export(
                 @rotation.y = Math.round(rotation.y*1000)/1000
                 @rotation.z = Math.round(rotation.z*1000)/1000
 
-                @points=[
-                    new THREE.Vector2(size.w/2*-1,size.h/2*-1)
-                    new THREE.Vector2(size.w/2*-1,size.h/2)
-                    new THREE.Vector2(size.w/2,size.h/2)
-                    new THREE.Vector2(size.w/2,size.h/2*-1)
-                    new THREE.Vector2(size.w/2*-1,size.h/2*-1)
+                @createGeometry()
+                @addToLayer()
+
+            createGeometry:=>
+                @remove(@perimetralLine) if @perimetralLine?
+                @remove(@horizontalLine) if @horizontalLine?
+                @remove(@verticalLine) if @verticalLine?
+                @remove(@normalLine) if @normalLine?
+                @remove(@graphicPlane) if @graphicPlane?
+                @remove(@logicPlane) if @logicPlane?
+
+                points=[
+                    new THREE.Vector2(@size.w/2*-1,@size.h/2*-1)
+                    new THREE.Vector2(@size.w/2*-1,@size.h/2)
+                    new THREE.Vector2(@size.w/2,@size.h/2)
+                    new THREE.Vector2(@size.w/2,@size.h/2*-1)
+                    new THREE.Vector2(@size.w/2*-1,@size.h/2*-1)
                 ]
 
                 @perimetralLine = new THREE.Line(
-                        new THREE.CurvePath.prototype.createGeometry(@points),
+                        new THREE.CurvePath.prototype.createGeometry(points),
                         new THREE.LineBasicMaterial
                             color: @color
                             linewidth: 1.5
                             blending: THREE.AdditiveAlphaBlending
                     )
                 @horizontalLine = new THREE.Line(
-                        new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(size.w/2*-1,0),new THREE.Vector2(size.w/2,0)]),
+                        new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(@size.w/2*-1,0),new THREE.Vector2(@size.w/2,0)]),
                         new THREE.LineBasicMaterial
                             color: @color
                             linewidth: .6
                             blending: THREE.AdditiveAlphaBlending
                     )
                 @verticalLine = new THREE.Line(
-                        new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(0,size.h/2*-1),new THREE.Vector2(0,size.h/2)]),
+                        new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(0,@size.h/2*-1),new THREE.Vector2(0,@size.h/2)]),
                         new THREE.LineBasicMaterial
                             color: @color
                             linewidth: .6
                             blending: THREE.AdditiveAlphaBlending
                     )
                 @normalLine = new THREE.Line(
-                        new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(0,0),new THREE.Vector2(normalSize,0)]),
+                        new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(0,0),new THREE.Vector2(@normalSize,0)]),
                         new THREE.LineBasicMaterial
                             color: @color
                             linewidth: 2
@@ -78,14 +89,14 @@ S.export(
                 @add @perimetralLine
                 @add @normalLine
                 @normalLine.rotation = new THREE.Vector3(0,Math.toRadian(-90),0)
-                @graphicPlane = new THREE.Mesh( new THREE.PlaneGeometry( size.w, size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 
+                @graphicPlane = new THREE.Mesh( new THREE.PlaneGeometry( @size.w, @size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 
                                 color: @color
                                 opacity: 0.045
                                 transparent: true
                                 wireframe: false
                                 blending: THREE.AdditiveAlphaBlending
                             }))
-                @logicPlane = new THREE.Mesh( new THREE.PlaneGeometry( size.w, size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 
+                @logicPlane = new THREE.Mesh( new THREE.PlaneGeometry( @size.w, @size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 
                                 color: @color
                                 opacity: 0.0
                                 transparent: true
@@ -105,6 +116,7 @@ S.export(
 
                 @add(@logicPlane)
                 @add(@graphicPlane)
-                
-                @addToLayer()
+            
+            update:=>
+                @createGeometry()
 )

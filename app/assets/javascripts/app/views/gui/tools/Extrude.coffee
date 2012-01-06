@@ -18,7 +18,7 @@ S.export(
                 )
                 
                 # Set labels
-                @prefs.setLabel("float_value", "Value")
+                @prefs.setLabel("float_value", "Extrusion value")
                 @prefs.setLabel("bool_side", "Booth sides")
 
                 # Register callback
@@ -26,7 +26,7 @@ S.export(
                     @do()
                 )
 
-            mouseDown:()=>
+            mouseDown:=>
                 @activeObj = @stage3d.selectedObject
                 if @activeObj?.class == "Path3D"
                     @activeObj.extrude(@prefs.get('float_value'))
@@ -37,7 +37,7 @@ S.export(
                         'bool_side': @prefs.get('bool_side')
                     })
 
-            mouseDragged:()=>
+            mouseDragged:=>
                 if @activeObj?.class == "Solid3D"
                     if @activeVertices.length? and @activeVertices.length >0
                         verts = @activeObj.mesh.geometry.vertices
@@ -47,7 +47,7 @@ S.export(
 
                         return value
             
-            mouseUp:()=>
+            mouseUp:=>
             
             prefChange:(prefModel)=>
                 #console.log @prefs.float_value

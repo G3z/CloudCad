@@ -14,7 +14,7 @@ S.export(
                     @do()
                 )
 
-            mouseDown:()=>
+            mouseDown:=>
                 if @stage3d.layers.solids? and @stage3d.layers.planes?
                     c = @getMouseTarget([@stage3d.layers.solids,@stage3d.layers.planes,@stage3d.layers.originPlanes])
                 else if @stage3d.layers.solids? and not @stage3d.layers.planes?
@@ -36,13 +36,20 @@ S.export(
                             v = new THREE.Vector3()
                             v.add(barycenter,normal)
 
+                            dummyObject = new THREE.Object3D()
+                            dummyObject.position=barycenter
+                            dummyObject.lookAt(v)
+                            
+                            normalizedVertices=[]
+                            for vert in faceVertices
+                                normalizedVertices.push(@normalise(vert,dummyObject))
+                            
                             geo = new THREE.Geometry()
-                            geo.vertices = faceVertices
+                            geo.vertices = normalizedVertices
                             geo.computeBoundingBox()
                             w = geo.boundingBox.x[0]-geo.boundingBox.x[1]
                             h = geo.boundingBox.y[0]-geo.boundingBox.y[1]
-                            #debugger
-                            
+
                             plane = new Plane3D(
                                 position: barycenter
                                 #rotation: emptyObj.rotation
@@ -52,14 +59,14 @@ S.export(
                                 normalSize:Math.abs((w*2+h*2)/20)
                                 color: 0xccaabb
                             )
+                            #plane.verts = faceVertices
                             plane.lookAt(v)
                             obj.add plane
-                            
 
-            mouseDragged:()=>
+            mouseDragged:=>
 
 
-            mouseUp:()=>
+            mouseUp:=>
             
 
         # Singleton

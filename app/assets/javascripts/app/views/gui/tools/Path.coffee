@@ -100,9 +100,9 @@ S.export(
                 if intersects[0]? and @activePoint.placeholder==true
                     intersects[0].object.position.copy(@activePoint.position)
                     newPoint = intersects[0].point.clone()
-                    mat = new THREE.Matrix4()
-                    newPoint = mat.getInverse(@activePlane.matrix).multiplyVector3(newPoint.clone())
-
+                    
+                    newPoint = @normalise(newPoint,@activePlane)
+                    
                     newPoint.x -= @activePoint.father.position.x
                     newPoint.y -= @activePoint.father.position.y
                     newPoint.z = 0

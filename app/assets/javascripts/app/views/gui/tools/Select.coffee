@@ -20,7 +20,7 @@ S.export(
                     @stage3d.selectedObject.toggleSelection()
                     @stage3d.selectedObject = undefined
 
-            mouseDown:()=>
+            mouseDown:=>
                 c = @getMouseTarget([@stage3d.layers.solids,@stage3d.layers.paths,@stage3d.layers.planes])
                 if c? and c.length>0
                     if c[0].object?
@@ -33,10 +33,9 @@ S.export(
                                 obj.father.toggleSelection()
                         @stage3d.selectedObject = obj.father
 
-            mouseDragged:()=>
+            mouseDragged:=>
 
-
-            mouseUp:()=>
+            mouseUp:=>
 
         # Singleton
         new Select()

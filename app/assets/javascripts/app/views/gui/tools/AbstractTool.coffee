@@ -126,6 +126,17 @@ S.export(
                             return result
                 else
                     return getTarget(object)
+            
+            normalise:(v,object)=>
+                if object.matrix?
+                    mat = new THREE.Matrix4()
+                    mat.getInverse(object.matrix)
+                    if v.position?
+                        vert = new THREE.Vertex()
+                        vert.position = mat.multiplyVector3(v.position.clone())
+                        return vert
+                    else
+                        return mat.multiplyVector3(v.clone())
 
             getBarycenter:(array)=>
                 maxX=null

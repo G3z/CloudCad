@@ -64,7 +64,7 @@ S.export(
                 @scene.add(@world)
 
                 # Setup camera
-                @camera = new Camera(@size.w,@size.h,35, 1, 15000,1, 15000)
+                @camera = new Camera(@size.w,@size.h,35, 0.001, 15000,0.001, 15000)
                 @camera.position.z = 1500
                 @scene.add(@camera)
 

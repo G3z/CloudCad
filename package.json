@@ -24,7 +24,7 @@
     "Three.js": "r46",
     "Spine": "latest"
   },
-  "docco_configuration": {
+  "docco_husky": {
     "path":"app/assets/javascripts/app/",
     "css": "docs.css",
     "show_timestamp": false,

@@ -52,16 +52,17 @@ S.export(
                     if c? and c.length>0
                         if c[0].point?
                             contactPoint = c[0].point
+                            originalPoint = contactPoint.clone()
                             if contactPoint?
-                                #console.log contactPoint
-                                contactPoint = @activePlane.matrix.multiplyVector3(contactPoint.clone())
                                 console.log contactPoint
+                                #mat = new THREE.Matrix4()
+                                #contactPoint = mat.getInverse(@activePlane.matrix).multiplyVector3(contactPoint.clone())
+                                #console.log contactPoint
                                 contactPoint.subSelf(@activePlane.position)
                                 #creo una nuova Path
                                 unless @activePath?
 
                                     @activePath = new Path3D({points:[contactPoint]})
-                                    #@activePath.position = @activePlane.position
                                     @activePath.toggleSelection() unless @activePath.selected
                                     @activePlane.add(@activePath)
                                     @stage3d.selectedObject = @activePath
@@ -81,24 +82,26 @@ S.export(
                                     else
                                         @activePath.lineTo(contactPoint)
                                         @activePoint = @activePath.point("last")
-                                @moveOnPlane()
+                                @moveOnPlane(originalPoint)
+                                console.log @activePath.point("last").position
                                 
             
             mouseDragged:=>
                 unless @activePoint?.vertexIndex?
                     return
-                @moveOnPlane()
+                @moveOnPlane(@activePoint.position)
                 
-            moveOnPlane:=>
+            moveOnPlane:(point)=>
                 if @activePoint?
-                    @stage3d.cameraPlane.position.copy( @activePoint.position )
+                    @stage3d.cameraPlane.position.copy( point )
                     #@stage3d.cameraPlane.rotation.copy(@activePoint.father.rotation)
 
                 intersects = @getMouseTarget(@stage3d.cameraPlane)
                 if intersects[0]? and @activePoint.placeholder==true
                     intersects[0].object.position.copy(@activePoint.position)
                     newPoint = intersects[0].point.clone()
-                    newPoint = @activePlane.matrix.multiplyVector3(newPoint.clone())
+                    mat = new THREE.Matrix4()
+                    newPoint = mat.getInverse(@activePlane.matrix).multiplyVector3(newPoint.clone())
 
                     newPoint.x -= @activePoint.father.position.x
                     newPoint.y -= @activePoint.father.position.y

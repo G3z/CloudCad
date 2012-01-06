@@ -33,13 +33,8 @@ S.export(
                             faceVertices = obj.facesWithNormal(face.normal,"vertex")
                             barycenter = @getBarycenter faceVertices
 
-                            emptyObj = new THREE.Object3D()
-                            emptyObj.position = barycenter
-
-                            #
                             v = new THREE.Vector3()
                             v.add(barycenter,normal)
-                            emptyObj.lookAt(v)
 
                             geo = new THREE.Geometry()
                             geo.vertices = faceVertices
@@ -50,13 +45,14 @@ S.export(
                             
                             plane = new Plane3D(
                                 position: barycenter
-                                rotation: emptyObj.rotation.addSelf(new THREE.Vector3(0,Math.toRadian(180),0))
+                                #rotation: emptyObj.rotation
                                 size:
                                     w:Math.abs(w)+10
                                     h:Math.abs(h)+10
                                 normalSize:Math.abs((w*2+h*2)/20)
                                 color: 0xccaabb
                             )
+                            plane.lookAt(v)
                             obj.add plane
                             
 

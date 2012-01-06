@@ -19,7 +19,7 @@ S.export(
                 
                 # Set labels
                 @prefs.setLabel("float_value", "Value")
-                @prefs.setLabel("bool_side", "Flip side")
+                @prefs.setLabel("bool_side", "Booth sides")
 
                 # Register callback
                 $(document).bind("execute_tool_Extrude", =>

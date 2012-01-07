@@ -205,4 +205,7 @@ S.export(
                 @world.add(@planeX)
                 @world.add(@planeY)
                 @world.add(@planeZ)
+        
+        # Singleton
+        new Stage3d()
 )

@@ -64,7 +64,7 @@ S.export(
                 @scene.add(@world)
 
                 # Setup camera
-                @camera = new Camera(@size.w,@size.h,35, 0.001, 15000,0.001, 15000)
+                @camera = new Camera(@size.w,@size.h,35, 0.1, 15000,0.1, 15000)
                 @camera.position.z = 1500
                 @scene.add(@camera)
 
@@ -87,10 +87,10 @@ S.export(
                 
 
                 # piano per le interazioni della camera
-                @cameraPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 2, 2 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: false, wireframe: true } ) )
-                @cameraPlane.lookAt( @camera.position )
-                @cameraPlane.visible = false
-                @scene.add(@cameraPlane)
+                @actionPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 2, 2 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: false, wireframe: true } ) )
+                @actionPlane.lookAt( @camera.position )
+                @actionPlane.visible = false
+                @scene.add(@actionPlane)
                 
                 @mouse = new Mouse($(@canvas))
                 @keyboard = new Keyboard()
@@ -167,7 +167,7 @@ S.export(
 
                     .bind 'keyboard:spacebar_up', =>
                         if @selectedObject?
-                            @selectedObject.toggleSelection()
+                            @selectedObject.toggleSelection?()
                         @selectedObject = undefined
                         if @tools.selectTool?
                             @tools.selectTool.do()
@@ -178,8 +178,7 @@ S.export(
 
             render:->
                 @cameraController.update()
-                @cameraPlane.lookAt( @camera.position )
-                @cameraPlane.up.copy(@camera.up)
+                #@actionPlane.lookAt( @camera.position )
                 @renderer.render(@scene,@camera)
 
             createGeom:=>

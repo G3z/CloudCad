@@ -42,7 +42,7 @@ S.export(
                             
                             normalizedVertices=[]
                             for vert in faceVertices
-                                normalizedVertices.push(@normalise(vert,dummyObject))
+                                normalizedVertices.push(@vectorToObjectSpace(vert,dummyObject))
                             
                             geo = new THREE.Geometry()
                             geo.vertices = normalizedVertices
@@ -62,6 +62,7 @@ S.export(
                             #plane.verts = faceVertices
                             plane.lookAt(v)
                             obj.add plane
+                            
 
             mouseDragged:=>
 

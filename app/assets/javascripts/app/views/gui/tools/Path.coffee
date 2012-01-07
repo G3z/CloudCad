@@ -43,22 +43,35 @@ S.export(
                     if c? and c.length>0
                         if c[0].object?
                             obj = c[0].object
-                            @activePlane = obj.father
-                            @stage3d.cameraController.normalTo(@activePlane)
+                            
+                            if obj.father.class == "Plane3D"
+                                @activePlane = obj.father
+                                
+                                #`stage3d.actionPlane` is positioned and rotated as the selected plane
+                                #v = new THREE.Vector3()
+                                pos = @vectorToWorldSpace(@activePlane.position,@activePlane.parent)
+                                v = @activePlane.matrixWorld.multiplyVector3(c[0].face.normal.clone())
+                                #v.add(pos,@activePlane.matrixWorld.multiplyVector3(c[0].face.normal.clone()))
+                                
+                                @stage3d.actionPlane.position.copy(pos)
+                                @stage3d.actionPlane.up.copy(@activePlane.up)
+                                @stage3d.actionPlane.lookAt(v)
+                                @stage3d.cameraController.normalTo(@activePlane)
+                                
                     else
                         @activePlane = null
+
                 else if @activePlane?
-                    c = @getMouseTarget(@activePlane)
+                    c = @getMouseTarget(@stage3d.actionPlane)
                     if c? and c.length>0
                         if c[0].point?
                             contactPoint = c[0].point
                             originalPoint = contactPoint.clone()
                             if contactPoint?
-                                console.log contactPoint
-                                #mat = new THREE.Matrix4()
-                                #contactPoint = mat.getInverse(@activePlane.matrix).multiplyVector3(contactPoint.clone())
-                                #console.log contactPoint
-                                contactPoint.subSelf(@activePlane.position)
+                                @vectorToWorldSpace(contactPoint.clone(),@stage3d.actionPlane)
+                                mat = new THREE.Matrix4()
+                                contactPoint = mat.getInverse(@activePlane.matrix).multiplyVector3(contactPoint.clone())
+                                #contactPoint.subSelf(@activePlane.position)
                                 #creo una nuova Path
                                 unless @activePath?
 
@@ -83,7 +96,6 @@ S.export(
                                         @activePath.lineTo(contactPoint)
                                         @activePoint = @activePath.point("last")
                                 @moveOnPlane(originalPoint)
-                                console.log @activePath.point("last").position
                                 
             
             mouseDragged:=>
@@ -92,16 +104,17 @@ S.export(
                 @moveOnPlane(@activePoint.position)
                 
             moveOnPlane:(point)=>
-                if @activePoint?
-                    @stage3d.cameraPlane.position.copy( point )
+                #if @activePoint?
+                #    console.log @activePoint
+                    #@stage3d.cameraPlane.position.copy( @vectorToWorldSpace(@activePlane.position,@activePlane) )
                     #@stage3d.cameraPlane.rotation.copy(@activePoint.father.rotation)
 
-                intersects = @getMouseTarget(@stage3d.cameraPlane)
+                intersects = @getMouseTarget(@stage3d.actionPlane)
                 if intersects[0]? and @activePoint.placeholder==true
-                    intersects[0].object.position.copy(@activePoint.position)
+                    #intersects[0].object.position.copy(@activePoint.position)
                     newPoint = intersects[0].point.clone()
                     
-                    newPoint = @normalise(newPoint,@activePlane)
+                    newPoint = @vectorToObjectSpace(newPoint,@activePlane)
                     
                     newPoint.x -= @activePoint.father.position.x
                     newPoint.y -= @activePoint.father.position.y

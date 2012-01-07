@@ -116,13 +116,9 @@ S.export(
                 @remove(@mesh)
                 target.parent.remove(target)
                 #debugger
-                mesh = target.mesh
-                mesh.position = target.position
-                rot = Math.toRadian(180)
-                mesh.rotation = target.rotation.addSelf(new THREE.Vector3(rot,rot,rot))
                 #mesh.rotation = target.rotation.multiplyScalar(-1)
 
-                target = THREE.CSG.toCSG(mesh)
+                target = THREE.CSG.toCSG(target.mesh)
                 self = THREE.CSG.toCSG(@mesh)
                 if op == "plus"
                     geometry = THREE.CSG.fromCSG( self.union(target) )

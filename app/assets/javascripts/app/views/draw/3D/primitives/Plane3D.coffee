@@ -44,7 +44,8 @@ S.export(
                 @remove(@verticalLine) if @verticalLine?
                 @remove(@normalLine) if @normalLine?
                 @remove(@graphicPlane) if @graphicPlane?
-                @remove(@logicPlane) if @logicPlane?
+                @remove(@frontLogicPlane) if @frontLogicPlane?
+                @remove(@backLogicPlane) if @backLogicPlane?
 
                 points=[
                     new THREE.Vector2(@size.w/2*-1,@size.h/2*-1)
@@ -96,25 +97,38 @@ S.export(
                                 wireframe: false
                                 blending: THREE.AdditiveAlphaBlending
                             }))
-                @logicPlane = new THREE.Mesh( new THREE.PlaneGeometry( @size.w, @size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 
+                @frontLogicPlane = new THREE.Mesh( new THREE.PlaneGeometry( @size.w, @size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 
                                 color: @color
                                 opacity: 0.0
                                 transparent: true
                                 wireframe: true
                                 
                             }))
-                @logicPlane.doubleSided=true
+                @frontLogicPlane.doubleSided=true
+                @frontLogicPlane.translateZ(0.1)
                 
+                @backLogicPlane = new THREE.Mesh( new THREE.PlaneGeometry( @size.w, @size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 
+                                color: @color
+                                opacity: 0.0
+                                transparent: true
+                                wireframe: true
+                                
+                            }))
+                @backLogicPlane.doubleSided=true
+                @backLogicPlane.translateZ(-0.1)
+
                 @updateMatrix()
                 @up = @matrix.multiplyVector3(@up.clone())
                 @up.subSelf(@position)
 
-                @normal = @matrix.multiplyVector3(@logicPlane.geometry.faces[0].normal.clone())
+                @normal = @matrix.multiplyVector3(@graphicPlane.geometry.faces[0].normal.clone())
                 @normal.subSelf(@position)
                 @graphicPlane.father = this
-                @logicPlane.father = this
+                @frontLogicPlane.father = this
+                @backLogicPlane.father = this
 
-                @add(@logicPlane)
+                @add(@frontLogicPlane)
+                @add(@backLogicPlane)
                 @add(@graphicPlane)
             
             update:=>

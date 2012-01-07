@@ -75,7 +75,7 @@ S.export(
             #* the *object* in witch the tool should be searching for collisions
             #
             # this method retuns the first object, child of `object`, under mouse position, either in perspective or orthographic mode
-            # if `object` is an array eache element is parsed until the first collision is found
+            # if `object` is an array each element is parsed until the first collision is found
             # this is an utility method for subClasses.  
             getMouseTarget:(object)=>  
                 getTarget = (target)=>
@@ -83,7 +83,7 @@ S.export(
                         vector = new THREE.Vector3(
                             @stage3d.mouse.currentPos.stage3Dx
                             @stage3d.mouse.currentPos.stage3Dy
-                            0.5
+                            0.0001
                         )
                         @stage3d.projector.unprojectVector(vector, @stage3d.camera)
                         ray = new THREE.Ray(@stage3d.camera.position, vector.subSelf( @stage3d.camera.position ).normalize())
@@ -91,7 +91,8 @@ S.export(
                             if $.type(target) == "array"
                                 return ray.intersectObjects(target) 
                             else
-                                return ray.intersectObject(target) 
+                                return ray.intersectObject(target)
+                            
                         else 
                             return ray.intersectObject(@stage3d.world)
                     else
@@ -126,18 +127,65 @@ S.export(
                             return result
                 else
                     return getTarget(object)
-            
-            normalise:(v,object)=>
+
+            #### *vectorToObjectSpace(`vector`,`object`)* method takes two arguments
+            #* the *vector* to be normalized
+            #* the *object* in which space the coordinates should be normalized
+            #
+            # this method retuns a copy of `vector` with coordinates translated to `object`'s space  
+            # if `vector` is a vertex `position` property is evaluated  
+            # this is an utility method for subClasses.  
+            vectorToObjectSpace:(vector,object)=>
+                worldMatrix=(object,matO)=>                
+                    if object.parent?
+                        mat = new THREE.Matrix4()
+                        matP = new THREE.Matrix4()
+                        unless matO?
+                            matO = new THREE.Matrix4()
+                            mat.multiply(matO.getInverse(object.matrix), matP.getInverse(object.parent.matrix))
+                        else
+                            mat.multiply(matO, matP.getInverse(object.parent.matrix))
+
+                        if object.parent != @stage3d.scene and object.parent?
+                            return worldMatrix(object.parent,mat)
+                        else
+                            return mat
+                    else
+                        mat = new THREE.Matrix4()
+                        return mat.getInverse(object.matrix)
+
                 if object.matrix?
-                    mat = new THREE.Matrix4()
-                    mat.getInverse(object.matrix)
-                    if v.position?
+                    object.updateMatrix()
+                    mat = worldMatrix(object)
+                    if vector.position?
                         vert = new THREE.Vertex()
-                        vert.position = mat.multiplyVector3(v.position.clone())
+                        vert.position = mat.multiplyVector3(vector.position.clone())
                         return vert
                     else
-                        return mat.multiplyVector3(v.clone())
+                        return mat.multiplyVector3(vector.clone())
 
+            #### *vectorToWorldSpace(`vector`,`object`)* method takes two arguments
+            #* the *vector* to be normalized
+            #* the *object* from which space the coordinates should be normalized
+            #
+            # this method retuns a copy of `vector` with coordinates translated to world's space  
+            # if `vector` is a vertex `position` property is evaluated  
+            # this is an utility method for subClasses.  
+            vectorToWorldSpace:(vector,object)=>
+                if object.matrix?
+                    object.updateMatrix()
+                    if vector.position?
+                        vert = new THREE.Vertex()
+                        vert.position = object.matrixWorld.multiplyVector3(vector.position.clone())
+                        return vert
+                    else
+                        return object.matrixWorld.multiplyVector3(vector.clone())
+
+            #### *getBarycenter(`array`)* method takes one arguments
+            #* the *array* of points in which the barycenter is calculated
+            #
+            # this method retuns a *vector* repesenting the geometrical barycenter determined from points in the `array`  
+            # this is an utility method for subClasses.  
             getBarycenter:(array)=>
                 maxX=null
                 maxY=null

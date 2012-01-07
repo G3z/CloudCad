@@ -215,13 +215,13 @@ S.export(
             normalTo:(plane)=>
                 if plane.class == "Plane3D"
                     distance = @stage3d.camera.position.distanceTo(@target)
-                    @target = plane.position.clone()
+                    @target = plane.parent.matrixWorld.multiplyVector3(plane.position.clone())
 
                     @stage3d.camera.position.copy(@target)
                     @stage3d.camera.up = plane.up.clone()
                     @stage3d.camera.rotationAutoUpdate = false
 
-                    normal = plane.normal.clone()
+                    normal = plane.parent.matrixWorld.multiplyVector3(plane.normal.clone())
                     normal.multiplyScalar(distance).multiplyScalar(-1)
                     @stage3d.camera.position.subSelf(normal)
 

@@ -133,7 +133,6 @@ S.export(
             #* the *object* in which space the coordinates should be normalized
             #
             # this method retuns a copy of `vector` with coordinates translated to `object`'s space  
-            # if `vector` is a vertex `position` property is evaluated  
             # this is an utility method for subClasses.  
             vectorToObjectSpace:(vector,object)=>
                 worldMatrix=(object,matO)=>                
@@ -157,29 +156,18 @@ S.export(
                 if object.matrix?
                     object.updateMatrix()
                     mat = worldMatrix(object)
-                    if vector.position?
-                        vert = new THREE.Vertex()
-                        vert.position = mat.multiplyVector3(vector.position.clone())
-                        return vert
-                    else
-                        return mat.multiplyVector3(vector.clone())
+                    return mat.multiplyVector3(vector.clone())
 
             #### *vectorToWorldSpace(`vector`,`object`)* method takes two arguments
             #* the *vector* to be normalized
             #* the *object* from which space the coordinates should be normalized
             #
             # this method retuns a copy of `vector` with coordinates translated to world's space  
-            # if `vector` is a vertex `position` property is evaluated  
             # this is an utility method for subClasses.  
             vectorToWorldSpace:(vector,object)=>
                 if object.matrix?
                     object.updateMatrix()
-                    if vector.position?
-                        vert = new THREE.Vertex()
-                        vert.position = object.matrixWorld.multiplyVector3(vector.position.clone())
-                        return vert
-                    else
-                        return object.matrixWorld.multiplyVector3(vector.clone())
+                    return object.matrixWorld.multiplyVector3(vector.clone())
 
             #### *getBarycenter(`array`)* method takes one arguments
             #* the *array* of points in which the barycenter is calculated

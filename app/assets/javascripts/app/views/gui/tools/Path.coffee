@@ -49,7 +49,7 @@ S.export(
                                 
                                 #`stage3d.actionPlane` is positioned and rotated as the selected plane
                                 #v = new THREE.Vector3()
-                                pos = @vectorToWorldSpace(@activePlane.position,@activePlane.parent)
+                                pos = @activePlane.position.fromObject(@activePlane.parent)
                                 v = @activePlane.matrixWorld.multiplyVector3(c[0].face.normal.clone())
                                 #v.add(pos,@activePlane.matrixWorld.multiplyVector3(c[0].face.normal.clone()))
                                 
@@ -68,7 +68,7 @@ S.export(
                             contactPoint = c[0].point
                             originalPoint = contactPoint.clone()
                             if contactPoint?
-                                @vectorToWorldSpace(contactPoint.clone(),@stage3d.actionPlane)
+                                contactPoint = contactPoint.fromObject(@stage3d.actionPlane)
                                 mat = new THREE.Matrix4()
                                 contactPoint = mat.getInverse(@activePlane.matrix).multiplyVector3(contactPoint.clone())
                                 #contactPoint.subSelf(@activePlane.position)
@@ -114,7 +114,7 @@ S.export(
                     #intersects[0].object.position.copy(@activePoint.position)
                     newPoint = intersects[0].point.clone()
                     
-                    newPoint = @vectorToObjectSpace(newPoint,@activePlane)
+                    newPoint = newPoint.toObject(@activePlane)
                     
                     newPoint.x -= @activePoint.father.position.x
                     newPoint.y -= @activePoint.father.position.y

@@ -24,4 +24,6 @@ S.export(
 
                 super(html)
                 Select.do()
+        # Singleton
+        new MainToolbar()
 )

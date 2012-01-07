@@ -1,12 +1,13 @@
 
 S.export(
     "views/gui/OptionsToolbar"
-    ["views/gui/AbstractToolbar"]
-    (AbstractToolbar)->
-        
-      class OptionsToolBar
+    ["solid.widgets.AbstractWidget"]
+    (AbstractWidget)->
+                
+        class OptionsToolBar extends AbstractWidget
             
-          constructor:->
+            constructor:->
+                super()
 
                 @element = $('#tool_options_panel')
 
@@ -37,16 +38,18 @@ S.export(
                             .addClass(k)
                             .data("option_name", k)
                             .on(evtName, (evt)->
-                                console.log(evt)
                                 target = $(evt.currentTarget)
                                 obj = {}
                                 obj[target.data("option_name")] = target.val()
                                 m.set(obj)
                             )
-
+    
                         label = $("<label>").html(m.getLabel(k) + ":")
 
                         $(@element)
                             .append(label)
                             .append(dom)
+
+        new OptionsToolBar()
+
 )

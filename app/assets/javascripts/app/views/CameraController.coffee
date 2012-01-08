@@ -225,7 +225,7 @@ S.export(
                     normal = normal.fromObject(plane)
 
                     @stage3d.camera.position.copy(normal)
-                    @stage3d.camera.up.copy(plane.up.clone())
+                    @stage3d.camera.up = plane.up.fromObject(plane).subSelf(@target)
 
             toFrontView:=>
                 distance = @stage3d.camera.position.distanceTo(@target)

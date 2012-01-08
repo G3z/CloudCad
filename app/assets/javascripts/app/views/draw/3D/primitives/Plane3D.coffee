@@ -121,8 +121,9 @@ S.export(
                 @up = @matrix.multiplyVector3(@up.clone())
                 @up.subSelf(@position)
 
-                @normal = @matrix.multiplyVector3(@graphicPlane.geometry.faces[0].normal.clone())
-                @normal.subSelf(@position)
+                #@normal = @matrix.multiplyVector3(@graphicPlane.geometry.faces[0].normal.clone())
+                #@normal.subSelf(@position)
+                @normal = new THREE.Vector3(0,0,1)
                 @graphicPlane.father = this
                 @frontLogicPlane.father = this
                 @backLogicPlane.father = this

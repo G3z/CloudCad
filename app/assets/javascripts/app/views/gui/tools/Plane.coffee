@@ -53,7 +53,7 @@ S.export(
 
                             plane = new Plane3D(
                                 position: barycenter
-                                #rotation: emptyObj.rotation
+                                rotation: dummyObject.rotation
                                 size:
                                     w:Math.abs(w)+10
                                     h:Math.abs(h)+10
@@ -61,7 +61,7 @@ S.export(
                                 color: 0xccaabb
                             )
                             #plane.verts = faceVertices
-                            plane.lookAt(v)
+                            #plane.lookAt(v)
                             obj.add plane
                             
 

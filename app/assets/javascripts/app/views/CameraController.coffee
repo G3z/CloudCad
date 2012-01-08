@@ -215,17 +215,17 @@ S.export(
             normalTo:(plane)=>
                 if plane.class == "Plane3D"
                     distance = @stage3d.camera.position.distanceTo(@target)
+
                     v = new THREE.Vector3()
                     @target = v.fromObject(plane)
-
                     @stage3d.camera.position.copy(@target)
-                    @stage3d.camera.up = plane.up.clone()
-                    #@stage3d.camera.rotationAutoUpdate = false
+
                     normal = plane.normal.clone()
                     normal.multiplyScalar(distance).multiplyScalar(1)
                     normal = normal.fromObject(plane)
 
                     @stage3d.camera.position.copy(normal)
+                    @stage3d.camera.up.copy(plane.up.clone())
 
             toFrontView:=>
                 distance = @stage3d.camera.position.distanceTo(@target)

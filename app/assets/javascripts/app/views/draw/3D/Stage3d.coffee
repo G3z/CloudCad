@@ -138,8 +138,11 @@ S.export(
                             @activeTool.mouseUp()
 
                     .bind 'keyboard:c_up', =>
-                        #alt + number events
                         @camera.toggleType()
+                    
+                    .bind 'keyboard:n_up', =>
+                        if @activeTool?.activePlane?.class = "Plane3D"
+                            @cameraController.normalTo(@activeTool.activePlane)
 
                     .bind 'keyboard:1_up', =>
                         if @keyboard.isKeyDown("alt")

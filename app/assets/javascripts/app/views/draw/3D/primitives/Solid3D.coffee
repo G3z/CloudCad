@@ -117,7 +117,7 @@ S.export(
                 target.parent.remove(target)
                 #debugger
                 #mesh.rotation = target.rotation.multiplyScalar(-1)
-
+                
                 target = THREE.CSG.toCSG(target.mesh)
                 self = THREE.CSG.toCSG(@mesh)
                 if op == "plus"

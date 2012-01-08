@@ -28,7 +28,7 @@ S.export(
             @selectedObject
 
             constructor:(@glOrNot)->
-                super()
+                
                 @tools = {}
                 @snapTolerance = 15
                 @size=
@@ -174,6 +174,7 @@ S.export(
                         @selectedObject = undefined
                         if @tools.selectTool?
                             @tools.selectTool.do()
+                super()
 
             animate:->
                 requestAnimFrame(window.stage3d.animate)

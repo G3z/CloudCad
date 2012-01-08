@@ -4,11 +4,12 @@
 
 S.export(
     "controllers/Abstract",
-    ()->
-        class Abstract
+    ["solid.widgets.AbstractWidget"]
+    (AbstractWidget)->
+        class Abstract extends AbstractWidget
 
-            constructor: (view) ->
-                @view = view
+            constructor: (options) ->
+                super(options)
 
             getView:->
                 return @view

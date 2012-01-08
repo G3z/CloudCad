@@ -11,8 +11,8 @@ S.export(
             @stage3d
             @stage2d
 
-            constructor: (view) ->
-                super @view
+            constructor: (options) ->
+                super(options)
 
                 # Create the stage with the correct rendering
                 @stage3d = Stage3d 
@@ -24,7 +24,10 @@ S.export(
                 #Backbone.history.start({
                 #    pushState: true
                 #})
+                
+                @addChild(Layout)
 
+                @render()
             to3d: =>
                 return
 

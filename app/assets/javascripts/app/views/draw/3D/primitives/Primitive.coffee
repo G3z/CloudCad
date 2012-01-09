@@ -23,24 +23,36 @@ S.export(
             
             promoteTo:(obj)=>
                 walk = (start,target)=>
-                    console.log "Object Promotion: processing " + start.class
                     if start.parent?
+                        #console.log "Object Promotion: processing " + start.parent.class
                         if start.parent.id?
                             if start.parent.id != target
                                 @position.addSelf(start.parent.position)
-                                console.log start.parent.position
-                                #@rotation.addSelf(start.parent.rotation)
+                                @rotation.addSelf(start.parent.rotation)
                                 return walk(start.parent,target)
                             else
-                                console.log "Object Promotion:Done"
+                                @rotation.addSelf(start.parent.position)
+                                @rotation.addSelf(start.parent.rotation)
+                                #console.log "Object Promotion:Done"
                                 return
                         else
-                            console.log "Object Promotion:No ID"
+                            #console.log "Object Promotion:No ID"
                             return
                     else
-                        console.log "Object Promotion:No Parent"
+                        #console.log "Object Promotion:No Parent"
                         return
                 target = obj.id
                 walk(this,target)
-                obj.add(this)
+                obj.parent.add(this)
+
+            isChildOf:(object)=>
+                walk=(obj)=>
+                    for child in obj.children
+                        unless child.father?
+                            if child.id == @id
+                                return true
+                            else                            
+                                return walk(child)
+                    return false
+                return walk(object)
 )

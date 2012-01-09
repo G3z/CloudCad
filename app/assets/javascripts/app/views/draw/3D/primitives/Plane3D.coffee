@@ -62,6 +62,7 @@ S.export(
                             linewidth: 1.5
                             blending: THREE.AdditiveAlphaBlending
                     )
+                @perimetralLine.father= this
                 @horizontalLine = new THREE.Line(
                         new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(@size.w/2*-1,0),new THREE.Vector2(@size.w/2,0)]),
                         new THREE.LineBasicMaterial
@@ -69,6 +70,7 @@ S.export(
                             linewidth: .6
                             blending: THREE.AdditiveAlphaBlending
                     )
+                @horizontalLine.father= this
                 @verticalLine = new THREE.Line(
                         new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(0,@size.h/2*-1),new THREE.Vector2(0,@size.h/2)]),
                         new THREE.LineBasicMaterial
@@ -76,6 +78,7 @@ S.export(
                             linewidth: .6
                             blending: THREE.AdditiveAlphaBlending
                     )
+                @verticalLine.father= this
                 @normalLine = new THREE.Line(
                         new THREE.CurvePath.prototype.createGeometry([new THREE.Vector2(0,0),new THREE.Vector2(@normalSize,0)]),
                         new THREE.LineBasicMaterial
@@ -83,7 +86,7 @@ S.export(
                             linewidth: 2
                             blending: THREE.AdditiveAlphaBlending
                     )
-                
+                @normalLine.father= this
 
                 #@add @verticalLine
                 #@add @horizontalLine
@@ -97,6 +100,7 @@ S.export(
                                 wireframe: false
                                 blending: THREE.AdditiveAlphaBlending
                             }))
+                @graphicPlane.father= this
                 @frontLogicPlane = new THREE.Mesh( new THREE.PlaneGeometry( @size.w, @size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 
                                 color: @color
                                 opacity: 0.0
@@ -104,6 +108,7 @@ S.export(
                                 wireframe: true
                                 
                             }))
+                @frontLogicPlane.father= this
                 @frontLogicPlane.doubleSided=true
                 @frontLogicPlane.translateZ(0.1)
                 
@@ -114,6 +119,7 @@ S.export(
                                 wireframe: true
                                 
                             }))
+                @backLogicPlane.father= this
                 @backLogicPlane.doubleSided=true
                 @backLogicPlane.translateZ(-0.1)
 

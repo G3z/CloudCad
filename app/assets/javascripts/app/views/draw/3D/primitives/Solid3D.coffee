@@ -113,22 +113,26 @@ S.export(
                 @mesh.geometry.computeCentroids()
             
             booleanOps:(op,target)=>
-                @remove(@mesh)
-                target.parent.remove(target)
-                #debugger
-                #mesh.rotation = target.rotation.multiplyScalar(-1)
-                
-                target = THREE.CSG.toCSG(target.mesh)
-                self = THREE.CSG.toCSG(@mesh)
-                if op == "plus"
-                    geometry = THREE.CSG.fromCSG( self.union(target) )
-                else if op == "minus"
-                    geometry = THREE.CSG.fromCSG( self.subtract(target) )
-                else if op == "intersect"
-                    geometry = THREE.CSG.fromCSG( self.intersect(target) )
-                
-                @mesh = new THREE.Mesh( geometry, @mesh.material )
-                @add(@mesh)
+                if target.parent?
+                    #@remove(@mesh)
+                    #target.parent.remove(target)
+
+                    #debugger
+                    #mesh.rotation = target.rotation.multiplyScalar(-1)
+                    if target.isChildOf(this) then target.promoteTo(this)
+                    target = THREE.CSG.toCSG(target.mesh)
+                    self = THREE.CSG.toCSG(@mesh)
+
+                    if op == "plus"
+                        geometry = THREE.CSG.fromCSG( self.union(target) )
+                    else if op == "minus"
+                        geometry = THREE.CSG.fromCSG( self.subtract(target) )
+                    else if op == "intersect"
+                        geometry = THREE.CSG.fromCSG( self.intersect(target) )
+                    
+                    #@mesh = new THREE.Mesh( geometry, @mesh.material )
+                    #@add(@mesh)
+                    @mesh.geometry = geometry
 
             plus:(object)=>
                 @booleanOps("plus",object)

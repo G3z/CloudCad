@@ -42,8 +42,10 @@ S.export(
                             
                             normalizedVertices=[]
                             for vert in faceVertices
-                                vert.position = vert.position.toObject(dummyObject)
-                                normalizedVertices.push(vert)
+                                ve = new THREE.Vertex()
+                                ve.position = vert.position.clone()
+                                ve.position = ve.position.toObject(dummyObject)
+                                normalizedVertices.push(ve)
                             
                             geo = new THREE.Geometry()
                             geo.vertices = normalizedVertices

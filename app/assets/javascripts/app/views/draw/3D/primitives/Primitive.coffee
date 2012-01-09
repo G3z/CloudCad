@@ -43,6 +43,15 @@ S.export(
                         return
                 target = obj.id
                 walk(this,target)
+                ###
+                if @mesh?.geometry?.vertices?
+                    verts = @mesh.geometry.vertices
+                    for v,i in verts
+                        v.position.fromObject(obj)
+                        @mesh.geometry.vertices[i].position=v.position
+                @position = new THREE.Vector3()
+                @rotation = new THREE.Vector3()
+                ###
                 obj.parent.add(this)
 
             isChildOf:(object)=>

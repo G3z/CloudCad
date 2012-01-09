@@ -114,25 +114,32 @@ S.export(
             
             booleanOps:(op,target)=>
                 if target.parent?
-                    #@remove(@mesh)
-                    #target.parent.remove(target)
+                    @remove(@mesh)
+                    target.partent.remove(target)
+                    if target.isChildOf(this)
+                        target.promoteTo(this)
+                        
+                        mat = new THREE.Matrix4();
+                        mat.setRotationFromEuler(target.rotation);
+                        
+                        matI = new THREE.Matrix4();
+                        matI.getInverse(mat);
+                        matI.multiplyVector3(target.position);
+                        
+                        target = THREE.CSG.toCSG(target.mesh)
+                        self = THREE.CSG.toCSG(@mesh)
 
-                    #debugger
-                    #mesh.rotation = target.rotation.multiplyScalar(-1)
-                    if target.isChildOf(this) then target.promoteTo(this)
-                    target = THREE.CSG.toCSG(target.mesh)
-                    self = THREE.CSG.toCSG(@mesh)
-
-                    if op == "plus"
-                        geometry = THREE.CSG.fromCSG( self.union(target) )
-                    else if op == "minus"
-                        geometry = THREE.CSG.fromCSG( self.subtract(target) )
-                    else if op == "intersect"
-                        geometry = THREE.CSG.fromCSG( self.intersect(target) )
-                    
-                    #@mesh = new THREE.Mesh( geometry, @mesh.material )
-                    #@add(@mesh)
-                    @mesh.geometry = geometry
+                        if op == "plus"
+                            geometry = THREE.CSG.fromCSG( self.union(target) )
+                        else if op == "minus"
+                            geometry = THREE.CSG.fromCSG( self.subtract(target) )
+                        else if op == "intersect"
+                            geometry = THREE.CSG.fromCSG( self.intersect(target) )
+                        
+                        @mesh = new THREE.Mesh( geometry, @mesh.material )
+                        @mesh.father = this
+                        @add(@mesh)
+                    #@mesh.geometry = geometry
 
             plus:(object)=>
                 @booleanOps("plus",object)

@@ -114,19 +114,19 @@ S.export(
             
             booleanOps:(op,target)=>
                 if target.parent?
-                    @remove(@mesh)
-                    target.partent.remove(target)
                     if target.isChildOf(this)
+                        @remove(@mesh)
                         target.promoteTo(this)
-                        
+                        target.parent.remove(target)
+                        ###
                         mat = new THREE.Matrix4();
                         mat.setRotationFromEuler(target.rotation);
                         
                         matI = new THREE.Matrix4();
                         matI.getInverse(mat);
                         matI.multiplyVector3(target.position);
-                        
-                        target = THREE.CSG.toCSG(target.mesh)
+                        ###
+                        target = THREE.CSG.toCSG(target.mesh,target.position,target.rotation)
                         self = THREE.CSG.toCSG(@mesh)
 
                         if op == "plus"

@@ -51,10 +51,18 @@
     background-color: white;
 }
 
+.cc_toolbar .second_toolbar{
+    height: 28px;
+    clear:both;
+    margin-top: 5px;
+    border-top: 1px solid #999;
+    padding-top: 5px;
+}
+
 .cc_toolbar .options_panel{
     clear:both;
     margin-top: 5px;
-    border-top: 1px solid white;
+    border-top: 1px solid #999;
     padding-top: 5px;
 }
 

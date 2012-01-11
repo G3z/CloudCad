@@ -34,7 +34,9 @@ S.export(
                     .addClass("cc_toolbar")
                 
                 self = this
-                S.import(["views/gui/OptionsToolbar"], (OptionsToolbar)->
+                
+                S.import(["views/gui/SecondToolbar", "views/gui/OptionsToolbar"], (SecondToolbar, OptionsToolbar)->
+                    self.addChild(SecondToolbar)
                     self.addChild(OptionsToolbar)
                 )
                 

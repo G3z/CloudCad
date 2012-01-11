@@ -13,9 +13,14 @@ S.export(
     ],
     (Abstract, Camera, Mouse, Keyboard, CameraController,Path3D,Solid3D,Plane3D,Axes)->
         class Stage3d extends Abstract
+            
             ###
             This class represent the Stage area where all the elements are represented
             ###
+            
+            tagName: "div"
+            className: "stage3d"
+
             @camera
             @scene
             @renderer
@@ -95,27 +100,27 @@ S.export(
                 @keyboard = new Keyboard()
 
                 @cameraController = new CameraController(this)
-                @cameraController.movementSpeed = 75;
-                @cameraController.lookSpeed = 0.125;
-                @cameraController.lookVertical = false;
+                @cameraController.movementSpeed = 75
+                @cameraController.lookSpeed = 0.125
+                @cameraController.lookVertical = false
 
 
                 # Define rendere size
                 @renderer.setSize( @size.w,@size.h )
-                @renderer.sortObjects = false;
-                @renderer.shadowMapEnabled = true;
-                @renderer.shadowMapSoft = true;
+                @renderer.sortObjects = false
+                @renderer.shadowMapEnabled = true
+                @renderer.shadowMapSoft = true
 
-                @renderer.shadowCameraNear = 3;
-                @renderer.shadowCameraFar = @camera.far;
-                @renderer.shadowCameraFov = 50;
+                @renderer.shadowCameraNear = 3
+                @renderer.shadowCameraFar = @camera.far
+                @renderer.shadowCameraFov = 50
 
-                @renderer.shadowMapBias = 0.0039;
-                @renderer.shadowMapDarkness = 0.5;
-                @renderer.shadowMapWidth = 1024;
-                @renderer.shadowMapHeight = 1024;
+                @renderer.shadowMapBias = 0.0039
+                @renderer.shadowMapDarkness = 0.5
+                @renderer.shadowMapWidth = 1024
+                @renderer.shadowMapHeight = 1024
                 # Add the element to the DOM
-                document.body.appendChild( @renderer.domElement )
+                $(@el).append(@renderer.domElement)
 
                 window.stage3d = this
                 @layers= {}
@@ -173,9 +178,11 @@ S.export(
                         @selectedObject = undefined
                         if @tools.selectTool?
                             @tools.selectTool.do()
-                
+
                 @checkLoop()
+				Refactoring struttura DOM e creazione elementi
                 super()
+                $(@el).append(@canvas)
 
             animate:->
                 requestAnimFrame(window.stage3d.animate)
@@ -224,3 +231,4 @@ S.export(
         # Singleton
         new Stage3d()
 )
+

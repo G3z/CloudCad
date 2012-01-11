@@ -3,51 +3,70 @@
  * */
 
 .cc_toolbar{
-  position: absolute;
-  background-color: #282828;
-  z-index: 10;
-  top: 100px;
-  left: 20px;
-  padding: 5px;
-  -webkit-border-radius: 5px;
+    position: absolute;
+    /*background-color: #282828;*/
+
+    /* Fallback for web browsers that doesn't support RGBa */
+    background: rgb(0, 0, 0);
+    /* RGBa with 0.6 opacity */
+    background: rgba(0, 0, 0, 0.75);
+    /* For IE 5.5 - 7*/
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+    /* For IE 8*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+
+    z-index: 10;
+    top: 100px;
+    left: 20px;
+    padding: 5px;
+    min-width: 300px;
+    -webkit-border-radius: 5px;
 }
 
 
 .cc_toolbar .header{
-  width: 100%;
-  height: 10px;
+    width: 100%;
+    height: 10px;
 }
 
 .cc_toolbar .toolbarButton{
-  display: block;
-  width: 16px;
-  height: 16px;
-  padding: 5px;
-  border: 1px solid #282828;
-  cursor: pointer; cursor: hand;
-  -webkit-border-radius: 5px
+    display: block;
+    width: 16px;
+    height: 16px;
+    padding: 5px;
+    border: 1px solid #282828;
+    cursor: pointer; cursor: hand;
+    float:left;
+    -webkit-border-radius: 5px
 }
 
-.selected{
-  background-color: #ccccdd;
-}
-.unselected{
-  background-color: white;
+.cc_toolbar .buttons{
+    height: 28px;
 }
 
-#tool_options_panel{
-  height:35px;
-  padding-top:5px;
-  width:100%;
-  margin-top:40px;
-  background-color: #959595;
+.cc_toolbar .selected{
+    background-color: #ccccdd;
+}
+.cc_toolbar .unselected{
+    background-color: white;
 }
 
-#tool_options_panel *{
-  margin-left: 10px;
+.cc_toolbar .options_panel{
+    clear:both;
+    margin-top: 5px;
+    border-top: 1px solid white;
+    padding-top: 5px;
 }
 
-#tool_options_panel label{
+.cc_toolbar .options_container{
+}
+
+.cc_toolbar .options_panel .options_container *{
+    margin-left: 10px;
+}
+
+.cc_toolbar .options_panel .options_container label{
     width: auto;
     float: none;
+    color: white;
 }

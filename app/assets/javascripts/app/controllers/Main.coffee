@@ -4,19 +4,17 @@
 
 S.export(
     "controllers/Main",
-    ["controllers/Abstract", "views/draw/3D/Stage3d", "views/Layout"],
-    (Abstract, Stage3d, Layout)->
+    ["controllers/Abstract", "views/Layout"],
+    (Abstract, Layout)->
         class Main extends Abstract
             
-            @stage3d
+            tagName: "div"
+            className: "main_container"
+
             @stage2d
 
             constructor: (options) ->
                 super(options)
-
-                # Create the stage with the correct rendering
-                @stage3d = Stage3d 
-                @stage3d.animate()
 
                 #@stage2d = new CC.views.draw.Stage2d()
                 
@@ -26,8 +24,8 @@ S.export(
                 #})
                 
                 @addChild(Layout)
+                $(document.body).append(@el)
 
-                @render()
             to3d: =>
                 return
 
@@ -35,5 +33,5 @@ S.export(
                 return
 
         # Singleton
-        return new Main()
+        new Main()
 )

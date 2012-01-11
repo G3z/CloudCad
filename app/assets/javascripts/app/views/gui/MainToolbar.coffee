@@ -9,12 +9,15 @@ S.export(
         "views/gui/tools/Extrude"
     ],
     (AbstractToolbar, Select, Plane, Path, Extrude)->
-
+        
         tools = arguments
 
         class MainToolbar extends AbstractToolbar
-
+            
             constructor:->
+                super()
+                
+                cnt = document.createElement("div")
 
                 html = ""
                 for k,v of tools
@@ -22,8 +25,22 @@ S.export(
                     html += v.button()
                 
 
-                super(html)
+                $(cnt)
+                    .html(html)
+                    .addClass("buttons")
+
+                $(@el)
+                    .append(cnt)
+                    .addClass("cc_toolbar")
+                
+                self = this
+                S.import(["views/gui/OptionsToolbar"], (OptionsToolbar)->
+                    self.addChild(OptionsToolbar)
+                )
+                
+                # Attivo il primo comando
                 Select.do()
+
         # Singleton
         new MainToolbar()
 )

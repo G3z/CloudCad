@@ -8,8 +8,8 @@ S.export(
             
             constructor:->
                 super()
-
-                @element = $('#tool_options_panel')
+                
+                $(@el).addClass("options_panel")
 
                 $(document).bind "current_tool_changed", (evt, tool)=>
                     
@@ -20,7 +20,7 @@ S.export(
 
                     data = m.toJSON()
                     
-                    $(@element).html("")
+                    $(@el).html("")
 
                     for k,v of data
                         continue if k.indexOf("_") < 0
@@ -45,10 +45,15 @@ S.export(
                             )
     
                         label = $("<label>").html(m.getLabel(k) + ":")
-
-                        $(@element)
+                        
+                        cnt = document.createElement("div")
+                        $(cnt)
+                            .addClass("options_container")
                             .append(label)
                             .append(dom)
+
+                        $(@el).append(cnt)
+                            
 
         new OptionsToolBar()
 

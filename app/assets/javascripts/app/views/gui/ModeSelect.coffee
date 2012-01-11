@@ -16,7 +16,7 @@ S.export(
                 super()
                 @select = new Select({
                     data: @data
-                }) 
+                })
                 @addChild(@select)
 
 

@@ -1,22 +1,15 @@
 
 S.export(
     "views/gui/AbstractToolbar",
-    ['views/gui/AbstractPanel'],
-    (AbstractPanel)->
-        class AbstractToolbar extends AbstractPanel
+    ['solid.widgets.Panel'],
+    (Panel)->
+        class AbstractToolbar extends Panel
 
             ###
             Toolbar
             ###
 
-            constructor:(html)->
+            constructor:()->
+                super()
 
-                id = "toolbar_" + new Date().getTime()
-
-                topbar = "<div class='header' id='" + id + "'>"
-                topbar += "</div>"
-
-                html = topbar + html
-
-                super(html, id, "cc_toolbar")
 )

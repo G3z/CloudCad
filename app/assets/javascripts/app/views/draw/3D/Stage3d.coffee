@@ -28,7 +28,6 @@ S.export(
             @selectedObject
 
             constructor:(@glOrNot)->
-                
                 @tools = {}
                 @snapTolerance = 15
                 @size=
@@ -174,6 +173,8 @@ S.export(
                         @selectedObject = undefined
                         if @tools.selectTool?
                             @tools.selectTool.do()
+                
+                @checkLoop()
                 super()
 
             animate:->
@@ -184,6 +185,16 @@ S.export(
                 @cameraController.update()
                 #@actionPlane.lookAt( @camera.position )
                 @renderer.render(@scene,@camera)
+
+            checkLoop:=>
+                check=(obj)=>
+                    for object in obj
+                        unless object.parent?
+                            @layers[object.layer].remove(object)
+                
+                for layer of @layers
+                    check(@layers[layer]) 
+                setTimeout(@checkLoop,1000)
 
             createGeom:=>
                 @planeZ = new Plane3D({

@@ -118,14 +118,7 @@ S.export(
                         @remove(@mesh)
                         target.promoteTo(this)
                         target.parent.remove(target)
-                        ###
-                        mat = new THREE.Matrix4();
-                        mat.setRotationFromEuler(target.rotation);
                         
-                        matI = new THREE.Matrix4();
-                        matI.getInverse(mat);
-                        matI.multiplyVector3(target.position);
-                        ###
                         target = THREE.CSG.toCSG(target.mesh,target.position,target.rotation)
                         self = THREE.CSG.toCSG(@mesh)
 
@@ -139,7 +132,7 @@ S.export(
                         @mesh = new THREE.Mesh( geometry, @mesh.material )
                         @mesh.father = this
                         @add(@mesh)
-                    #@mesh.geometry = geometry
+
 
             plus:(object)=>
                 @booleanOps("plus",object)

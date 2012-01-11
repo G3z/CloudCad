@@ -18,7 +18,7 @@ S.export(
                 #debugger
                 @screen = { 
                     width: window.innerWidth
-                    height: window.innerHeight-80        ## Da rendere dinamico
+                    height: window.innerHeight-80       ## Da rendere dinamico
                     offsetLeft: 0
                     offsetTop: 80                       ## Da rendere dinamico
                 }

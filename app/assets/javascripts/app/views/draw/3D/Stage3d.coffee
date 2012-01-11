@@ -37,7 +37,7 @@ S.export(
                 @snapTolerance = 15
                 @size=
                     w: window.innerWidth
-                    h: window.innerHeight-85
+                    h: window.innerHeight-55
                 # Renderer
                 @canvas = document.createElement( 'canvas' )
                 $(@canvas).attr("id","canvas3d")
@@ -180,7 +180,6 @@ S.export(
                             @tools.selectTool.do()
 
                 @checkLoop()
-				Refactoring struttura DOM e creazione elementi
                 super()
                 $(@el).append(@canvas)
 

@@ -62,8 +62,8 @@ scene.add(pointLight);
 scene.add(camera);
 
 var cube = new THREE.Mesh(
-new THREE.CubeGeometry(20, 100, 20), cubeMaterial);
-
+new THREE.CubeGeometry(20, -100, 20), cubeMaterial);
+cube.flipSided=true;
 scene.add(cube);
 var pos = new THREE.Vector3(0, 30, 30);
 

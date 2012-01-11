@@ -71,10 +71,12 @@ S.export(
                         unless firstPoint?
                             firstPoint = verts[idx]
                         verts[idx].position.z = ammount
+                    
                     if verts[0].position.z < firstPoint.position.z
                         @activeObj.mesh.flipSided = false
                     else 
                         @activeObj.mesh.flipSided = true
+                    
                     @activeObj.update()
 
 

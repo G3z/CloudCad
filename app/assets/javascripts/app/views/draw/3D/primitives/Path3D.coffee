@@ -261,8 +261,8 @@ S.export(
                     generator: this
                     extrusionValue : value
                 })
-                if value < 0
-                    @extrusion.mesh.flipSided = true
+                #if value < 0
+                    #@extrusion.mesh.flipSided = true
                 @extrusion.position = @position
                 @extrusion.rotation = @rotation
 

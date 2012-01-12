@@ -37,7 +37,7 @@ S.export(
                 @snapTolerance = 15
                 @size=
                     w: window.innerWidth
-                    h: window.innerHeight-55
+                    h: window.innerHeight-5
                 # Renderer
                 @canvas = document.createElement( 'canvas' )
                 $(@canvas).attr("id","canvas3d")

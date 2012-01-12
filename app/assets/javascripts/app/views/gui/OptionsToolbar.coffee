@@ -37,7 +37,7 @@ S.export(
                         dom?.attr("label", label)
                             .addClass(k)
                             .data("option_name", k)
-                            .on(evtName, (evt)->
+                            .on(evtName, (evt,type)->
                                 target = $(evt.currentTarget)
                                 obj = {}
                                 if type == "bool"

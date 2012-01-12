@@ -99,6 +99,9 @@ S.export(
                                 transparent: true
                                 wireframe: false
                                 blending: THREE.AdditiveAlphaBlending
+                                polygonOffset: true
+                                polygonOffsetFactor : -1
+                                polygonOffsetUnits : 0.01
                             }))
                 @graphicPlane.father= this
                 @frontLogicPlane = new THREE.Mesh( new THREE.PlaneGeometry( @size.w, @size.h, 2, 2 ), new THREE.MeshBasicMaterial( { 

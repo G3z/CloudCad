@@ -79,7 +79,11 @@ S.export(
                             unless firstPoint?
                                 firstPoint = verts[idx]
                             verts[idx].position.z = -ammount
-                    
+                    else
+                        for idx in @inactiveVertices
+                            unless firstPoint?
+                                firstPoint = verts[idx]
+                            verts[idx].position.z = 0
                     if verts[0].position.z < firstPoint.position.z
                         @activeObj.mesh.flipSided = false
                     else 

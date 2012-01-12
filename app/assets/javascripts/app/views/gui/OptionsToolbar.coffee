@@ -40,7 +40,10 @@ S.export(
                             .on(evtName, (evt)->
                                 target = $(evt.currentTarget)
                                 obj = {}
-                                obj[target.data("option_name")] = target.val()
+                                if type == "bool"
+                                    obj[target.data("option_name")] = target.attr("checked")
+                                else
+                                    obj[target.data("option_name")] = target.val()
                                 m.set(obj)
                             )
     

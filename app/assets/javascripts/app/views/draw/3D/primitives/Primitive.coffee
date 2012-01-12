@@ -55,6 +55,7 @@ S.export(
                 obj.parent.add(this)
 
             isChildOf:(object)=>
+                ###
                 walk=(obj)=>
                     for child in obj.children
                         unless child.father?
@@ -63,5 +64,15 @@ S.export(
                             else                            
                                 return walk(child)
                     return false
-                return walk(object)
+                ###
+                walk=(parent,id)=>
+                    if parent.id == id
+                        return true
+                    else
+                        if parent.parent?.id?
+                            return walk(parent.parent,id)
+                        else
+                            return false
+                        
+                return walk(@parent,object.id)
 )

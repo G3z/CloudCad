@@ -62,7 +62,7 @@ S.export(
                             linewidth: 2
                             blending: THREE.AdditiveAlphaBlending
                     )
-                                            
+                    @line.translateZ(1)
                     @line.father = this
                     @add(@line)
                     
@@ -257,6 +257,7 @@ S.export(
             # Path is turned invisible when creating the 3D shape
             extrude:(value)=>
                 if value? then value = value
+                @line.position = new THREE.Vector3()
                 @extrusion = new Solid3D({
                     generator: this
                     extrusionValue : value

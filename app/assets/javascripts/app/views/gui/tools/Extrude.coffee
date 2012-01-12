@@ -32,6 +32,7 @@ S.export(
                     @activeObj.extrude(@prefs.get('float_value'))
                     @activeObj = @stage3d.selectedObject
                     @activeVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,1),"vertexIndices")
+                    @inactiveVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,-1),"vertexIndices")
                     @prefs.set({
                         'float_value': @prefs.get('float_value'),
                         'bool_side': @prefs.get('bool_side')
@@ -67,10 +68,17 @@ S.export(
                 if @activeVertices?.length? and @activeVertices?.length >0
                     verts = @activeObj.mesh.geometry.vertices
                     firstPoint = undefined
+                    bool_side = @prefs.get('bool_side')
                     for idx in @activeVertices
                         unless firstPoint?
                             firstPoint = verts[idx]
                         verts[idx].position.z = ammount
+
+                    if @prefs.get('bool_side')
+                        for idx in @inactiveVertices
+                            unless firstPoint?
+                                firstPoint = verts[idx]
+                            verts[idx].position.z = -ammount
                     
                     if verts[0].position.z < firstPoint.position.z
                         @activeObj.mesh.flipSided = false

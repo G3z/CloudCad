@@ -33,7 +33,7 @@ var sphereMaterial = new THREE.MeshLambertMaterial({
 });
 
 var cubeMaterial = new THREE.MeshLambertMaterial({
-    color: 0x0000CC
+    color: 0xCC0000
 });
 
 // set up the sphere vars
@@ -47,7 +47,7 @@ var sphere = new THREE.Mesh(
 new THREE.SphereGeometry(radius, segments, rings), sphereMaterial);
 
 // add the sphere to the scene
-scene.add(sphere);
+//scene.add(sphere);
 sphere.translateX(-20);
 // create a point light
 var pointLight = new THREE.PointLight(0xFFFFFF);
@@ -62,29 +62,22 @@ scene.add(pointLight);
 scene.add(camera);
 
 var cube = new THREE.Mesh(
-new THREE.CubeGeometry(20, -100, 20), cubeMaterial);
-cube.flipSided=true;
+new THREE.CubeGeometry(120, 120, 40), cubeMaterial);
+//cube.flipSided=true;
 scene.add(cube);
-var pos = new THREE.Vector3(0, 30, 30);
+
+var pos = new THREE.Vector3(-50, -50, 0);
 
 
-var rot = new THREE.Vector3(0, 0, -1.5707963267948966);
-//var rot = new THREE.Vector3(0,0,0);
-cube.position = pos;
-cube.rotation = rot;
-cube.translateX(-20);
-/*
-var mat = new THREE.Matrix4();
-mat.setRotationFromEuler(rot);
-var matI = new THREE.Matrix4();
-matI.getInverse(mat);
-matI.multiplyVector3(cube.position);
-*/
-var cubeCSG = THREE.CSG.toCSG(cube);
-var sphereCSG = THREE.CSG.toCSG(sphere);
-var geometry = THREE.CSG.fromCSG(sphereCSG.subtract(cubeCSG));
-var mesh = new THREE.Mesh(geometry, sphereMaterial);
-scene.add(mesh);
-mesh.translateX(120);
-// draw!
+var points = [new THREE.Vector2(-30,-30),new THREE.Vector2(30,-30),new THREE.Vector2(30,30),new THREE.Vector2(-30,30),new THREE.Vector2(-30,-30)];
+var line = new THREE.Line(
+    new THREE.CurvePath.prototype.createGeometry(points),
+    new THREE.LineBasicMaterial({
+        color: 0x8866ff,
+        linewidth: 2,
+        blending: THREE.AdditiveAlphaBlending,
+    })
+);
+line.translateZ(20.02);
+scene.add(line);
 renderer.render(scene, camera);

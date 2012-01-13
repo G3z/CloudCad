@@ -12,15 +12,13 @@ S.export(
                 $(@el).addClass("options_panel")
 
                 $(document).bind "current_tool_changed", (evt, tool)=>
-                    
+                    $(@el).html("")
                     m = tool.getPrefModel()
                     
                     if !m
                         return
 
                     data = m.toJSON()
-                    
-                    $(@el).html("")
 
                     for k,v of data
                         continue if k.indexOf("_") < 0
@@ -34,16 +32,22 @@ S.export(
                         else if type == "float"
                             dom = $("<input>").attr("type","text")
                             evtName = "keyup"
+                        else if type == "int"
+                            dom = $("<input>").attr("type","text")
+                            evtName = "keyup"
                         dom?.attr("label", label)
                             .addClass(k)
                             .data("option_name", k)
                             .on(evtName, (evt,type)->
                                 target = $(evt.currentTarget)
+                                type = target.attr("class").split("_")[0]
                                 obj = {}
                                 if type == "bool"
                                     obj[target.data("option_name")] = target.attr("checked")
-                                else
+                                else if type == "float"
                                     obj[target.data("option_name")] = target.val()
+                                else if type == "int"
+                                    obj[target.data("option_name")] = parseInt(target.val(),10)
                                 m.set(obj)
                             )
     

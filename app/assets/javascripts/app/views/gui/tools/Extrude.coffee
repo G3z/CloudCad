@@ -13,17 +13,22 @@ S.export(
                     # @configure "Pref", "float_value", "bool_side"
                     
                 @prefs = new Pref(
-                    "float_value": 20
+                    "float_value": 50
                     "bool_side": false
+                    "float_angle": 0
                 )
                 
                 # Set labels
                 @prefs.setLabel("float_value", "Extrusion value")
                 @prefs.setLabel("bool_side", "Booth sides")
+                @prefs.setLabel("float_angle", "Extrusion angle")
 
                 # Register callback
                 $(document).bind("execute_tool_Extrude", =>
                     @do()
+                    $(".float_value").val(@prefs.get('float_value'))
+                    $(".bool_side").attr('checked',@prefs.get('bool_side'))
+                    $(".float_angle").val(@prefs.get('float_angle'))
                 )
 
             mouseDown:=>
@@ -33,10 +38,10 @@ S.export(
                     @activeObj = @stage3d.selectedObject
                     @activeVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,1),"vertexIndices")
                     @inactiveVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,-1),"vertexIndices")
-                    @prefs.set({
-                        'float_value': @prefs.get('float_value'),
-                        'bool_side': @prefs.get('bool_side')
-                    })
+                    @prefs.set
+                        "float_value": @prefs.get('float_value')
+                        "bool_side": @prefs.get('bool_side')
+                        "float_angle": @prefs.get('float_angle')
 
             mouseDragged:=>
                 if @activeObj?.class == "Solid3D"
@@ -47,12 +52,13 @@ S.export(
 
                         distance = Math.sqrt(w*w + h*h)
                         if h >= w
-                            distance *= 1
-                        else
                             distance *= -1
+                        else
+                            distance *= 1
                         value = verts[@activeVertices[0]].position.z + distance * 0.05
                         value = Math.round(value*1000)/1000
-                        @prefs.set({'float_value': value})
+                        @prefs.set
+                            float_value: parseInt(value,10)
 
                         return value
             
@@ -62,32 +68,48 @@ S.export(
                 #console.log @prefs.float_value
                 $(".float_value").val(@prefs.get('float_value'))
                 $(".bool_side").attr('checked',@prefs.get('bool_side'))
-                @moveExtrudedFaces(parseFloat(@prefs.get('float_value')))
+                $(".float_angle").val(@prefs.get('float_angle'))
 
-            moveExtrudedFaces:(ammount)=>
+                @moveExtrudedFaces()
+
+            moveExtrudedFaces:()=>
+                ammount = parseFloat(@prefs.get('float_value'))
+                angle = @prefs.get('float_angle')
+
+                if angle != 0
+                    angleDelta = Math.sin(Math.toRadian(angle))*ammount*-1
+
                 if @activeVertices?.length? and @activeVertices?.length >0
                     verts = @activeObj.mesh.geometry.vertices
                     firstPoint = undefined
                     bool_side = @prefs.get('bool_side')
-                    for idx in @activeVertices
-                        unless firstPoint?
-                            firstPoint = verts[idx]
-                        verts[idx].position.z = ammount
+
+                    for vertex,i in verts
+                        unless @activeVertices.indexOf(i.toString()) == -1
+                            vertex.position.z = ammount
+                            if angleDelta?
+                                halfLength=verts.length/2
+                                vertex.position.x = verts[i-halfLength].position.x
+                                vertex.position.y = verts[i-halfLength].position.y
+
+                                multiplier = new THREE.Vector3()
+                                for idx in vertex.faces
+                                    face = @activeObj.mesh.geometry.faces[idx]
+                                    unless face.normal.z == 1 or face.normal.z == -1 
+                                        unless face.originalNormal?
+                                            face.originalNormal = face.normal.clone()
+                                        unless multiplier.x == face.originalNormal.x and multiplier.y == face.originalNormal.y and multiplier.z == face.originalNormal.z
+                                            multiplier.addSelf(face.originalNormal)
+                                vertex.position.addSelf(multiplier.multiplyScalar(angleDelta))
 
                     if @prefs.get('bool_side')
                         for idx in @inactiveVertices
-                            unless firstPoint?
-                                firstPoint = verts[idx]
                             verts[idx].position.z = -ammount
                     else
                         for idx in @inactiveVertices
-                            unless firstPoint?
-                                firstPoint = verts[idx]
                             verts[idx].position.z = 0
-                    if verts[0].position.z < firstPoint.position.z
-                        @activeObj.mesh.flipSided = false
-                    else 
-                        @activeObj.mesh.flipSided = true
+
+                    if verts[0].position.z < verts[@activeVertices[0]].position.z then @activeObj.mesh.flipSided = false else @activeObj.mesh.flipSided = true
                     
                     @activeObj.update()
 

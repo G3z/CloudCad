@@ -155,13 +155,38 @@ S.export(
                                 result.push face.centroid
                 else
                     result = {}
-                    for face in @mesh.geometry.faces
+                    for face,i in @mesh.geometry.faces
                         if face.normal.x == normal.x and face.normal.y == normal.y and face.normal.z == normal.z
                             result[face.a] = true
                             result[face.b] = true
                             result[face.c] = true
                             if face.d?
                                 result[face.d] = true
+                                
+                        unless @mesh.geometry.vertices[face.a].faces?
+                            @mesh.geometry.vertices[face.a].faces = [i]
+                        else
+                            if @mesh.geometry.vertices[face.a].faces.indexOf(i) == -1
+                                @mesh.geometry.vertices[face.a].faces.push(i)
+                        
+                        unless @mesh.geometry.vertices[face.b].faces?
+                            @mesh.geometry.vertices[face.b].faces = [i]
+                        else
+                            if @mesh.geometry.vertices[face.b].faces.indexOf(i) == -1
+                                @mesh.geometry.vertices[face.b].faces.push(i)
+                        
+                        unless @mesh.geometry.vertices[face.c].faces?
+                            @mesh.geometry.vertices[face.c].faces = [i]
+                        else
+                            if @mesh.geometry.vertices[face.c].faces.indexOf(i) == -1
+                                @mesh.geometry.vertices[face.c].faces.push(i)
+                        if face.d?
+                            unless @mesh.geometry.vertices[face.d].faces?
+                                @mesh.geometry.vertices[face.d].faces = [i]
+                            else
+                                if @mesh.geometry.vertices[face.d].faces.indexOf(i) == -1
+                                    @mesh.geometry.vertices[face.d].faces.push(i)
+                            
                     vertexIndices = Object.keys(result)
                     if output == "vertex"
                         result = [] 

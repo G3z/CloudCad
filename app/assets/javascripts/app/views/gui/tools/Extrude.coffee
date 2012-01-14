@@ -5,6 +5,10 @@ S.export(
 
         class Extrude extends AbstractTool
             @activeVertices
+            @inactiveVertices
+            #### *constructor()* method takes no arguments  
+            # 
+            # 
             constructor:->
                 super()
                 @icon = "layer-resize-replicate-vertical.png"
@@ -13,9 +17,9 @@ S.export(
                     # @configure "Pref", "float_value", "bool_side"
                     
                 @prefs = new Pref(
-                    "float_value": 50
-                    "bool_side": false
-                    "float_angle": 0
+                    float_value: 50
+                    bool_side: false
+                    float_angle: 0
                 )
                 
                 # Set labels
@@ -30,7 +34,12 @@ S.export(
                     $(".bool_side").attr('checked',@prefs.get('bool_side'))
                     $(".float_angle").val(@prefs.get('float_angle'))
                 )
-
+            
+            #### *mouseDown()* method takes no arguments 
+            # it checks if the active object is an instance of Path3D with more than 2 points  
+            # the path is extruded and the new solid become the selectedObject  
+            # `@activeVertices` contains the vertex of the new face while `@inactiveVertices` contains the vertices of the base  
+            # `@prefs` are reset
             mouseDown:=>
                 @activeObj = @stage3d.selectedObject
                 if @activeObj?.class == "Path3D" and @activeObj.points.length > 2
@@ -39,10 +48,14 @@ S.export(
                     @activeVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,1),"vertexIndices")
                     @inactiveVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,-1),"vertexIndices")
                     @prefs.set
-                        "float_value": @prefs.get('float_value')
-                        "bool_side": @prefs.get('bool_side')
-                        "float_angle": @prefs.get('float_angle')
-
+                        float_value: @prefs.get('float_value')
+                        bool_side: @prefs.get('bool_side')
+                        float_angle: @prefs.get('float_angle')
+            
+            #### *mouseDragged()* method takes no arguments 
+            # It checks if the active object is an instance of Solid3D  
+            # A new extrusion ammount is calculad based on mouse movement  
+            # `@prefs.float_value` is updated with the new value of the extrusion
             mouseDragged:=>
                 if @activeObj?.class == "Solid3D"
                     if @activeVertices.length? and @activeVertices.length >0
@@ -64,6 +77,9 @@ S.export(
             
             mouseUp:=>
             
+            #### *prefChange()* method takes one argument  
+            # This method updates options controls to reflect user interaction  
+            # `@moveExtrudedFaces()` is fired 
             prefChange:(prefModel)=>
                 #console.log @prefs.float_value
                 $(".float_value").val(@prefs.get('float_value'))
@@ -71,7 +87,10 @@ S.export(
                 $(".float_angle").val(@prefs.get('float_angle'))
 
                 @moveExtrudedFaces()
-
+            
+            #### *prefChange()* method takes one argument  
+            # This method updates options controls to reflect user interaction  
+            # `@moveExtrudedFaces()` is fired 
             moveExtrudedFaces:()=>
                 ammount = parseFloat(@prefs.get('float_value'))
                 angle = @prefs.get('float_angle')
@@ -83,7 +102,8 @@ S.export(
                     verts = @activeObj.mesh.geometry.vertices
                     firstPoint = undefined
                     bool_side = @prefs.get('bool_side')
-
+                    l=1
+                    halfLength=verts.length/(@activeObj.steps+1)
                     for vertex,i in verts
                         compute = false
                         unless @activeVertices.indexOf(i.toString()) == -1
@@ -96,10 +116,13 @@ S.export(
                             else
                                 vertex.position.z = 0
                         if angleDelta? and compute
-                            halfLength=verts.length/2
-                            if i>=halfLength
-                                vertex.position.x = verts[i-halfLength].position.x
-                                vertex.position.y = verts[i-halfLength].position.y
+                            if i>=halfLength*l and i<halfLength*(l+1)
+                                vertex.position.x = verts[i-halfLength*l].position.x
+                                vertex.position.y = verts[i-halfLength*l].position.y
+                            else if i >=halfLength*(l+1)
+                                l++
+                                vertex.position.x = verts[i-halfLength*l].position.x
+                                vertex.position.y = verts[i-halfLength*l].position.y
 
                             multiplier = new THREE.Vector3()
                             for idx in vertex.faces

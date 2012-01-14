@@ -24,28 +24,12 @@ S.export(
         Array::remove = (e) -> @[t..t] = [] if (t = @indexOf(e)) > -1
 
         THREE.Vector3::toObject=(object)->
-            worldMatrix=(object,matO)->                
-                if object.parent?
-                    mat = new THREE.Matrix4()
-                    matP = new THREE.Matrix4()
-                    unless matO?
-                        matO = new THREE.Matrix4()
-                        mat.multiply(matO.getInverse(object.matrix), matP.getInverse(object.parent.matrix))
-                    else
-                        mat.multiply(matO, matP.getInverse(object.parent.matrix))
-
-                    unless object.parent instanceof THREE.Scene
-                        return worldMatrix(object.parent,mat)
-                    else
-                        return mat
-                else
-                    mat = new THREE.Matrix4()
-                    return mat.getInverse(object.matrix)
-
             if object.matrix?
                 object.updateMatrix()
-                mat = worldMatrix(object)
+                object.updateMatrixWorld()
+                mat = new THREE.Matrix4().getInverse(object.matrixWorld)
                 return mat.multiplyVector3(@clone())
+                
         THREE.Vector3::fromObject=(object)->
             if object.matrix?
                 object.updateMatrix()

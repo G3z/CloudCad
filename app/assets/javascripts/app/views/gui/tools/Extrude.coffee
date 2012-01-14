@@ -90,7 +90,7 @@ S.export(
                             vertex.position.z = ammount
                             compute = true
                         unless @inactiveVertices.indexOf(i.toString()) == -1
-                            if @prefs.get('bool_side')
+                            if bool_side
                                 vertex.position.z = -ammount
                                 #compute = true
                             else

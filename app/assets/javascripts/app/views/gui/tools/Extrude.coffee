@@ -85,29 +85,34 @@ S.export(
                     bool_side = @prefs.get('bool_side')
 
                     for vertex,i in verts
+                        compute = false
                         unless @activeVertices.indexOf(i.toString()) == -1
                             vertex.position.z = ammount
-                            if angleDelta?
-                                halfLength=verts.length/2
+                            compute = true
+                        unless @inactiveVertices.indexOf(i.toString()) == -1
+                            if @prefs.get('bool_side')
+                                vertex.position.z = -ammount
+                                #compute = true
+                            else
+                                vertex.position.z = 0
+                        if angleDelta? and compute
+                            halfLength=verts.length/2
+                            if i>=halfLength
                                 vertex.position.x = verts[i-halfLength].position.x
                                 vertex.position.y = verts[i-halfLength].position.y
 
-                                multiplier = new THREE.Vector3()
-                                for idx in vertex.faces
-                                    face = @activeObj.mesh.geometry.faces[idx]
-                                    unless face.normal.z == 1 or face.normal.z == -1 
-                                        unless face.originalNormal?
-                                            face.originalNormal = face.normal.clone()
-                                        unless multiplier.x == face.originalNormal.x and multiplier.y == face.originalNormal.y and multiplier.z == face.originalNormal.z
-                                            multiplier.addSelf(face.originalNormal)
-                                vertex.position.addSelf(multiplier.multiplyScalar(angleDelta))
+                            multiplier = new THREE.Vector3()
+                            for idx in vertex.faces
+                                face = @activeObj.mesh.geometry.faces[idx]
+                                unless face.normal.z == 1 or face.normal.z == -1 
+                                    unless face.originalNormal?
+                                        face.originalNormal = face.normal.clone()
+                                    unless multiplier.x == face.originalNormal.x and multiplier.y == face.originalNormal.y and multiplier.z == face.originalNormal.z
+                                        multiplier.addSelf(face.originalNormal)
+                            vertex.position.addSelf(multiplier.multiplyScalar(angleDelta))
 
-                    if @prefs.get('bool_side')
-                        for idx in @inactiveVertices
-                            verts[idx].position.z = -ammount
-                    else
-                        for idx in @inactiveVertices
-                            verts[idx].position.z = 0
+                        
+                            
 
                     if verts[0].position.z < verts[@activeVertices[0]].position.z then @activeObj.mesh.flipSided = false else @activeObj.mesh.flipSided = true
                     

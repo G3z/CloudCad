@@ -31,16 +31,19 @@ S.export(
                 defaults = {
                     generator : undefined
                     extrusionValue : undefined
+                    steps : 1
                     color : 0x8866ff
                 }
 
                 unless attr?
                     @generator = defaults.generator
                     @extrusionValue = defaults.extrusionValue
+                    @steps = defaults.steps
                     @color = defaults.color
                 else
                     if attr.generator? then @generator = attr.generator else @generator = defaults.generator
                     if attr.extrusionValue? then @extrusionValue = attr.extrusionValue else @extrusionValue = defaults.extrusionValue
+                    if attr.steps? then @steps = attr.steps else @steps = defaults.steps
                     if attr.color? then @color = attr.color else @color = defaults.color
                     if attr.layer? then @layer = attr.layer
 
@@ -65,9 +68,10 @@ S.export(
                     #mesh is created as an extrusion of it's generator
                     @mesh = new THREE.Mesh(
                         shape.extrude
-                            amount:@extrusionValue,
-                            bevelEnabled:false,
-                            material: material,
+                            amount:@extrusionValue
+                            bevelEnabled:false
+                            steps:@steps
+                            material: material
                             extrudeMaterial: material
                         material
                     )

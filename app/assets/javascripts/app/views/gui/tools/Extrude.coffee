@@ -46,9 +46,16 @@ S.export(
                 if @activeObj?.class == "Path3D" and @activeObj.points.length > 2
                     @activeObj.extrude(@prefs.get('float_value'))
                     @activeObj = @stage3d.selectedObject
+                    if @bool_bothSides
+                        @activeObj.steps=2
+                        @activeObj.createGeometry()
                     @frontFacingVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,1),"vertexIndices")
                     @backFacingVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,-1),"vertexIndices")
                     @inactiveVertices = []
+                    if @bool_bothSides
+                        for vert,i in @activeObj.mesh.geometry.vertices
+                            if @frontFacingVertices.indexOf(i.toString()) == -1 and @backFacingVertices.indexOf(i.toString()) == -1
+                                @inactiveVertices.push(i.toString())
                     @prefs.set
                         float_value: @prefs.get('float_value')
                         bool_bothSides: @prefs.get('bool_bothSides')
@@ -90,18 +97,19 @@ S.export(
                 if @prefs.hasChanged('bool_bothSides')
                     @bool_bothSides = @prefs.get('bool_bothSides')
                     $(".bool_bothSides").attr('checked',@bool_bothSides)
-                    if @bool_bothSides
-                        @activeObj.steps=2
-                    else
-                        @activeObj.steps=1
-                    @activeObj.createGeometry()
-                    @frontFacingVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,1),"vertexIndices")
-                    @backFacingVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,-1),"vertexIndices")
-                    @inactiveVertices = []
-                    if @bool_bothSides
-                        for vert,i in @activeObj.mesh.geometry.vertices
-                            if @frontFacingVertices.indexOf(i.toString()) == -1 and @backFacingVertices.indexOf(i.toString()) == -1
-                                @inactiveVertices.push(i.toString())
+                    if @activeObj?
+                        if @bool_bothSides
+                            @activeObj.steps=2
+                        else
+                            @activeObj.steps=1
+                        @activeObj.createGeometry()
+                        @frontFacingVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,1),"vertexIndices")
+                        @backFacingVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,-1),"vertexIndices")
+                        @inactiveVertices = []
+                        if @bool_bothSides
+                            for vert,i in @activeObj.mesh.geometry.vertices
+                                if @frontFacingVertices.indexOf(i.toString()) == -1 and @backFacingVertices.indexOf(i.toString()) == -1
+                                    @inactiveVertices.push(i.toString())
 
                 @moveExtrudedFaces()
             
@@ -110,7 +118,7 @@ S.export(
             # `@moveExtrudedFaces()` is fired 
             moveExtrudedFaces:()=>
                 @ammount = parseFloat(@prefs.get('float_value'))
-                @angle = @prefs.get('float_angle')
+                @angle = parseFloat(@prefs.get('float_angle'))
 
                 if @angle != 0
                     angleDelta = Math.sin(Math.toRadian(@angle))*@ammount*-1

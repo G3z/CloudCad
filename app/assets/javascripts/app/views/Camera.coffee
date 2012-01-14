@@ -38,7 +38,7 @@ S.export(
                 near = @pNear
                 far = @pFar
                 #debugger
-                hyperfocus = ( near + far ) / 100 * (@distance/2000)
+                hyperfocus = ( near + far ) / 100 * (@distance/20000)
                 halfHeight = Math.abs(Math.tan( @fov / 2 ) * hyperfocus)
                 planeHeight = 2 * halfHeight
                 planeWidth = planeHeight * aspect

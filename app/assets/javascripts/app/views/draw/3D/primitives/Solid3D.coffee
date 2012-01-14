@@ -144,7 +144,6 @@ S.export(
                 @booleanOps("intersect",object)
             
             facesWithNormal:(normal,output)=>
-                
                 if output == "faces" or output == "centroids"
                     result = []
                     for face in @mesh.geometry.faces
@@ -162,7 +161,7 @@ S.export(
                             result[face.c] = true
                             if face.d?
                                 result[face.d] = true
-                                
+
                         unless @mesh.geometry.vertices[face.a].faces?
                             @mesh.geometry.vertices[face.a].faces = [i]
                         else

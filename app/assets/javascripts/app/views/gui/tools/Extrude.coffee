@@ -111,13 +111,8 @@ S.export(
                                         multiplier.addSelf(face.originalNormal)
                             vertex.position.addSelf(multiplier.multiplyScalar(angleDelta))
 
-                        
-                            
-
                     if verts[0].position.z < verts[@activeVertices[0]].position.z then @activeObj.mesh.flipSided = false else @activeObj.mesh.flipSided = true
-                    
                     @activeObj.update()
-
 
         # Singleton
         new Extrude()

@@ -256,22 +256,23 @@ S.export(
             # This method returns a new mesh containig the extruded shape  
             # Path is turned invisible when creating the 3D shape
             extrude:(value)=>
-                if value? then value = value
-                @line.position = new THREE.Vector3()
-                @extrusion = new Solid3D({
-                    generator: this
-                    extrusionValue : value
-                })
-                #if value < 0
-                    #@extrusion.mesh.flipSided = true
-                @extrusion.position = @position
-                @extrusion.rotation = @rotation
+                if @points.length>2
+                    if value? then value = value
+                    @line.position = new THREE.Vector3()
+                    @extrusion = new Solid3D({
+                        generator: this
+                        extrusionValue : value
+                    })
+                    #if value < 0
+                        #@extrusion.mesh.flipSided = true
+                    @extrusion.position = @position
+                    @extrusion.rotation = @rotation
 
-                @parent?.add(@extrusion)
-                @parent?.remove(this)
-                if window.stage3d.selectedObject?.id == @id
-                    window.stage3d.selectedObject = @extrusion
-                    @extrusion.toggleSelection()
+                    @parent?.add(@extrusion)
+                    @parent?.remove(this)
+                    if window.stage3d.selectedObject?.id == @id
+                        window.stage3d.selectedObject = @extrusion
+                        @extrusion.toggleSelection()
 
             #### *validatePoint(`point`)* method takes one argument
             #* the *point* variable that needs to be checked  

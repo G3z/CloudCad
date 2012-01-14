@@ -33,7 +33,7 @@ S.export(
 
             mouseDown:=>
                 @activeObj = @stage3d.selectedObject
-                if @activeObj?.class == "Path3D"
+                if @activeObj?.class == "Path3D" and @activeObj.points.length > 2
                     @activeObj.extrude(@prefs.get('float_value'))
                     @activeObj = @stage3d.selectedObject
                     @activeVertices = @activeObj.facesWithNormal(new THREE.Vector3(0,0,1),"vertexIndices")

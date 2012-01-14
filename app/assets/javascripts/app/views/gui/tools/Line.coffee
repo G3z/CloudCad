@@ -1,5 +1,5 @@
-### Path Tool Class###
-# Path tool is used to  create planar polygons by adding one point at a time
+### Line Tool Class###
+# Line tool is used to  create planar polygons by adding one point at a time
 S.export(
     "views/gui/tools/Line",
     ["views/gui/tools/AbstractTool","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Point3D"],

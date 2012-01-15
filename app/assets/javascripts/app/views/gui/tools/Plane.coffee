@@ -50,8 +50,8 @@ S.export(
                             geo = new THREE.Geometry()
                             geo.vertices = normalizedVertices
                             geo.computeBoundingBox()
-                            w = geo.boundingBox.x[0]-geo.boundingBox.x[1]
-                            h = geo.boundingBox.y[0]-geo.boundingBox.y[1]
+                            w = geo.boundingBox.max.x-geo.boundingBox.min.x
+                            h = geo.boundingBox.max.y-geo.boundingBox.min.y
 
                             plane = new Plane3D(
                                 position: barycenter

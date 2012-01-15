@@ -135,6 +135,9 @@ S.export(
             #### *update()* method takes no argument
             #Update forces updates to the internals
             update:=>
+                @mesh.geometry.computeBoundingBox()
+                @mesh.geometry.computeCentroids()
+                @mesh.geometry.computeFaceNormals()
                 @mesh.geometry.__dirtyVertices = true
                 @mesh.geometry.__dirtyNormals = true
                 @mesh.geometry.computeCentroids()

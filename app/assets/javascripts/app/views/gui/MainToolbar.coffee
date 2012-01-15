@@ -5,7 +5,6 @@ S.export(
         "views/gui/AbstractToolbar"
         "views/gui/tools/Select"
         "views/gui/tools/Plane"
-        "views/gui/tools/Line"
         "views/gui/tools/Path"
         "views/gui/tools/Extrude"
     ],

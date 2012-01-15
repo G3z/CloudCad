@@ -3,7 +3,7 @@ S.export(
     "views/gui/SecondToolbar"
     [
         "solid.widgets.AbstractWidget"
-        "views/gui/tools/SubtoolExample"
+        "views/gui/tools/path/Line"
     ]
     (AbstractWidget)->
                 

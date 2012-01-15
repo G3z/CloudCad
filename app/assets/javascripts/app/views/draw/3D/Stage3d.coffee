@@ -73,16 +73,16 @@ S.export(
                 @scene.add(@camera)
 
                 # Luci
-                @light1 = new THREE.SpotLight(0xFFFFFF,1.0,2.0)
-                @light1.position.set( 400, 300, 400 )
+                @light1 = new THREE.DirectionalLight(0xFFFFFF,1.0,1000)
+                @light1.position.set( 1, 1, 0.6 )
                 @scene.add( @light1 )
 
-                @light2 = new THREE.SpotLight(0xFFFFFF,0.6,2.0)
-                @light2.position.set( 400, 300, -600 )
+                @light2 = new THREE.DirectionalLight(0xFFFFFF,0.8,1000)
+                @light2.position.set( 1, 1, -1 )
                 @scene.add( @light2 )
 
-                @light3 = new THREE.SpotLight(0xFFFFFF,0.4,2.0)
-                @light3.position.set( -400, -300, -600 )
+                @light3 = new THREE.DirectionalLight(0xFFFFFF,0.5,1000)
+                @light3.position.set( -1, -1, -0.6 )
                 @scene.add( @light3 )
 
                 # Add ambient light
@@ -184,7 +184,7 @@ S.export(
                 $(@el).append(@canvas)
 
             animate:->
-                requestAnimFrame(window.stage3d.animate)
+                requestAnimationFrame(window.stage3d.animate)
                 window.stage3d.render()
 
             render:->

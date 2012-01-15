@@ -37,7 +37,7 @@ S.export(
                 @snapTolerance = 15
                 @size=
                     w: window.innerWidth
-                    h: window.innerHeight-5
+                    h: window.innerHeight-2
                 # Renderer
                 @canvas = document.createElement( 'canvas' )
                 $(@canvas).attr("id","canvas3d")
@@ -128,6 +128,10 @@ S.export(
 
                 # Event listeners
                 # Mouse events
+                $(window)
+                    .bind  'resize',
+                        @windowResize
+
                 $(document)
                     .bind 'mouse:btn1_down', =>
                         unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
@@ -202,6 +206,18 @@ S.export(
                     check(@layers[layer]) 
                 setTimeout(@checkLoop,1000)
 
+            windowResize:=>
+                @size=
+                    w: window.innerWidth
+                    h: window.innerHeight-5
+
+                @renderer.setSize( @size.w, @size.h )
+
+                @camera.width  = @size.w
+                @camera.height = @size.h
+                
+                @camera.update()
+                
             createGeom:=>
                 @planeZ = new Plane3D({
                     color: 0x0000AA

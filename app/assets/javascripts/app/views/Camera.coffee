@@ -11,17 +11,29 @@ S.export(
                 @top = @height / 2
                 @bottom = -@height / 2
 
-                @cameraO = new THREE.OrthographicCamera( @width / - 2, @width / 2, @height / 2, @height / - 2,  @oNear, @oFar )
+                @cameraO = new THREE.OrthographicCamera( 0.5*@width / - 2, 0.5*@width / 2, @height / 2, @height / - 2,  @oNear, @oFar )
                 @cameraP = new THREE.PerspectiveCamera( @fov, @width/@height, @pNear, @pFar )
                 
                 @zoom = 1
                 @distance = 1
                 @toPerspective()
 
-                @aspect = @width/@height
-
+                @aspect = 0.5 * @width/@height
                 
-            
+            update:=>
+                @aspect = 0.5 * @width/@height
+
+                @cameraP.aspect = 0.5 * @width/@height
+                @cameraP.updateProjectionMatrix()
+                
+                @cameraO.left   = - 0.5 * @width / 2
+                @cameraO.right  =   0.5 * @width / 2
+                @cameraO.top    =   @height / 2
+                @cameraO.bottom = - @height / 2
+                @cameraO.updateProjectionMatrix()
+
+                console.log @cameraP.aspect
+
             toPerspective:=>
                 @near = @cameraP.near
                 @far = @cameraP.far

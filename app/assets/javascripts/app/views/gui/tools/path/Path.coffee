@@ -1,7 +1,7 @@
 ### Path Tool Class###
 # Path tool is used to  create planar polygons by adding one point at a time
 S.export(
-    "views/gui/tools/Path",
+    "views/gui/tools/path/Path",
     ["views/gui/tools/AbstractTool","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Point3D"],
     (AbstractTool,Path3D,Point3D)->
         class Path extends AbstractTool
@@ -20,9 +20,25 @@ S.export(
                 @activePath = null
                 
                 # Register callback
-                $(document).bind("execute_tool_Path", =>
-                    @do()
-                )
+                #$(document).bind("execute_tool_Path", =>
+                #    @do()
+                #)
+                $(document)
+                    .bind("execute_tool_Line", =>
+                        @do()
+                    )
+                    .bind("current_tool_changed", (evt, tool)=>
+                        
+                        if tool.toolName == "drawTool"
+                            self = this
+                            _.delay(()->
+                            
+                                S.import(["views/gui/SecondToolbar"], (SecondToolbar)->
+                                    $(SecondToolbar.el).append($(self.button()))
+                                )
+                            , 50) # Mi assicuro che arrivi dopo lo svuotamento
+                                
+                    )
             #### *do()* method takes no arguments 
             # `@activePlane` propery is reset to null
             # `@activePath` propery is reset to null

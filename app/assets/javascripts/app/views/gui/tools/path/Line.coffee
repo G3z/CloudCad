@@ -1,5 +1,5 @@
 S.export(
-    "views/gui/tools/Line",
+    "views/gui/tools/path/Line",
     ["views/gui/tools/AbstractTool","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Point3D"],
     (AbstractTool,Path3D,Point3D)->
         class Line extends AbstractTool
@@ -20,7 +20,7 @@ S.export(
                     )
                     .bind("current_tool_changed", (evt, tool)=>
                         
-                        if tool.toolName == "pathTool"
+                        if tool.toolName == "drawTool"
                             self = this
                             _.delay(()->
                             
@@ -35,7 +35,7 @@ S.export(
                 @activePoint = null
                 @activePlane = null
                 @activePath = null
-                
+
             mouseDown:=>
                 #Seleziono il piano su cui lavorare
                 unless @activePlane?

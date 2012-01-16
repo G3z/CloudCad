@@ -4,6 +4,7 @@ S.export(
     [
         "solid.widgets.AbstractWidget"
         "views/gui/tools/path/Line"
+        "views/gui/tools/path/Path"
     ]
     (AbstractWidget)->
                 

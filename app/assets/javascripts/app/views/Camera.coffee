@@ -19,6 +19,7 @@ S.export(
                 @toPerspective()
 
                 @aspect = @width/@height
+                console.log @aspect
 
             update:=>
                 @aspect = @width/@height
@@ -31,6 +32,13 @@ S.export(
                 @cameraO.top    =   @height / 2
                 @cameraO.bottom = - @height / 2
                 @cameraO.updateProjectionMatrix()
+                
+                
+                if @inPersepectiveMode
+                    @toPerspective()
+                else
+                    @toOrthographic()
+                
             
             toPerspective:=>
                 @near = @cameraP.near

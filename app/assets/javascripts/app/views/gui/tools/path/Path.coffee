@@ -24,7 +24,7 @@ S.export(
                 #    @do()
                 #)
                 $(document)
-                    .bind("execute_tool_Line", =>
+                    .bind("execute_tool_Path", =>
                         @do()
                     )
                     .bind("current_tool_changed", (evt, tool)=>

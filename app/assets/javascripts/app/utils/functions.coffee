@@ -34,4 +34,7 @@ S.export(
             if object.matrix?
                 object.updateMatrix()
                 return object.matrixWorld.multiplyVector3(@clone())
+        
+        THREE.Vector3::toString=()->
+            return "x:" + @x + " y:" + @y + " z:" + @z
 )

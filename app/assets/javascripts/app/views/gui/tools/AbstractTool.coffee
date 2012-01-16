@@ -89,12 +89,12 @@ S.export(
                         ray = new THREE.Ray(@stage3d.camera.position, vector.subSelf( @stage3d.camera.position ).normalize())
                         if target? 
                             if $.type(target) == "array"
-                                return ray.intersectObjects(target) 
+                                return ray.intersectObjects(target)
                             else
                                 return ray.intersectObject(target)
-                            
                         else 
-                            return ray.intersectObject(@stage3d.world)
+                            return ray.intersectObjects(@stage3d.world)
+                            
                     else
                         vecOrigin = new THREE.Vector3( 
                             @stage3d.mouse.currentPos.stage3Dx
@@ -128,46 +128,44 @@ S.export(
                 else
                     return getTarget(object)
 
-            #### *vectorToObjectSpace(`vector`,`object`)* method takes two arguments
-            #* the *vector* to be normalized
-            #* the *object* in which space the coordinates should be normalized
-            #
-            # this method retuns a copy of `vector` with coordinates translated to `object`'s space  
-            # this is an utility method for subClasses.  
-            vectorToObjectSpace:(vector,object)=>
-                worldMatrix=(object,matO)=>                
-                    if object.parent?
-                        mat = new THREE.Matrix4()
-                        matP = new THREE.Matrix4()
-                        unless matO?
-                            matO = new THREE.Matrix4()
-                            mat.multiply(matO.getInverse(object.matrix), matP.getInverse(object.parent.matrix))
-                        else
-                            mat.multiply(matO, matP.getInverse(object.parent.matrix))
+            isContactNearLine:(contact,tollerance)=>
+                #http://paulbourke.net/geometry/pointline/
+                check=(point,lineStart,lineEnd)=>
+                    lineMag = lineStart.distanceTo(lineEnd)
+                    U = ( ( ( point.x - lineStart.x ) * ( lineEnd.x - lineStart.x ) ) +
+                        ( ( point.y - lineStart.y ) * ( lineEnd.y - lineStart.y ) ) +
+                        ( ( point.z - lineStart.z ) * ( lineEnd.z - lineStart.z ) ) ) /
+                        ( lineMag * lineMag )
+                 
+                    if( U < 0.0 || U > 1.0 )
+                        return 0   # closest point does not fall within the line segment
 
-                        if object.parent != @stage3d.scene and object.parent?
-                            return worldMatrix(object.parent,mat)
-                        else
-                            return mat
-                    else
-                        mat = new THREE.Matrix4()
-                        return mat.getInverse(object.matrix)
+                    intersection = new THREE.Vector3()
+                    intersection.x = lineStart.x + U * ( lineEnd.x - lineStart.x )
+                    intersection.y = lineStart.y + U * ( lineEnd.y - lineStart.y )
+                    intersection.z = lineStart.z + U * ( lineEnd.z - lineStart.z )
+                 
+                    return point.distanceTo( intersection )
 
-                if object.matrix?
-                    object.updateMatrix()
-                    mat = worldMatrix(object)
-                    return mat.multiplyVector3(vector.clone())
 
-            #### *vectorToWorldSpace(`vector`,`object`)* method takes two arguments
-            #* the *vector* to be normalized
-            #* the *object* from which space the coordinates should be normalized
-            #
-            # this method retuns a copy of `vector` with coordinates translated to world's space  
-            # this is an utility method for subClasses.  
-            vectorToWorldSpace:(vector,object)=>
-                if object.matrix?
-                    object.updateMatrix()
-                    return object.matrixWorld.multiplyVector3(vector.clone())
+                
+                face = contact.face
+                object = contact.object
+                point = contact.point
+                console.log object
+                a = object.geometry.vertices[face.a].position.fromObject(object)
+                b = object.geometry.vertices[face.b].position.fromObject(object)
+                c = object.geometry.vertices[face.c].position.fromObject(object)
+                d = object.geometry.vertices[face.d].position.fromObject(object) if face.d?
+                if face instanceof THREE.Face3
+                    segments = [[a,b],[b,c],[c,a]]
+                else
+                    segments = [[a,b],[b,c],[c,d],[d,a]]
+                
+
+                for segment in segments
+                    console.log check(point,segment[0],segment[1])
+                console.log " "
 
             #### *getBarycenter(`array`)* method takes one arguments
             #* the *array* of points in which the barycenter is calculated

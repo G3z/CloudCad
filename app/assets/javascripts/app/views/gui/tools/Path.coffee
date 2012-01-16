@@ -95,15 +95,15 @@ S.export(
                                     else
                                         @activePath.lineTo(contactPoint)
                                         @activePoint = @activePath.point("last")
-                                @moveOnPlane(originalPoint)
+                                @moveOnPlane()
                                 
             
             mouseDragged:=>
                 unless @activePoint?.vertexIndex?
                     return
-                @moveOnPlane(@activePoint.position)
+                @moveOnPlane()
                 
-            moveOnPlane:(point)=>
+            moveOnPlane:=>
                 #if @activePoint?
                 #    console.log @activePoint
                     #@stage3d.cameraPlane.position.copy( @vectorToWorldSpace(@activePlane.position,@activePlane) )

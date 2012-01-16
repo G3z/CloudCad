@@ -30,10 +30,10 @@ S.export(
                             dom = $("<input>").attr("type","checkbox")
                             evtName = "change"
                         else if type == "float"
-                            dom = $("<input>").attr("type","text")
+                            dom = $("<input>").attr("type","number")
                             evtName = "keyup"
                         else if type == "int"
-                            dom = $("<input>").attr("type","text")
+                            dom = $("<input>").attr("type","number")
                             evtName = "keyup"
                         dom?.attr("label", label)
                             .addClass(k)

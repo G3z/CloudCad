@@ -1,7 +1,7 @@
 S.export(
     "views/gui/tools/Line",
     ["views/gui/tools/AbstractTool","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Point3D"],
-    (AbstractTool)->
+    (AbstractTool,Path3D,Point3D)->
         class Line extends AbstractTool
 
             constructor:->

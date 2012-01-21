@@ -19,7 +19,6 @@ S.export(
                 @toPerspective()
 
                 @aspect = @width/@height
-                console.log @aspect
 
             update:=>
                 @aspect = @width/@height

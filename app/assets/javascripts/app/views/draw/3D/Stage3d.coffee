@@ -45,7 +45,7 @@ S.export(
                     @renderer =new THREE.CanvasRenderer
                         canvas:@canvas
                 else if glOrNot == "svg"
-                    @renderer =new THREE.SVGRenderer 
+                    @renderer = new THREE.SVGRenderer 
                         canvas: @canvas
                 else
                     @renderer = new THREE.WebGLRenderer
@@ -55,7 +55,7 @@ S.export(
                         clearAlpha: 0.2
                         maxLights: 4
                         #stencil: true
-                        #preserveDrawingBuffer: false
+                        preserveDrawingBuffer: true
                         sortObjects:true
                     
                     #@renderer.setFaceCulling("back","cw")
@@ -183,28 +183,35 @@ S.export(
                         if @tools.selectTool?
                             @tools.selectTool.do()
 
-                @checkLoop()
                 super()
                 $(@el).append(@canvas)
+            
+            startLoops:=>
+                @graphicLoop()
+                @logicLoop()
 
-            animate:->
-                requestAnimationFrame(window.stage3d.animate)
-                window.stage3d.render()
+            graphicLoop:->
+                stage3d = window.stage3d
+                render=(stage3d)->
+                    stage3d.cameraController.update()
+                    #@actionPlane.lookAt( @camera.position )
+                    stage3d.renderer.render(stage3d.scene,stage3d.camera)
+                requestAnimationFrame(stage3d.graphicLoop)
+                render(stage3d)
 
-            render:->
-                @cameraController.update()
-                #@actionPlane.lookAt( @camera.position )
-                @renderer.render(@scene,@camera)
-
-            checkLoop:=>
-                check=(obj)=>
+            logicLoop:->
+                stage3d = window.stage3d
+                check=(obj,stage3d)->
                     for object in obj
                         unless object.parent?
-                            @layers[object.layer].remove(object)
-                
-                for layer of @layers
-                    check(@layers[layer]) 
-                setTimeout(@checkLoop,1000)
+                            stage3d.layers[object.layer].remove(object)
+                        if obj.selected? and obj.id?
+                            if obj.selected
+                                unless obj.id = stage3d.selectedObject.id
+                                    obj.toggleSelection()
+                for layer of stage3d.layers
+                    check(stage3d.layers[layer],stage3d) 
+                setTimeout(stage3d.logicLoop,1000)
 
             windowResize:=>
                 @size=

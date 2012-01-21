@@ -21,7 +21,7 @@ S.export(
                 @addChild(History)
                 @addChild(TopBar)
                 @addChild(Stage3d)
-                Stage3d.animate()
+                Stage3d.startLoops()
                 
                 @addChild(MainToolbar)
 

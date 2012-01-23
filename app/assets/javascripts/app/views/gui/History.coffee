@@ -7,7 +7,10 @@ S.export(
 
             constructor:(options)->
                 super(options)
+
+            render:()=>
                 @list = new HBox()
+                @addChild(@list)
 
         # Singleton
         new History()

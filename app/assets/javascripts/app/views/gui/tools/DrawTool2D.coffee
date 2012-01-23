@@ -34,10 +34,8 @@ S.export(
             # it checks if there is already an `@activePlane` otherwise the one under mouse cursor is selectedObject
             # if an `@activePlane` is present a new contact point on the plane is discovered and it is 
             mouseDown:=>
-
             
             mouseDragged:=>
-                
             
             mouseUp:=>
             
@@ -85,17 +83,10 @@ S.export(
                     if point.isNear("xyz",nextPoint,0)
                         point.remove()
 
-            moveOnPlane:=>
-                #if @activePoint?
-                #    console.log @activePoint
-                    #@stage3d.cameraPlane.position.copy( @vectorToWorldSpace(@activePlane.position,@activePlane) )
-                    #@stage3d.cameraPlane.rotation.copy(@activePoint.father.rotation)
-
+            moveActivePointToCursor:=>
                 intersects = @getMouseTarget(@stage3d.actionPlane)
                 if intersects[0]? and @activePoint?
-                    #intersects[0].object.position.copy(@activePoint.position)
                     newPoint = intersects[0].point.clone()
-                    
                     newPoint = newPoint.toObject(@activePlane)
                     
                     newPoint.x -= @activePoint.father.position.x

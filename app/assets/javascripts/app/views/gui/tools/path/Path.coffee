@@ -90,13 +90,13 @@ S.export(
                                     else
                                         @activePath.lineTo(contactPoint)
                                         @activePoint = @activePath.point("last")
-                                @moveOnPlane()
+                                @moveActivePointToCursor()
                                 
             
             mouseDragged:=>
                 unless @activePoint?.idx?
                     return
-                @moveOnPlane()
+                @moveActivePointToCursor()
                 
             mouseUp:=>
                 #@removeDoubles()

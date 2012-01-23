@@ -81,16 +81,18 @@ S.export(
                                     @activePoint = @activePath.point("last")
                                 #aggiungo punti ad alla Path attiva
                                 else
-                                    pathContact = @nearPoint(originalPoint.toObject(@activePath.parent))
-                                    if pathContact?
-                                        if _.isArray(pathContact)
-                                            @activeEdge = pathContact
-                                        else
-                                            @activePoint = pathContact
+                                    pathPoint = @activePath.pointNear(originalPoint.toObject(@activePath.parent),@stage3d.snapTolerance)
+                                    if pathPoint?
+                                        @activePoint = pathPoint
                                     else
-                                        @activePath.lineTo(contactPoint)
-                                        @activePoint = @activePath.point("last")
-                                @moveActivePointToCursor()
+                                        pathEdge = @activePath.segmentNear(originalPoint.toObject(@activePath.parent),@stage3d.snapTolerance)
+                                        if pathEdge?
+                                            @activePoint = null
+                                            @activeEdge = pathEdge
+                                        else
+                                            @activePath.lineTo(contactPoint)
+                                            @activePoint = @activePath.point("last")
+                                            @moveActivePointToCursor()
                                 
             
             mouseDragged:=>

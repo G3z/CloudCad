@@ -85,7 +85,7 @@ S.export(
 
             moveActivePointToCursor:=>
                 intersects = @getMouseTarget(@stage3d.actionPlane)
-                if intersects[0]? and @activePoint?
+                if intersects[0]? and @activePoint?.father?
                     newPoint = intersects[0].point.clone()
                     newPoint = newPoint.toObject(@activePlane)
                     
@@ -93,35 +93,11 @@ S.export(
                     newPoint.y -= @activePoint.father.position.y
                     newPoint.z = 0
                     newPoint = new Point3D(newPoint.x,newPoint.y,newPoint.z)
+                    newPoint.father = @activePoint.father
                     newPoint.idx = @activePoint.idx
                     newPoint = @checkAlignment(newPoint)
 
                     @stage3d.selectedObject.movePoint(@activePoint.idx , newPoint)
-            
-            nearPoint:(point)=>
-                if @stage3d.selectedObject?
-                    if @stage3d.selectedObject.class == "Path3D" and @stage3d.selectedObject.parent.class == "Plane3D"
-                        path = @stage3d.selectedObject
-                        plane = path.parent
-                        vertices = path.line.geometry.vertices
-                        for vertex,i in vertices
-                            if vertex.position.distanceTo(point) <= @stage3d.snapTolerance
-                                return i
-                            unless i == vertices.length-1 
-                                next = vertices[i+1]
-                                                  
-                                lineMag = vertex.position.distanceTo(next.position)
-                                U = (((point.x - vertex.position.x) * (next.position.x - vertex.position.x)) + ((point.y - vertex.position.y) * (next.position.y - vertex.position.y)) + ((point.z - vertex.position.z) * (next.position.z - vertex.position.z))) / (lineMag * lineMag)
-                                  
-                                unless (U < 0.0 || U > 1.0)
-                                    intersection = new THREE.Vector3()
-
-                                    intersection.x = vertex.position.x + U * (next.position.x - vertex.position.x)
-                                    intersection.y = vertex.position.y + U * (next.position.y - vertex.position.y)
-                                    intersection.z = vertex.position.z + U * (next.position.z - vertex.position.z)
-                                      
-                                    if point.distanceTo(intersection) <= @stage3d.snapTolerance
-                                        return [i,i+1]
 
             isContactNearLine:(contact,tollerance)=>
                 #http://paulbourke.net/geometry/pointline/

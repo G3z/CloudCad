@@ -82,23 +82,6 @@ S.export(
                         particle.father = this
                         particle.idx = i
                         position = new THREE.Vector3(vertice.x,vertice.y,@position.z)
-                        ###
-                        size = 8
-                        cube = new THREE.Mesh(new THREE.CubeGeometry(size,size,size),new THREE.MeshBasicMaterial({
-                                color: @color
-                                opacity: 0.25
-                                transparent: true
-                                wireframe: true
-                            }))
-                        cube.placeholder = true
-                        cube.visible = false
-                        cube.vertexIndex = i
-                        cube.position.x = vertice.x
-                        cube.position.y = vertice.y
-                        cube.position.z = vertice.z
-                        cube.father = this
-                        @line.add(cube)
-                        ###
                     
                     @particleSystem = new THREE.ParticleSystem(
                         particles,
@@ -220,38 +203,30 @@ S.export(
                     return @points[intSel]
                 
             
-            pointNear:(point,tollerance)=>
-                ###
-                for i in [0...@segments.length]
-                    if @paperPath.segments[i].point.isClose(point,tollerance)
-                        @selectedPoint = i
-                        return @selectedPoint
+            pointNear:(point,tolerance)=>
+                for myPoint,i in @points
+                    if myPoint.isNear("all",point,tolerance)
+                        return myPoint
                 return null
-                ###
             
-            segmentNear:(point,tollerance)=>
-                ###
-                #debugger
-                nearPoint = @paperPath.getNearestPoint(new paper.Point(point.x,point.y))
-                circle = new paper.Path.Circle(nearPoint, 3);
-                @update()
-                if nearPoint.isClose(point,tollerance)
-                    for segment in @paperPath.segments
-                        start = segment.point
-                        if segment.index < @paperPath.segments.length
-                            end = segment.next.point
-                        else
-                            end = @paperPath.segments[0].point
-                        crossproduct = (nearPoint.y - start.y) * (end.x - start.x) - (nearPoint.x - start.x) * (end.y - start.y)
-                        dotproduct = (nearPoint.x - start.x) * (end.x - start.x) + (nearPoint.y - start.y)*(end.y - start.y)
-                        squaredlengthba = (end.x - start.x)*(end.x - start.x) + (end.y - start.y)*(end.y - start.y)
+            segmentNear:(point,tolerance)=>
+                for myPoint,i in @points
+                    unless i == @points.length-1 
+                        next = @points[i+1]
+                                          
+                        lineMag = myPoint.distanceTo(next)
+                        U = (((point.x - myPoint.x) * (next.x - myPoint.x)) + ((point.y - myPoint.y) * (next.y - myPoint.y)) + ((point.z - myPoint.z) * (next.z - myPoint.z))) / (lineMag * lineMag)
+                          
+                        unless (U < 0.0 || U > 1.0)
+                            intersection = new THREE.Vector3()
 
-                        if Math.abs(crossproduct) <= 0.000001 && dotproduct <= squaredlengthba && dotproduct >= 0
-                            return segment.index
-
-                else
-                    false
-                ###
+                            intersection.x = myPoint.x + U * (next.x - myPoint.x)
+                            intersection.y = myPoint.y + U * (next.y - myPoint.y)
+                            intersection.z = myPoint.z + U * (next.z - myPoint.z)
+                              
+                            if point.distanceTo(intersection) <= tolerance
+                                return [i,i+1]
+                return null
 
             #### *extrude(`point`)* method takes one argument
             #* the *lenght* of the extrusion  

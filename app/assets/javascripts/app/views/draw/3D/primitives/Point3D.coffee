@@ -30,27 +30,27 @@ S.export(
             coords:=>
                 [@x,@y,@z]
 
-            isNear:(cord,point,tollerance)=>
+            isNear:(cord,point,tolerance)=>
                 if cord == "x"
-                    if @x <= point.x + tollerance && @x >= point.x - tollerance
+                    if @x <= point.x + tolerance && @x >= point.x - tolerance
                         return true
                 else if cord == "y"
-                    if @y <= point.y + tollerance && @y >= point.y - tollerance
+                    if @y <= point.y + tolerance && @y >= point.y - tolerance
                         return true
                 else if cord == "z"
-                    if @z <= point.z + tollerance && @z >= point.z - tollerance
+                    if @z <= point.z + tolerance && @z >= point.z - tolerance
                         return true
                 else if cord == "xy" || cord == "yx"
-                    if @x <= point.x + tollerance && @x >= point.x - tollerance && @y <= point.y + tollerance && @y >= point.y - tollerance
+                    if @x <= point.x + tolerance && @x >= point.x - tolerance && @y <= point.y + tolerance && @y >= point.y - tolerance
                         return true
                 else if cord == "xz" || cord == "zx"
-                    if @x <= point.x + tollerance && @x >= point.x - tollerance && @z <= point.z + tollerance && @z >= point.z - tollerance
+                    if @x <= point.x + tolerance && @x >= point.x - tolerance && @z <= point.z + tolerance && @z >= point.z - tolerance
                         return true
                 else if cord == "yz" || cord == "zy"
-                    if @y <= point.y + tollerance && @y >= point.y - tollerance && @z <= point.z + tollerance && @z >= point.z - tollerance
+                    if @y <= point.y + tolerance && @y >= point.y - tolerance && @z <= point.z + tolerance && @z >= point.z - tolerance
                         return true
                 else if cord == "all"
-                    if @x <= point.x + tollerance && @x >= point.x - tollerance && @y <= point.y + tollerance && @y >= point.y - tollerance && @z <= point.z + tollerance && @z >= point.z - tollerance
+                    if @x <= point.x + tolerance && @x >= point.x - tolerance && @y <= point.y + tolerance && @y >= point.y - tolerance && @z <= point.z + tolerance && @z >= point.z - tolerance
                         return true
                 return false
             

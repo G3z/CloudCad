@@ -82,7 +82,7 @@ S.export(
                         particle.father = this
                         particle.idx = i
                         position = new THREE.Vector3(vertice.x,vertice.y,@position.z)
-
+                        ###
                         size = 8
                         cube = new THREE.Mesh(new THREE.CubeGeometry(size,size,size),new THREE.MeshBasicMaterial({
                                 color: @color
@@ -98,6 +98,7 @@ S.export(
                         cube.position.z = vertice.z
                         cube.father = this
                         @line.add(cube)
+                        ###
                     
                     @particleSystem = new THREE.ParticleSystem(
                         particles,
@@ -135,7 +136,7 @@ S.export(
             #* the starting *point* from wich the Path should start
             start:(point)=>
                 point = @validatePoint(point)
-                if point
+                if point?
                     point.idx = @points.length
                     point.father = this
                     @points.push(point)
@@ -144,7 +145,8 @@ S.export(
             #* the *point* to be added to the Path
             lineTo:(point)=>
                 validPoint = @validatePoint(point)
-                if validPoint
+                if validPoint?
+                    validPoint.idx = @points.length
                     @points.push(validPoint)
                     @createGeometry()
                     @update()
@@ -211,11 +213,11 @@ S.export(
                 unless selector?
                     return null
                 else if selector == "last"
-                    return @line.children[@points.length-1]
+                    return @points[@points.length-1]
                 else if selector == "first"
-                    return @line.children[0]
-                else if $.type(intSel) == "number" && intSel < @points.length && intSel > -1
-                    return @line.children[intSel]
+                    return @points[0]
+                else if _.isNumber(intSel) && intSel < @points.length && intSel > -1
+                    return @points[intSel]
                 
             
             pointNear:(point,tollerance)=>
@@ -287,19 +289,12 @@ S.export(
                 else if point.class? == "Point3D"
                     return point
                 else if point.x? and point.y? and point.z?
-                    ###
-                    point.x = Math.round(point.x*100)/100
-                    point.y = Math.round(point.y*100)/100
-                    point.z = Math.round(point.z*100)/100
-                    ###
                     return new Point3D(point.x,point.y,point.z)
                 else
-                    return false
+                    return null
 
             rearrangePoints:=>
-                i=0
-                for point in @points    
-                    point.idx = i 
-                    i++
+                for point,i in @points    
+                    point.idx = i
 )
             

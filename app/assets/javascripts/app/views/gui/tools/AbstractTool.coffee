@@ -127,46 +127,7 @@ S.export(
                             return result
                 else
                     return getTarget(object)
-
-            isContactNearLine:(contact,tollerance)=>
-                #http://paulbourke.net/geometry/pointline/
-                check=(point,lineStart,lineEnd)=>
-                    lineMag = lineStart.distanceTo(lineEnd)
-                    U = ( ( ( point.x - lineStart.x ) * ( lineEnd.x - lineStart.x ) ) +
-                        ( ( point.y - lineStart.y ) * ( lineEnd.y - lineStart.y ) ) +
-                        ( ( point.z - lineStart.z ) * ( lineEnd.z - lineStart.z ) ) ) /
-                        ( lineMag * lineMag )
-                 
-                    if( U < 0.0 || U > 1.0 )
-                        return 0   # closest point does not fall within the line segment
-
-                    intersection = new THREE.Vector3()
-                    intersection.x = lineStart.x + U * ( lineEnd.x - lineStart.x )
-                    intersection.y = lineStart.y + U * ( lineEnd.y - lineStart.y )
-                    intersection.z = lineStart.z + U * ( lineEnd.z - lineStart.z )
-                 
-                    return point.distanceTo( intersection )
-
-
-                
-                face = contact.face
-                object = contact.object
-                point = contact.point
-                console.log object
-                a = object.geometry.vertices[face.a].position.fromObject(object)
-                b = object.geometry.vertices[face.b].position.fromObject(object)
-                c = object.geometry.vertices[face.c].position.fromObject(object)
-                d = object.geometry.vertices[face.d].position.fromObject(object) if face.d?
-                if face instanceof THREE.Face3
-                    segments = [[a,b],[b,c],[c,a]]
-                else
-                    segments = [[a,b],[b,c],[c,d],[d,a]]
-                
-
-                for segment in segments
-                    console.log check(point,segment[0],segment[1])
-                console.log " "
-
+            
             #### *getBarycenter(`array`)* method takes one arguments
             #* the *array* of points in which the barycenter is calculated
             #

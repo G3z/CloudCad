@@ -53,15 +53,11 @@ S.export(
                     c = @getMouseTarget(@stage3d.actionPlane)
                     if c? and c.length>0
                         if c[0].point?
-                            contactPoint = c[0].point
-                            originalPoint = contactPoint.clone()
-                            if contactPoint?
-                                contactPoint = contactPoint.fromObject(@stage3d.actionPlane)
-                                mat = new THREE.Matrix4()
-                                contactPoint = mat.getInverse(@activePlane.matrix).multiplyVector3(contactPoint.clone())
+                            originalPoint = c[0].point.clone()
+                            contactPoint = originalPoint.toObject(@activePlane)
+                            if contactPoint?   
                                 #creo una nuova Path
                                 if @activePath?.points?.length > 1 or not @activePath?
-
                                     @activePath = new Path3D({points:[contactPoint]})
                                     @activePath.toggleSelection() unless @activePath.selected
                                     @activePlane.add(@activePath)
@@ -69,16 +65,18 @@ S.export(
                                     @activePoint = @activePath.point("last")
                                 #aggiungo punti ad alla Path attiva
                                 else
-                                    pathContact = @nearPoint(originalPoint.toObject(@activePath.parent))
-                                    if pathContact?
-                                        if _.isArray(pathContact)
-                                            @activeEdge = pathContact
-                                        else
-                                            @activePoint = pathContact
+                                    pathPoint = @activePath.pointNear(contactPoint,@stage3d.snapTolerance)
+                                    if pathPoint?
+                                        @activePoint = pathPoint
                                     else
-                                        @activePath.lineTo(contactPoint)
-                                        @activePoint = @activePath.point("last")
-                                @moveActivePointToCursor()
+                                        pathEdge = @activePath.segmentNear(contactPoint,@stage3d.snapTolerance)
+                                        if pathEdge?
+                                            @activePoint = null
+                                            @activeEdge = pathEdge
+                                        else
+                                            @activePath.lineTo(contactPoint)
+                                            @activePoint = @activePath.point("last")
+                                            @moveActivePointToCursor()
                                 
             
             mouseDragged:=>

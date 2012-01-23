@@ -64,16 +64,10 @@ S.export(
                     c = @getMouseTarget(@stage3d.actionPlane)
                     if c? and c.length>0
                         if c[0].point?
-                            contactPoint = c[0].point
-                            
-                            originalPoint = contactPoint.clone()
-                            if contactPoint?
-                                contactPoint = contactPoint.fromObject(@stage3d.actionPlane)
-                                mat = new THREE.Matrix4()
-                                contactPoint = mat.getInverse(@activePlane.matrix).multiplyVector3(contactPoint.clone())
-                                #creo una nuova Path
+                            originalPoint = c[0].point.clone()
+                            contactPoint = originalPoint.toObject(@activePlane)
+                            if contactPoint?                                
                                 unless @activePath?
-
                                     @activePath = new Path3D({points:[contactPoint]})
                                     @activePath.toggleSelection() unless @activePath.selected
                                     @activePlane.add(@activePath)
@@ -81,11 +75,11 @@ S.export(
                                     @activePoint = @activePath.point("last")
                                 #aggiungo punti ad alla Path attiva
                                 else
-                                    pathPoint = @activePath.pointNear(originalPoint.toObject(@activePath.parent),@stage3d.snapTolerance)
+                                    pathPoint = @activePath.pointNear(contactPoint,@stage3d.snapTolerance)
                                     if pathPoint?
                                         @activePoint = pathPoint
                                     else
-                                        pathEdge = @activePath.segmentNear(originalPoint.toObject(@activePath.parent),@stage3d.snapTolerance)
+                                        pathEdge = @activePath.segmentNear(contactPoint,@stage3d.snapTolerance)
                                         if pathEdge?
                                             @activePoint = null
                                             @activeEdge = pathEdge

@@ -31,22 +31,20 @@ S.export(
 
                 #Mouse Events
                 @canvas
-                    .bind('contextmenu', (event)=>
+                    .bind 'contextmenu', (event)=>
                         event.preventDefault()
-                    )
-                    .bind('mousemove', (event) =>
+                    .bind 'mousemove', (event) =>
                         @mouseMove(event)
-                    )
-                    .bind('mousedown', (event)=>
+                    .bind 'mousedown', (event)=>
                         @mouseDown(event)
-                    )
-                    .bind('mouseup', (event)=>
+                    .bind "dblclick",(event)=>
+                        @mouseDblClick(event)
+                    .bind 'mouseup', (event)=>
                         @mouseUp(event)
-                    )
-                    .bind('mousewheel', (event,delta)=>
+                    .bind 'mousewheel', (event,delta)=>
                         event.preventDefault()
                         @mouseWheel(event,delta)
-                    )
+                    
 
                 #Touch Events
                 #touchCanvas = @canvas.Touchable()
@@ -87,6 +85,26 @@ S.export(
                     @btn3.start = @eventToPoint(event)
                     @anyDown =true
                     @canvas.trigger 'mouse:btn3_down'
+            
+            #### *mouseDown(`event`)* method takes one argument
+            #* the *event* on the screen where the events was fired
+            #
+            # it updates the `start` point of the appropriate `btn`  
+            # the related `Backbone Event` is also fired
+            mouseDblClick:(event)=>
+                buttonNr = event.button
+
+                if buttonNr == 0                          #click sinistro
+                    @btn1.start = @eventToPoint(event)
+                    @canvas.trigger 'mouse:btn1_doubleClick'
+
+                if buttonNr == 1                          #click centrale
+                    @btn2.start = @eventToPoint(event)
+                    @canvas.trigger 'mouse:btn2_doubleClick'
+
+                if buttonNr == 2                          #click destro
+                    @btn3.start = @eventToPoint(event)
+                    @canvas.trigger 'mouse:btn3_doubleClick'
 
             #### *mouseMove(`event`)* method takes one argument
             #* the *event* on the screen where the events was fired

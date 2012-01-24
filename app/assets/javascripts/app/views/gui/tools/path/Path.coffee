@@ -88,7 +88,8 @@ S.export(
                                             @activePoint = @activePath.point("last")
                                             @moveActivePointToCursor()
                                 
-            
+            mouseDoubleClick:=>
+
             mouseDragged:=>
                 unless @activePoint?.idx?
                     return

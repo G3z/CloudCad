@@ -136,6 +136,9 @@ S.export(
                     .bind 'mouse:btn1_down', =>
                         unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
                             @activeTool.mouseDown()
+                            
+                    .bind 'mouse:btn1_doubleClick', =>
+                        @activeTool.mouseDoubleClick()
 
                     .bind 'mouse:btn1_drag', =>
                         unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")

@@ -55,10 +55,16 @@ S.export(
 
             #### *mouseDown()* method takes no arguments
             #
-            # this method is called when mouse button is clicked while tool is active.
+            # this method is called when mouse button is pushed while tool is active.
             # this method is meant to be implemented in subClasses
             mouseDown:=>
             
+            #### *mouseDoubleClick()* method takes no arguments
+            #
+            # this method is called when mouse button is double clicked while tool is active.
+            # this method is meant to be implemented in subClasses
+            mouseDoubleClick:=>
+
             #### *mouseDragged()* method takes no arguments
             #
             # this method is called when mousebutton is pressed and the mouse is moving while tool is active.

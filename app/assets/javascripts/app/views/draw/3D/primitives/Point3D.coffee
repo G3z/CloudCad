@@ -10,7 +10,7 @@ S.export(
             @father
             @idx
 
-            constructor:(@x,@y,@z,@name,@father)->
+            constructor:(@x=0,@y=0,@z=0,@name,@father)->
                 super(@x,@y,@z)
                 if @constructor.toString?
                     arr = @constructor.toString().match(/function\s*(\w+)/)

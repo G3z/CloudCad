@@ -110,6 +110,7 @@ S.export(
             #### *update()* method takes no argument
             #Update forces updates to the internals
             update:=>
+                @rearrangePoints()
                 @lastPoint = @point("last")
                 @line.geometry.__dirtyVertices = true
                 @line.geometry.__dirtyNormals = true
@@ -135,38 +136,42 @@ S.export(
                     @update()
 
             insert:(idx,point)=>
-                
-                #debugger
-                split = idx
-                idx++
+                validPoint = @validatePoint(point)
+                if validPoint?
+                    split = idx
+                    idx++
+                    
+                    points_before = @points[0..split]
+                    points_before.push(validPoint)
+                    points_after = @points[idx...@points.length]
 
-                points_before = @points[0..split]
-                points_before.push(point)
-                points_after = @points[idx..@points.length-1]
-                @points = points_before.concat(points_after)
-                @points[0] = @points[@points.length-1]
-                @createGeometry()
-                @update()
+                    @points = points_before.concat(points_after)
+                    @points[0] = @points[@points.length-1]
+
+                    @createGeometry()
+                    @update()
                 
 
-            #remove:(el)=>
-            #    if el instanceof Point3D
-            #        @removePoint(el)
-            #    else if el instanceof Segment
-            #        @removeSegment(el)
+            remove:(el)=>
+                if el instanceof Point3D
+                    @removePoint(el)
+                else if el instanceof Segment
+                    @removeSegment(el)
 
             removePoint:(point)=>
-                ###
-                @points.remove(point) if point in @points
-                @paperPath.removeSegment(point.idx)
-                @rearrangePoints()
-                ###
+                points_before = @points[0...point.idx]
+                points_after = @points[point.idx+1...@points.length]
+                
+                @points = points_before.concat(points_after)
+                @createGeometry()
+                @update()
 
             move:(el,newPos)=>
                 if el instanceof Point3D
                     @movePoint(el,newPos)
                 else if el instanceof Segment
                     @moveSegment(el,newPos)
+
             #### *movePoint(`index`,`newPoint`)* method takes two argument
             #* the *index* of the point that has to be moved
             #* the *newPoint* representing the new position of the element  
@@ -225,7 +230,7 @@ S.export(
                             intersection.z = myPoint.z + U * (next.z - myPoint.z)
                               
                             if point.distanceTo(intersection) <= tolerance
-                                return [i,i+1]
+                                return [[myPoint,next],intersection]
                 return null
 
             #### *extrude(`point`)* method takes one argument

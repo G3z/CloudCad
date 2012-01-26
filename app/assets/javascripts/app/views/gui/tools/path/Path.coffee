@@ -81,8 +81,9 @@ S.export(
                                     else
                                         pathEdge = @activePath.segmentNear(contactPoint,@stage3d.snapTolerance)
                                         if pathEdge?
-                                            @activePoint = null
-                                            @activeEdge = pathEdge
+                                            @activeEdge = pathEdge[0]
+                                            @activePath.insert(@activeEdge[0].idx,pathEdge[1])
+                                            @activePoint = @activePath.point(@activeEdge[0].idx+1)
                                         else
                                             @activePath.lineTo(contactPoint)
                                             @activePoint = @activePath.point("last")

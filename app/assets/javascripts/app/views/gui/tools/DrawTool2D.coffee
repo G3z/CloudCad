@@ -44,6 +44,7 @@ S.export(
                     tollerance = @stage3d.snapTolerance
                     foundx =false
                     foundy =false
+                    zero = new Point3D()
                     for pathPoint,i in @activePath.points
                         if i != point.idx
                             if point.isNear("xy",pathPoint,tollerance)
@@ -62,6 +63,15 @@ S.export(
                             if foundx and foundy
                                 return point
 
+                    if point.isNear("xy",zero,tollerance)
+                        point.x = 0
+                        point.y = 0
+                    else if point.isNear("x",zero,tollerance)
+                        point.x = 0
+                    else if point.isNear("y",zero,tollerance)
+                        point.y = 0
+                    
+
                 return point
                         
 
@@ -70,18 +80,27 @@ S.export(
                     if point.idx !=0
                         previousPoint = @activePath.point(point.idx-1)
                     else
-                        previousPoint = @activePath.lastPoint
+                        previousPoint = @activePath.point("last")
 
                     if point.idx != @activePath.points.length-1
                         nextPoint = @activePath.point(point.idx+1)
                     else
                         nextPoint = @activePath.point(0)
                     
-                    if point.isNear("xyz",previousPoint,0)
-                        point.remove()
+                    if point.distanceTo(previousPoint) < 1
+                        @activePoint = null
+                        @activePath.remove(point)
+
+                        console.log "remove #{point.idx}"
+                        return false
                     
-                    if point.isNear("xyz",nextPoint,0)
-                        point.remove()
+                    else if point.distanceTo(nextPoint) < 1
+                        @activePoint = null
+                        @activePath.remove(point)
+                        console.log "remove #{point.idx}"
+                        return false
+                    
+                    return point
 
             moveActivePointToCursor:=>
                 intersects = @getMouseTarget(@stage3d.actionPlane)
@@ -95,9 +114,9 @@ S.export(
                     newPoint = new Point3D(newPoint.x,newPoint.y,newPoint.z)
                     newPoint.father = @activePoint.father
                     newPoint.idx = @activePoint.idx
-                    newPoint = @checkAlignment(newPoint)
-
-                    @stage3d.selectedObject.movePoint(@activePoint.idx , newPoint)
+                    if @removeIfDouble(newPoint)
+                        newPoint = @checkAlignment(newPoint)
+                        @stage3d.selectedObject.movePoint(@activePoint.idx , newPoint)
 
             isContactNearLine:(contact,tollerance)=>
                 #http://paulbourke.net/geometry/pointline/

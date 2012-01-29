@@ -161,7 +161,7 @@ S.export(
             removePoint:(point)=>
                 points_before = @points[0...point.idx]
                 points_after = @points[point.idx+1...@points.length]
-                
+
                 @points = points_before.concat(points_after)
                 @createGeometry()
                 @update()
@@ -207,7 +207,52 @@ S.export(
                 else if _.isNumber(intSel) && intSel < @points.length && intSel > -1
                     return @points[intSel]
                 
-            
+            intersectionWithPath:(path)=>
+                # http://paulbourke.net/geometry/lineline2d/
+                check =(myStart,myEnd,otherStart,otherEnd)=>
+                    EPS = 0.0001
+                    result = {}
+                    denom  = (otherEnd.y-otherStart.y) * (myEnd.x-myStart.x) - (otherEnd.x-otherStart.x) * (myEnd.y-myStart.y)
+                    numera = (otherEnd.x-otherStart.x) * (myStart.y-otherStart.y) - (otherEnd.y-otherStart.y) * (myStart.x-otherStart.x)
+                    numerb = (myEnd.x-myStart.x) * (myStart.y-otherStart.y) - (myEnd.y-myStart.y) * (myStart.x-otherStart.x)
+                    
+                    #Are the line coincident?
+                    if Math.abs(numera) < EPS && Math.abs(numerb) < EPS && Math.abs(denom) < EPS
+                        result.x = (myStart.x + myEnd.x) / 2
+                        result.y = (myStart.y + myEnd.y) / 2
+                        result.z =0
+                        return result
+
+                    #Are the line parallel
+                    if Math.abs(denom) < EPS
+                        return null
+
+                    #Is the intersection along the the segments
+                    mua = numera / denom
+                    mub = numerb / denom
+                    if mua < 0 || mua > 1 || mub < 0 || mub > 1
+                        return null
+                    result.x = myStart.x + mua * (myEnd.x - myStart.x)
+                    result.y = myStart.y + mua * (myEnd.y - myStart.y)
+                    result.z = 0
+
+                    return result
+                result = []
+                for myStart,i in @points
+                    if i < @points.length-1
+                        myEnd = @points[i+1]
+                        for otherStart,h in path.points
+                            if h < path.points.length-1
+                                otherEnd = path.points[h+1]
+                                point = check(myStart,myEnd,otherStart,otherEnd)
+                                data = 
+                                    point:point
+                                    edge:[myStart.idx,myEnd.idx]
+                                if point?
+                                    result.push(data)
+                return result
+                
+
             pointNear:(point,tolerance)=>
                 for myPoint,i in @points
                     if myPoint.isNear("all",point,tolerance)
@@ -234,7 +279,7 @@ S.export(
                 return null
 
             #### *extrude(`point`)* method takes one argument
-            #* the *lenght* of the extrusion  
+            #* the *length* of the extrusion  
             # This method returns a new mesh containig the extruded shape  
             # Path is turned invisible when creating the 3D shape
             extrude:(value)=>

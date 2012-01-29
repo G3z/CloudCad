@@ -97,7 +97,6 @@ S.export(
                 @moveActivePointToCursor()
                 
             mouseUp:=>
-                #@removeDoubles()
 
         # Singleton
         new Path()

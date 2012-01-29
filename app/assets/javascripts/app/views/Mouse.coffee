@@ -140,12 +140,12 @@ S.export(
             # it updates `currentPos` of the mouse  
             mouseDragged:(point, btn)=>
                 btn.absoluteDelta = {
-                    w:btn.oldDelta.w + @eventToPoint(event).x - btn.start.x
-                    h:btn.oldDelta.h + @eventToPoint(event).y - btn.start.y
+                    w:btn.oldDelta.w + point.x - btn.start.x
+                    h:btn.oldDelta.h + point.y - btn.start.y
                 }
                 btn.delta = {
-                    w:@eventToPoint(event).x - btn.start.x
-                    h:@eventToPoint(event).y - btn.start.y
+                    w:point.x - btn.start.x
+                    h:point.y - btn.start.y
                 }
 
             #### *mouseUp(`event`)* method takes one argument

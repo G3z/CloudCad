@@ -60,8 +60,9 @@ S.export(
                 # Currently only linear extruded meshes are suported
                 if @generator? and @generator.class = "Path3D"
                     shape = new THREE.Shape(@generator.points)
+                    color = unless @selected then @generator.color else 0x0000bb 
                     material = new THREE.MeshLambertMaterial
-                        color: @generator.color
+                        color: color
                         ambient: 0x111111
                         blending: THREE.AdditiveAlphaBlending
                         shading: 1

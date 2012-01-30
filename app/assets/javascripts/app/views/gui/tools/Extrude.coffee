@@ -122,6 +122,8 @@ S.export(
 
                 if @angle != 0
                     angleDelta = Math.sin(Math.toRadian(@angle))*@ammount*-1
+                else
+                    angleDelta = 0
 
                 if @frontFacingVertices?.length? and @frontFacingVertices?.length >0
                     verts = @activeObj.mesh.geometry.vertices

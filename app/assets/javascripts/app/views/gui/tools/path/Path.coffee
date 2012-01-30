@@ -97,6 +97,7 @@ S.export(
                 @moveActivePointToCursor()
                 
             mouseUp:=>
+                super()
 
         # Singleton
         new Path()

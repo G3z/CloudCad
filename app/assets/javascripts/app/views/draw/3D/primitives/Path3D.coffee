@@ -136,20 +136,29 @@ S.export(
                     @update()
 
             insert:(idx,point)=>
-                validPoint = @validatePoint(point)
-                if validPoint?
-                    split = idx
-                    idx++
-                    
-                    points_before = @points[0..split]
-                    points_before.push(validPoint)
-                    points_after = @points[idx...@points.length]
+                if idx?
+                    validPoint = @validatePoint(point)
+                    if validPoint?
+                        found = false
+                        for vert in @points
+                            if vert.distanceTo(validPoint) < 0.001
+                                found = true
+                                break
+                        unless found
+                            split = idx
+                            idx++
+                            
+                            points_before = @points[0..split]
+                            points_before.push(validPoint)
+                            points_after = @points[idx...@points.length]
 
-                    @points = points_before.concat(points_after)
-                    @points[0] = @points[@points.length-1]
+                            @points = points_before.concat(points_after)
+                            @points[0] = @points[@points.length-1]
 
-                    @createGeometry()
-                    @update()
+                            @createGeometry()
+                            @update()
+                            return true
+                return false
                 
 
             remove:(el)=>
@@ -245,10 +254,21 @@ S.export(
                             if h < path.points.length-1
                                 otherEnd = path.points[h+1]
                                 point = check(myStart,myEnd,otherStart,otherEnd)
-                                data = 
-                                    point:point
-                                    edge:[myStart.idx,myEnd.idx]
                                 if point?
+                                    if myStart.idx < myEnd.idx
+                                        idx = myStart.idx
+                                    else
+                                        idx = myEnd.idx
+
+                                    if otherStart.idx < otherEnd.idx
+                                        otherIdx = otherStart.idx
+                                    else
+                                        otherIdx = otherEnd.idx
+
+                                    data = 
+                                        point:point
+                                        myIndex: idx
+                                        otherIndex: otherIdx
                                     result.push(data)
                 return result
                 

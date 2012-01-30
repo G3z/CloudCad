@@ -26,6 +26,7 @@ S.export(
                                 
                     )
             mouseDown:=>
+                super()
                 #Seleziono il piano su cui lavorare
                 unless @activePlane?
                     c = @getMouseTarget([@stage3d.layers.planes,@stage3d.layers.originPlanes])
@@ -80,11 +81,13 @@ S.export(
                                 
             
             mouseDragged:=>
+                super()
                 unless @activePoint?.idx?
                     return
                 @moveActivePointToCursor()
 
             mouseUp:=>
+                super()
                 #@removeDoubles()
 
         # Singleton

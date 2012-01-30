@@ -38,6 +38,15 @@ S.export(
             mouseDragged:=>
             
             mouseUp:=>
+                if @stage3d.layers.paths? and @activePath?
+                    for path in @stage3d.layers.paths
+                        contacts = null
+                        if path.id != @activePath.id and path.parent.id == @activePath.parent.id
+                            contacts = @activePath.intersectionWithPath(path)
+                            console.log contacts
+                            for contact in contacts
+                                @activePath.insert(contact.myIndex,contact.point)
+                                #path.insert(contact.otherIndex,contact.point)
             
             checkAlignment:(point)->
                 if @activePath?.points.length > 1

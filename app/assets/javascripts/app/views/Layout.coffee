@@ -18,12 +18,13 @@ S.export(
             constructor:(options)->
                 super(options)
                 @addChild(Header)
-                @addChild(History)
+                
                 @addChild(TopBar)
                 @addChild(Stage3d)
                 Stage3d.startLoops()
                 
                 @addChild(MainToolbar)
+                @addChild(History)
 
         # Singleton
         new Layout()

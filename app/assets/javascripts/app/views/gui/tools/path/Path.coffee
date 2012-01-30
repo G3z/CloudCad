@@ -2,8 +2,14 @@
 # Path tool is used to  create planar polygons by adding one point at a time
 S.export(
     "views/gui/tools/path/Path",
-    ["views/gui/tools/DrawTool2D","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Point3D"],
-    (DrawTool2D,Path3D,Point3D)->
+    [
+        "views/gui/tools/DrawTool2D",
+        "views/draw/3D/primitives/Path3D",
+        "views/draw/3D/primitives/Point3D",
+        "models/Action",
+        "views/gui/History"
+    ],
+    (DrawTool2D,Path3D,Point3D, Action, History)->
         class Path extends DrawTool2D
             #### *constructor()* method takes no arguments
             #
@@ -73,6 +79,16 @@ S.export(
                                     @activePlane.add(@activePath)
                                     @stage3d.selectedObject = @activePath
                                     @activePoint = @activePath.point("last")
+
+                                    # Save the new Action
+                                    action = new Action({
+                                        label: "Path"
+                                        data: @activePath
+                                        time: new Date()
+                                    })
+
+                                    History.addAction(action)
+
                                 #aggiungo punti ad alla Path attiva
                                 else
                                     pathPoint = @activePath.pointNear(contactPoint,@stage3d.snapTolerance)

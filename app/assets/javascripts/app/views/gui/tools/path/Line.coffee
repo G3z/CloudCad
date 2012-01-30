@@ -5,9 +5,10 @@ S.export(
     ["views/gui/tools/DrawTool2D","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Point3D"],
     (DrawTool2D,Path3D,Point3D)->
         class Line extends DrawTool2D
+
             constructor:->
                 super()
-                @icon = "layer-shape-line.png"                
+                @icon = "layer-shape-line.png"
                 # Register callback
                 $(document)
                     .bind("execute_tool_Line", =>
@@ -25,6 +26,7 @@ S.export(
                             , 50) # Mi assicuro che arrivi dopo lo svuotamento
                                 
                     )
+
             mouseDown:=>
                 super()
                 #Seleziono il piano su cui lavorare

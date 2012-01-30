@@ -1,0 +1,42 @@
+.history{
+
+    position: absolute;
+    /*background-color: #282828;*/
+
+    /* Fallback for web browsers that doesn't support RGBa */
+    background: rgb(0, 0, 0);
+    /* RGBa with 0.6 opacity */
+    background: rgba(0, 0, 0, 0.75);
+    /* For IE 5.5 - 7*/
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+    /* For IE 8*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+
+    z-index: 10;
+    top: 100px;
+    right: 20px;
+    padding: 5px;
+    min-width: 150px;
+    min-height: 25px;
+    -webkit-border-radius: 5px;
+    
+    .header{
+        color: white;
+    }
+
+    .item{
+        margin-top: 1px; 
+        padding: 5px;
+        background-color: #FFFFFF;
+    }
+    
+    .Path{
+        width: 20px;
+        height: 20px;
+        float:right;
+        background-image: url(/fugue-icons/icons/layer-shape-polygon.png);
+        background-position: 2px 2px;
+        background-repeat: no-repeat;
+    }
+
+}

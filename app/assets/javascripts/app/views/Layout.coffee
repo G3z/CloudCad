@@ -25,6 +25,9 @@ S.export(
                 
                 @addChild(MainToolbar)
                 @addChild(History)
+                
+                # Posizioning History Menu
+                $(History.el).css("left", ($(document).width() - 200) + "px")
 
         # Singleton
         new Layout()

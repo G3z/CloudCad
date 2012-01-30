@@ -9,8 +9,13 @@ S.export(
             className: "history"
 
             constructor:(options)->
-                @data = Actions
                 super(options)
+                @data = Actions
+                
+                # Some graphic initializazion
+                $(".header", @el).html("History")
+                @list = new HBox()
+                @addChild(@list)
 
             addAction:(action)=>
                 
@@ -25,14 +30,6 @@ S.export(
 
                 $(@list.el).append(item)
 
-            render:()=>
-                
-                $(@el).html("<div class='header'>History</div>")
-
-                @list = new HBox()
-                @addChild(@list)
-
-            
 
         # Singleton
         new History()

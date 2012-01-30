@@ -17,6 +17,15 @@ S.export(
                     if arr? and  arr.length == 2
                         @class = arr[1]
                 @id = Math.guid()
+            
+            store:=>
+                output = {
+                    xtype: "point3d"
+                    x: @x
+                    y: @y
+                    z: @z
+                    name: @name
+                }
 
             moveTo:(@x,@y,@z)=>
                 if @father?

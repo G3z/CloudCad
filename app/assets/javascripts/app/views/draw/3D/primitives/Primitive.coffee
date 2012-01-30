@@ -57,4 +57,10 @@ S.export(
                             return false
                         
                 return walk(@parent,object.id)
+
+            load:(object)=>
+                throw "Please implement me!"
+
+            store:(object)=>
+                throw "Please implement me!"
 )

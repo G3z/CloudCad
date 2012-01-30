@@ -48,7 +48,20 @@ S.export(
 
                 @createGeometry()
                 @addToLayer()
+            
+            store:()=>
+                output = {
+                    xtype: "path3d"
+                    points: []
+                    color: @color
+                    name: @name
+                }
+
+                for p in @points
+                    output.points.push(p.store())
                 
+                return output
+                    
             createGeometry:=>
                 console.log @class,"create Geometry"
                 if @line?

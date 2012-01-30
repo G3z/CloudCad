@@ -83,7 +83,7 @@ S.export(
                                     # Save the new Action
                                     action = new Action({
                                         label: "Path"
-                                        data: @activePath
+                                        data: @activePath.store()
                                         time: new Date()
                                     })
 

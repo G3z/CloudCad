@@ -30,6 +30,9 @@ S.export(
 
                 $(@list.el).append(item)
 
+                # Request resync
+                action.save()
+
             getLastAction:()=>
                 action = @data.last()
 

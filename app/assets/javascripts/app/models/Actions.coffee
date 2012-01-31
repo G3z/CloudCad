@@ -7,6 +7,8 @@ define(
 
             model: Action
             url: "/project"
+
         # Singleton 
-        new Actions()
+        actions = new Actions()
+
 )

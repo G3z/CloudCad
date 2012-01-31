@@ -30,6 +30,8 @@ S.export(
 
                 $(@list.el).append(item)
 
+            getLastAction:()=>
+                action = @data.last()
 
         # Singleton
         new History()

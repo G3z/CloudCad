@@ -104,6 +104,9 @@ S.export(
                                             @activePath.lineTo(contactPoint)
                                             @activePoint = @activePath.point("last")
                                             @moveActivePointToCursor()
+                                        
+                                        action = History.getLastAction()
+                                        action.set("data", @activePath.store())
                                 
             mouseDoubleClick:=>
 

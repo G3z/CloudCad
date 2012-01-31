@@ -1,7 +1,12 @@
 S.export(
     "views/gui/tools/Extrude",
-    ["views/gui/tools/AbstractTool", "views/gui/tools/ToolOption"],
-    (AbstractTool, ToolOption)->
+    [
+        "views/gui/tools/AbstractTool",
+        "views/gui/tools/ToolOption",
+        "views/gui/History",
+        "models/Action"
+    ],
+    (AbstractTool, ToolOption, History, Action)->
 
         class Extrude extends AbstractTool
             @frontFacingVertices
@@ -60,7 +65,19 @@ S.export(
                         float_value: @prefs.get('float_value')
                         bool_bothSides: @prefs.get('bool_bothSides')
                         float_angle: @prefs.get('float_angle')
-            
+                     # Save the new Action
+                    action = new Action({
+                        label:"Extrude"
+                        data: {
+                            float_value: @prefs.get('float_value')
+                            bool_bothSides: @prefs.get('bool_bothSides')
+                            float_angle: @prefs.get('float_angle')
+                        }
+                        time: new Date()
+                    })
+
+                    History.addAction(action)
+
             #### *mouseDragged()* method takes no arguments 
             # It checks if the active object is an instance of Solid3D  
             # A new extrusion ammount is calculad based on mouse movement  

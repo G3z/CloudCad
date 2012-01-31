@@ -12,6 +12,9 @@ S.export(
                 super(options)
                 @data = Actions
                 
+                # Load previous actions
+                @data.fetch()
+
                 # Some graphic initializazion
                 $(".header", @el).html("History")
                 @list = new HBox()

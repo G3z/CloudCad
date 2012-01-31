@@ -1,7 +1,11 @@
 class ProjectController < ApplicationController
 
+    respond_to :html, :json
+
     def index
-        render :text => "Hello"
+
+        respond_with(@actions = Action.all)
+
     end
     
     def create

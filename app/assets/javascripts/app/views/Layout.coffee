@@ -18,12 +18,16 @@ S.export(
             constructor:(options)->
                 super(options)
                 @addChild(Header)
-                @addChild(History)
+                
                 @addChild(TopBar)
                 @addChild(Stage3d)
                 Stage3d.startLoops()
                 
                 @addChild(MainToolbar)
+                @addChild(History)
+                
+                # Posizioning History Menu
+                $(History.el).css("left", ($(document).width() - 200) + "px")
 
         # Singleton
         new Layout()

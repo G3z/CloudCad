@@ -2,12 +2,19 @@
 # line tool is used to create planar Lines
 S.export(
     "views/gui/tools/path/Line",
-    ["views/gui/tools/DrawTool2D","views/draw/3D/primitives/Path3D","views/draw/3D/primitives/Point3D"],
-    (DrawTool2D,Path3D,Point3D)->
+    [
+        "views/gui/tools/DrawTool2D",
+        "views/draw/3D/primitives/Path3D",
+        "views/draw/3D/primitives/Point3D"
+        "models/Action",
+        "views/gui/History"
+    ],
+    (DrawTool2D ,Path3D, Point3D, Action, History)->
         class Line extends DrawTool2D
+
             constructor:->
                 super()
-                @icon = "layer-shape-line.png"                
+                @icon = "layer-shape-line.png"
                 # Register callback
                 $(document)
                     .bind("execute_tool_Line", =>
@@ -25,6 +32,7 @@ S.export(
                             , 50) # Mi assicuro che arrivi dopo lo svuotamento
                                 
                     )
+
             mouseDown:=>
                 super()
                 #Seleziono il piano su cui lavorare
@@ -53,7 +61,7 @@ S.export(
                         if c[0].point?
                             originalPoint = c[0].point.clone()
                             contactPoint = originalPoint.toObject(@activePlane)
-                            if contactPoint?   
+                            if contactPoint?
                                 #creo una nuova Path
                                 if @activePath?.points?.length > 1 or not @activePath?
                                     @activePath = new Path3D({points:[contactPoint]})
@@ -62,6 +70,15 @@ S.export(
                                     @activePlane.add(@activePath)
                                     @stage3d.selectedObject = @activePath
                                     @activePoint = @activePath.point("last")
+                                    # Save the new Action
+                                    action = new Action({
+                                        label: "Line"
+                                        data: @activePath.store()
+                                        time: new Date()
+                                    })
+
+                                    History.addAction(action)
+
                                 #aggiungo punti ad alla Path attiva
                                 else
                                     pathPoint = @activePath.pointNear(contactPoint,@stage3d.snapTolerance)
@@ -76,6 +93,9 @@ S.export(
                                             @activePath.lineTo(contactPoint)
                                             @activePoint = @activePath.point("last")
                                             @moveActivePointToCursor()
+
+                                        action = History.getLastAction()
+                                        action.set("data", @activePath.store())
                                 
             
             mouseDragged:=>

@@ -22,3 +22,5 @@ docs/
 .sass-cache/
 node_modules/
 .idea/*
+
+db/development.sqlite3

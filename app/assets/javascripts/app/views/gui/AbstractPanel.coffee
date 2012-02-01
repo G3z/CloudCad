@@ -49,6 +49,7 @@ S.export(
                         @mouseDown = false
                         evt.stopImmediatePropagation()
                     )
+
                 $(document.body).bind('mousemove', (evt)=>
                         if !@mouseDown then return
 

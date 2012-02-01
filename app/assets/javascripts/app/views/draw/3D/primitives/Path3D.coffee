@@ -27,6 +27,7 @@ S.export(
             constructor:(attr)->
                 super()
                 @closed = false
+                @selected = false
                 defaults = {
                     points : []
                     name : undefined
@@ -166,19 +167,12 @@ S.export(
                             points_after = @points[idx...@points.length]
 
                             @points = points_before.concat(points_after)
-                            @points[0] = @points[@points.length-1]
+                            #@points[0] = @points[@points.length-1]
 
                             @createGeometry()
                             @update()
                             return true
                 return false
-                
-
-            remove:(el)=>
-                if el instanceof Point3D
-                    @removePoint(el)
-                else if el instanceof Segment
-                    @removeSegment(el)
 
             removePoint:(point)=>
                 points_before = @points[0...point.idx]

@@ -43,9 +43,9 @@ S.export(
                         contacts = null
                         if path.id != @activePath.id and path.parent.id == @activePath.parent.id
                             contacts = @activePath.intersectionWithPath(path)
-                            for contact in contacts
+                            for contact,i in contacts
                                 @activePath.insert(contact.myIndex,contact.point)
-                                path.insert(contact.otherIndex,contact.point)
+                                path.insert(contact.otherIndex+i,contact.point)
             
             checkAlignment:(point)->
                 if @activePath?.points.length > 1
@@ -97,14 +97,14 @@ S.export(
                     
                     if point.distanceTo(previousPoint) < 1
                         @activePoint = null
-                        @activePath.remove(point)
+                        @activePath.removePoint(point)
 
                         console.log "remove #{point.idx}"
                         return false
                     
                     else if point.distanceTo(nextPoint) < 1
                         @activePoint = null
-                        @activePath.remove(point)
+                        @activePath.removePoint(point)
                         console.log "remove #{point.idx}"
                         return false
                     

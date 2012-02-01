@@ -48,9 +48,8 @@ S.export(
                             if obj.father.class == "Plane3D"
                                 @activePlane = obj.father
                                 
-                                #`stage3d.actionPlane` is positioned and rotated as the selected plane
                                 pos = @activePlane.position.fromObject(@activePlane.parent)
-                                v = @activePlane.matrixWorld.multiplyVector3(c[0].face.normal.clone())
+                                v = c[0].face.normal.fromObject(@activePlane)
                                 
                                 @stage3d.actionPlane.position.copy(pos)
                                 @stage3d.actionPlane.up.copy(@activePlane.up)

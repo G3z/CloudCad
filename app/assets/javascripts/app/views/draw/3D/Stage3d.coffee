@@ -208,10 +208,9 @@ S.export(
                     for object in obj
                         unless object.parent?
                             stage3d.layers[object.layer].remove(object)
-                        if obj.selected? and obj.id?
-                            if obj.selected
-                                unless obj.id = stage3d.selectedObject.id
-                                    obj.toggleSelection()
+                        if object.selected? and object.id?
+                            if object.selected and object.id != stage3d.selectedObject.id
+                                object.toggleSelection()
                 for layer of stage3d.layers
                     check(stage3d.layers[layer],stage3d) 
                 setTimeout(stage3d.logicLoop,1000)

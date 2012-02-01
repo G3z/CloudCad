@@ -37,11 +37,8 @@ S.export(
                             if obj.father.class == "Plane3D"
                                 @activePlane = obj.father
                                 
-                                #`stage3d.actionPlane` is positioned and rotated as the selected plane
-                                #v = new THREE.Vector3()
                                 pos = @activePlane.position.fromObject(@activePlane.parent)
-                                v = @activePlane.matrixWorld.multiplyVector3(c[0].face.normal.clone())
-                                #v.add(pos,@activePlane.matrixWorld.multiplyVector3(c[0].face.normal.clone()))
+                                v = c[0].face.normal.fromObject(@activePlane)
                                 
                                 @stage3d.actionPlane.position.copy(pos)
                                 @stage3d.actionPlane.up.copy(@activePlane.up)
@@ -60,7 +57,8 @@ S.export(
                                 #creo una nuova Path
                                 if @activePath?.points?.length > 1 or not @activePath?
                                     @activePath = new Path3D({points:[contactPoint]})
-                                    @activePath.toggleSelection() unless @activePath.selected
+                                    unless @activePath.selected
+                                        @activePath.toggleSelection()
                                     @activePlane.add(@activePath)
                                     @stage3d.selectedObject = @activePath
                                     @activePoint = @activePath.point("last")
@@ -81,7 +79,7 @@ S.export(
                                 
             
             mouseDragged:=>
-                super()
+                #super()
                 unless @activePoint?.idx?
                     return
                 @moveActivePointToCursor()

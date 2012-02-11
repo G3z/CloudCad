@@ -28,6 +28,7 @@ S.export(
                 @btn3 = new MouseButton()
                 @wheel = new MouseWheel()
                 @anyDown = false
+                document.onselectstart = ()->false
 
                 #Mouse Events
                 @canvas

@@ -3,6 +3,7 @@ S.export(
     "views/gui/SecondToolbar"
     [
         "solid.widgets.AbstractWidget"
+        "views/gui/tools/path/Scissors"
         "views/gui/tools/path/Line"
         "views/gui/tools/path/Path"
     ]

@@ -1,11 +1,5 @@
-##Notes
+#Main Authors
+Giacomo *G[3z]* Trezzi & Fabio *Wezzy* Trezzi
 
-#24/11/2011
+You need rails to make the app work and a modern browser that supports three.js and WebGL (I recommend Chrome)
 
-*implementazione delle viste principali tramite Alt 1..6
-*implementazione della camera ortografica tramite C
-
-#19/11/2011
-
-*Disegno nella classe Path  
-*Parziale implementazione della documentazione

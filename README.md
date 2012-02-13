@@ -5,9 +5,10 @@ Design Versioning tool.(**Not present**)
 Collaborative Design tool.(**Not present**)  
 
 ##Main Authors
-Giacomo *G[3z]* Trezzi & Fabio *Wezzy* Trezzi
+Giacomo **G[3z]** Trezzi  
+Fabio **Wezzy** Trezzi
 
-##Dependencies:
+##Dependencies
 [Ruby](http://www.ruby-lang.org/en/ )  
 [Rails](http://rubyonrails.org/ )  
 [THREE.js](https://github.com/mrdoob/three.js/)  

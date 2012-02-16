@@ -25,7 +25,7 @@ gem 'jquery-rails'
 gem 'sprockets-jquery-tmpl'
 
 # Embed Spine automatically
-gem 'spine-rails'
+#gem 'spine-rails'
 
 # Use unicorn as the web server
 # gem 'unicorn'

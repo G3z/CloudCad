@@ -1,8 +1,8 @@
 ##Key Features
-CAD application in the browser.(**Early stage WIP**)  
-Design sharing tool.(**Not present**)  
-Design Versioning tool.(**Not present**)  
-Collaborative Design tool.(**Not present**)  
+- CAD application in the browser.(**Early stage WIP**)  
+- Design sharing tool.(**Not present**)  
+- Design Versioning tool.(**Not present**)  
+- Collaborative Design tool.(**Not present**)  
 
 #[Video 000](http://www.youtube.com/watch?v=1vnIxy5GMro)
 
@@ -20,4 +20,4 @@ Fabio **Wezzy** Trezzi
 [Solid](https://github.com/wezzy/solid)
 [Rails](http://rubyonrails.org/ )  
 
-[docco-husky](https://github.com/mbrevoort/docco-husky) and therefore [Node.js](http://nodejs.org/) is used for generating the documentation
+[docco-husky](https://github.com/mbrevoort/docco-husky) is used for generating the documentation

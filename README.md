@@ -6,6 +6,24 @@
 
 #[Video 000](http://www.youtube.com/watch?v=1vnIxy5GMro)
 
+##Installation
+	#clone the stuff...  
+    $ git clone git://github.com/G3z/CloudCad.git  
+    
+    #initialize and update solid in app/assets/javascripts/app/libs/solid  
+    $ git submodule update --init --recursive 
+    
+    #rails initialization...  
+    $ cd CloudCad  
+    $ bundle install  
+    $ rake db:create;rake db:migrate; rake db:seed  
+	
+    #...FINALLY:
+    $ rails s
+    #or
+    $ rails s -e production
+    
+
 ##Main Authors
 Giacomo **G[3z]** Trezzi  
 Fabio **Wezzy** Trezzi

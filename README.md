@@ -33,7 +33,7 @@ Fabio **Wezzy** Trezzi
 [Backbone.js](http://documentcloud.github.com/backbone/)  
 [THREE.js](https://github.com/mrdoob/three.js/)  
 [CSG.js](https://github.com/evanw/csg.js)  
-[THREECsg.js](http://chandler.prallfamily.com/2011/12/constructive-solid-geometry-with-three-js/)
+[THREECsg.js](http://chandler.prallfamily.com/2011/12/constructive-solid-geometry-with-three-js/)  
 [jQuery](http://www.jquery.com)  
 [Solid](https://github.com/wezzy/solid)
 [Rails](http://rubyonrails.org/ )  

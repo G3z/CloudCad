@@ -28,14 +28,14 @@
 Giacomo **G[3z]** Trezzi  
 Fabio **Wezzy** Trezzi
 
-##Made with:
-[CoffeeScript](http://jashkenas.github.com/coffee-script/)  
-[Backbone.js](http://documentcloud.github.com/backbone/)  
-[THREE.js](https://github.com/mrdoob/three.js/)  
+##Made with :
+[Backbone.js](http://backbonejs.org/)  
 [CSG.js](https://github.com/evanw/csg.js)  
-[THREECsg.js](http://chandler.prallfamily.com/2011/12/constructive-solid-geometry-with-three-js/)  
+[CoffeeScript](http://jashkenas.github.com/coffee-script/)  
 [jQuery](http://www.jquery.com)  
-[Solid](https://github.com/wezzy/solid)
 [Rails](http://rubyonrails.org/ )  
+[Solid](https://github.com/wezzy/solid)  
+[THREECsg.js](http://chandler.prallfamily.com/2011/12/constructive-solid-geometry-with-three-js/)  
+[THREE.js](https://github.com/mrdoob/three.js/)  
 
 [docco-husky](https://github.com/mbrevoort/docco-husky) is used for generating the documentation

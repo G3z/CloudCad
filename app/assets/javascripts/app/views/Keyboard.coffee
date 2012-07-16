@@ -84,11 +84,13 @@ S.export(
                 #console.log keyCode
                 @_keysState[keyCode] = true
                 $(document).trigger 'keyboard:' + @keyForKeycode(keyCode) + '_down'
+                $(document).trigger 'keyboard:any_down'
                 return true
 
             _keyUp:(keyCode)=>
                 @_keysState[keyCode] = false
                 $(document).trigger 'keyboard:' + @keyForKeycode(keyCode) + '_up'
+                $(document).trigger 'keyboard:any_up'
                 return true
 
             isKeyDown:(keyCode)=>

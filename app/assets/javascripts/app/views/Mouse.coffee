@@ -86,6 +86,8 @@ S.export(
                     @btn3.start = @eventToPoint(event)
                     @anyDown =true
                     @canvas.trigger 'mouse:btn3_down'
+
+                @canvas.trigger 'mouse:any_down'
             
             #### *mouseDown(`event`)* method takes one argument
             #* the *event* on the screen where the events was fired
@@ -132,6 +134,7 @@ S.export(
                     @mouseDragged(@eventToPoint(event),@btn3)
                     @canvas.trigger 'mouse:btn3_drag'
 
+                
             #### *mouseDragged(`point`,`btn`)* method takes two arguments
             #* the *point* on the screen where the events was fired
             #* the *btn* instance wich was pushed
@@ -148,7 +151,7 @@ S.export(
                     w:point.x - btn.start.x
                     h:point.y - btn.start.y
                 }
-
+                @canvas.trigger 'mouse:any_drag'
             #### *mouseUp(`event`)* method takes one argument
             #* the *event* on the screen where the events was fired
             #
@@ -177,6 +180,8 @@ S.export(
                     @btn3.end = @eventToPoint(event)
                     @canvas.trigger 'mouse:btn3_up'
 
+                @canvas.trigger 'mouse:any_up'
+                
                 if !@btn1.down && !@btn2.down && !@btn1.down
                     @anyDown =false
 

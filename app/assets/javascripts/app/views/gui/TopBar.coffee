@@ -11,7 +11,7 @@ S.export(
                 $("#top_bar_help").bind("click", @help)
 
             @get: (args) -> # Must be a static method
-                _instance ?= new _TopBar args
+                _instance = new _TopBar args
         
 
             help:->

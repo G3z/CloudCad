@@ -24,3 +24,4 @@ node_modules/
 .idea/*
 
 db/development.sqlite3
+thin/

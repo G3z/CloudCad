@@ -16,7 +16,7 @@
     #rails initialization...  
     $ cd CloudCad  
     $ bundle install  
-    $ rake db:create;rake db:migrate; rake db:seed  
+    $ rake db:load
 	
     #...FINALLY:
     $ rails s

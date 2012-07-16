@@ -38,6 +38,7 @@ S.export(
                 @size=
                     w: window.innerWidth
                     h: window.innerHeight-2
+                @active = false
                 # Renderer
                 @canvas = document.createElement( 'canvas' )
                 $(@canvas).attr("id","canvas3d")
@@ -134,52 +135,65 @@ S.export(
 
                 $(document)
                     .bind 'mouse:btn1_down', =>
+                        @hasInput()
                         unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
                             @activeTool.mouseDown()
                             
                     .bind 'mouse:btn1_doubleClick', =>
+                        @hasInput()
                         @activeTool.mouseDoubleClick()
 
                     .bind 'mouse:btn1_drag', =>
+                        @hasInput()
                         unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
                             @activeTool.mouseDragged()
 
                     .bind 'mouse:btn1_up', =>
+                        @hasInput()
                         unless @keyboard.isKeyDown("shift") or @keyboard.isKeyDown("alt") or @keyboard.isKeyDown("ctrl")
                             @activeTool.mouseUp()
 
                     .bind 'keyboard:c_up', =>
+                        @hasInput()
                         @camera.toggleType()
                     
                     .bind 'keyboard:n_up', =>
+                        @hasInput()
                         if @activeTool?.activePlane?.class = "Plane3D"
                             @cameraController.normalTo(@activeTool.activePlane)
 
                     .bind 'keyboard:1_up', =>
+                        @hasInput()
                         if @keyboard.isKeyDown("alt")
                             @cameraController.toFrontView()
 
                     .bind 'keyboard:2_up', =>
+                        @hasInput()
                         if @keyboard.isKeyDown("alt")
                             @cameraController.toBackView()
 
                     .bind 'keyboard:3_up', =>
+                        @hasInput()
                         if @keyboard.isKeyDown("alt")
                             @cameraController.toTopView()
 
                     .bind 'keyboard:4_up', =>
+                        @hasInput()
                         if @keyboard.isKeyDown("alt")
                             @cameraController.toBottomView()
 
                     .bind 'keyboard:5_up', =>
+                        @hasInput()
                         if @keyboard.isKeyDown("alt")
                             @cameraController.toLeftView()
 
                     .bind 'keyboard:6_up', =>
+                        @hasInput()
                         if @keyboard.isKeyDown("alt")
                             @cameraController.toRightView()
 
                     .bind 'keyboard:spacebar_up', =>
+                        @hasInput()
                         if @selectedObject?
                             @selectedObject.toggleSelection?()
                         @selectedObject = undefined
@@ -193,13 +207,24 @@ S.export(
                 @graphicLoop()
                 @logicLoop()
 
+            hasInput:=>
+                clearInterval timer
+                @active = true
+                @graphicLoop()
+                @inactiveTime = 0.0
+                timer = setInterval(()->
+                    window.stage3d.active = false
+                ,2000)
+                #@active = false
+
             graphicLoop:->
                 stage3d = window.stage3d
                 render=(stage3d)->
                     stage3d.cameraController.update()
                     #@actionPlane.lookAt( @camera.position )
                     stage3d.renderer.render(stage3d.scene,stage3d.camera)
-                requestAnimationFrame(stage3d.graphicLoop)
+                if stage3d.active == true
+                    requestAnimationFrame(stage3d.graphicLoop)
                 render(stage3d)
 
             logicLoop:->

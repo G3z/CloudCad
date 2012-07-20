@@ -211,24 +211,24 @@ S.export(
                 @logicLoop()
 
             hasInput:=>
-                clearInterval timer
-                @active = true
-                @graphicLoop()
-                @inactiveTime = 0.0
-                timer = setInterval(()->
-                    window.stage3d.active = false
-                ,2000)
-                #@active = false
+                stage3d = window.stage3d
+                stage3d.active = true
+                clearInterval stage3d.activityTimer
+                stage3d = window.stage3d
+                stage3d.activityTimer = setTimeout(()->
+                    stage3d.active = false
+                    console.log "Inactive Stage"
+                ,5000)
 
             graphicLoop:->
                 stage3d = window.stage3d
                 render=(stage3d)->
                     stage3d.cameraController.update()
-                    #@actionPlane.lookAt( @camera.position )
                     stage3d.renderer.render(stage3d.scene,stage3d.camera)
+                
+                requestAnimationFrame(stage3d.graphicLoop)
                 if stage3d.active == true
-                    requestAnimationFrame(stage3d.graphicLoop)
-                render(stage3d)
+                    render(stage3d)
 
             logicLoop:->
                 stage3d = window.stage3d
